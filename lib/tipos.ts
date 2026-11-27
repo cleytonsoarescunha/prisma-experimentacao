@@ -114,6 +114,15 @@ export const PASSOS_PEDIDO = [
   { t: "Em desenvolvimento", d: "O time desenvolve a solução. Depois, ela segue para a Prototipação.", etapa: 1 },
 ] as const;
 
+/** Descrição curta de onde a demanda está: "Etapa 1 · Demanda recebida" ou "Etapa 4 · Testes". */
+export function descreverSituacao(situacao: string): string {
+  const { esteira, passo } = posicaoDemanda(situacao);
+  return passo < PASSOS_PEDIDO.length ? `Etapa ${esteira + 1} · ${PASSOS_PEDIDO[passo].t}` : `Etapa ${esteira + 1} · ${ETAPAS_ESTEIRA[esteira]}`;
+}
+
+/** Todas as situações possíveis de uma demanda, em ordem: os 5 passos do pedido e as etapas 3 a 8 da esteira. */
+export const SITUACOES_DEMANDA: string[] = [...PASSOS_PEDIDO.map((p) => p.t), ...ETAPAS_ESTEIRA.slice(2)];
+
 /**
  * Converte a situação gravada no banco em etapa da esteira (0 a 7) e passo do pedido.
  * passo vai de 0 a 4 nas etapas 1 e 2; é 5 quando os passos já terminaram (etapa 3 em diante).

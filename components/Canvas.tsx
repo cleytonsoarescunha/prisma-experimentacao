@@ -1,6 +1,8 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useRef, useState, type ReactNode, type Ref } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, useSyncExternalStore, type ReactNode, type Ref } from "react";
+
+const semAssinatura = () => () => {};
 import { createPortal } from "react-dom";
 import { COR, IconeFrasco } from "./ui";
 import type { DadosCanvas } from "@/lib/regras";
@@ -230,8 +232,13 @@ export function CanvasTela({ d }: { d: DadosCanvas }) {
   const [largura, setLargura] = useState(760);
   const [nivel, setNivel] = useState(0);
   const [nivelT, setNivelT] = useState(0);
-  // A tela final só aparece depois de interação no navegador, então document já existe.
-  const montado = typeof document !== "undefined";
+  // A cópia para impressão só existe no navegador. No servidor (ex.: detalhe da área do time) fica de fora,
+  // e assim o HTML do servidor e o do navegador começam iguais.
+  const montado = useSyncExternalStore(
+    semAssinatura,
+    () => true,
+    () => false,
+  );
 
   useEffect(() => {
     const el = wrapRef.current;

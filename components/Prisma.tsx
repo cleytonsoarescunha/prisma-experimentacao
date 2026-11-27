@@ -1,16 +1,16 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import PrismaVidro from "./PrismaVidro";
 import { ConteudoInicio, HeroInicio, type EstadoConsulta } from "./Inicio";
 import PassoConta from "./PassoConta";
 import { PassoConfere, PassoOrganizando } from "./PassosOrganiza";
 import TelaFim from "./TelaFim";
-import { COR, IconeFrasco } from "./ui";
+import Rodape from "./Rodape";
+import { COR } from "./ui";
 import { EXEMPLO, organizarSemIA } from "@/lib/regras";
 
-/** E-mail do criador, para o link "Criado por" do rodapé. */
-const CONTATO_CRIADOR = "cleytonsoarescunha@gmail.com";
 import { FORMULARIO_VAZIO, type Demanda, type Formulario, type ItemOrganizado } from "@/lib/tipos";
 
 type Tela = "entrada" | "conta" | "ia" | "valida" | "fim";
@@ -196,6 +196,19 @@ export default function Prisma() {
               <span style={{ fontSize: 12, lineHeight: "16px", color: COR.suave }}>Time InovAI · CoE Digital</span>
             </span>
           </button>
+          <Link
+            href="/inovai"
+            aria-label="Área restrita"
+            title="Área restrita"
+            className="pz-restrita"
+            style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 8, minHeight: 40, minWidth: 40, border: `2px solid ${COR.vermelho}`, borderRadius: 9999, color: COR.vermelhoEscuro, fontSize: 14, fontWeight: 700, textDecoration: "none", whiteSpace: "nowrap", flex: "none" }}
+          >
+            <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="4" y="11" width="16" height="10" rx="2" />
+              <path d="M8 11V7a4 4 0 0 1 8 0v4" />
+            </svg>
+            <span className="pz-restrita-texto">Área restrita</span>
+          </Link>
         </div>
       </header>
 
@@ -300,36 +313,7 @@ export default function Prisma() {
         </div>
       </div>
 
-      <footer className="pz-x" style={{ width: "100%", maxWidth: 1240, margin: "0 auto", paddingTop: 8, paddingBottom: 36, flex: "none" }}>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, flexWrap: "wrap", borderTop: `1px solid ${COR.linhas}`, paddingTop: 22 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-            <span style={{ width: 44, height: 44, background: COR.vermelho, display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <IconeFrasco />
-            </span>
-            <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
-              <div style={{ display: "flex", alignItems: "center" }}>
-                <span style={{ fontSize: 17, fontWeight: 700, letterSpacing: "0.08em", color: COR.vermelhoEscuro }}>EXPERIMENTAÇÃO</span>
-                <span style={{ width: 1, height: 20, background: COR.cinzaBorda, margin: "0 14px" }} />
-                <span style={{ fontSize: 15, color: COR.suave }}>CoE Digital</span>
-              </div>
-              <div style={{ width: 90, height: 3, background: "linear-gradient(90deg, #e2262b, rgba(226,38,43,0))" }} />
-            </div>
-          </div>
-          <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 4, textAlign: "right" }}>
-            <span style={{ fontSize: 13, color: COR.suave }}>Os problemas recebidos entram na esteira de experimentação do time InovAI</span>
-            <span style={{ fontSize: 13, color: COR.suave }}>
-              Criado por{" "}
-              <a
-                href={"mailto:" + CONTATO_CRIADOR + "?subject=" + encodeURIComponent("Contato sobre o Prisma de Experimentação")}
-                title="Enviar um e-mail para o criador do Prisma"
-                style={{ color: COR.vermelhoEscuro, fontWeight: 700 }}
-              >
-                Cleyton Cunha
-              </a>
-            </span>
-          </div>
-        </div>
-      </footer>
+      <Rodape />
     </div>
   );
 }

@@ -100,6 +100,19 @@
   animation: pzPulse 1.6s ease-in-out infinite;
 }
 
+/* Botão "Área restrita" da barra superior: texto e cadeado no computador; só o cadeado no celular. */
+.pz-restrita {
+  padding: 8px 16px;
+}
+@media (max-width: 767px) {
+  .pz-restrita {
+    padding: 8px;
+  }
+  .pz-restrita-texto {
+    display: none;
+  }
+}
+
 /* Trilha do pedido: cartões ligados por setas. No computador largo fica numa linha (setas para a direita);
    em telas menores, um cartão embaixo do outro (setas para baixo). */
 .pz-trilha {

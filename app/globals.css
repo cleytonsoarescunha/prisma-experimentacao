@@ -19,6 +19,8 @@
 
 html {
   height: 100%;
+  /* Reserva sempre o espaço da barra de rolagem: assim a barra superior não "pula" entre páginas curtas e longas. */
+  scrollbar-gutter: stable;
 }
 
 body {

@@ -118,6 +118,15 @@ Barra lateral vermelha (#E2262B, 490px, sem imagem de fundo):
 - Selo "EXPERIMENTAÇÃO | CoE Digital" no pé, à esquerda.
 - Se o texto não couber, reduza a fonte da área branca aos poucos até caber; nunca corte texto.
 
+## Área do time InovAI
+
+- Endereço `/inovai`. Na barra superior do site, à direita, um botão "Área restrita" (com ícone de cadeado) leva para lá.
+- Entrada sem senha: a pessoa digita o e-mail em `/inovai/entrar` e recebe pelo Gmail do Prisma um link de acesso ("InovAI | Seu link de acesso ao Prisma"), criado pelo Supabase Auth, que vale uma vez e por cerca de 1 hora. Só e-mails da lista `INOVAI_EMAILS` (no .env.local) recebem o link; a resposta na tela é sempre a mesma, para não revelar quem está na lista. Depois do clique, a sessão fica guardada por 7 dias num cookie assinado.
+- Lista de todas as demandas (código, data, nome da solução, produto, quem enviou e área, situação), com filtro por situação.
+- Detalhe da demanda: situação e botão para mudar (com histórico de quem mudou e quando), quem enviou, tudo o que foi contado, anexos (links temporários), hipótese e riscos, canvas e botão para baixar o PDF.
+- Botão Sair, que recarrega a página do zero.
+- Quem enviou um problema ainda não tem login próprio: acompanha pelo código. Fica para depois, se fizer falta.
+
 ## Banco de dados (Supabase)
 
 Tabela `demandas` (sugestão; ajuste se precisar): código, data de envio, todos os campos do Passo 1, itens confirmados no Passo 3 (resumo, nome, hipótese, riscos), situação atual (um dos 5 passos do pedido nas etapas 1 e 2, ou uma etapa de Prototipação em diante; começa em "Demanda recebida"), histórico de mudanças de etapa, caminho dos anexos no Storage e do PDF do canvas. Ative Row Level Security: quem enviou vê só as próprias demandas; o time InovAI (lista de e-mails em variável de ambiente) vê e altera todas.

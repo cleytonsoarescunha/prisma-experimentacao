@@ -40,6 +40,33 @@ async function enviarPorGmail(m: Mensagem): Promise<boolean> {
   return true;
 }
 
+/** Envia o link de acesso à área do time InovAI. Devolve true se o envio foi aceito. */
+export async function enviarEmailAcesso(para: string, link: string): Promise<boolean> {
+  const html = `<div style="font-family: Roboto, Arial, sans-serif; color: #262626; font-size: 16px; line-height: 24px; max-width: 560px">
+  <p>Olá!</p>
+  <p>Use o botão abaixo para entrar na área do time InovAI no Prisma de Experimentação.</p>
+  <p style="margin: 24px 0"><a href="${escapar(link)}" style="display: inline-block; padding: 12px 24px; border-radius: 9999px; background: #e2262b; color: #ffffff; font-weight: 700; text-decoration: none">Entrar no Prisma</a></p>
+  <p style="color: #53585f; font-size: 14px">O link vale uma única vez e por cerca de 1 hora. Se você não pediu este acesso, ignore este e-mail.</p>
+  <p style="color: #53585f; font-size: 14px">Time InovAI · Experimentação</p>
+</div>`;
+  const texto = [
+    "Olá!",
+    "",
+    "Use o link abaixo para entrar na área do time InovAI no Prisma de Experimentação:",
+    link,
+    "",
+    "O link vale uma única vez e por cerca de 1 hora. Se você não pediu este acesso, ignore este e-mail.",
+    "",
+    "Time InovAI · Experimentação",
+  ].join("\n");
+  try {
+    return await enviarPorGmail({ para, assunto: "InovAI | Seu link de acesso ao Prisma", html, texto, anexo: null });
+  } catch (e) {
+    console.warn("[email] Gmail falhou (link de acesso):", e instanceof Error ? e.message.slice(0, 200) : e);
+    return false;
+  }
+}
+
 /** Envia para quem contou o problema o código da demanda e o canvas em PDF. Devolve true se o envio foi aceito. */
 export async function enviarEmailCanvas(dados: { para: string; nome: string; codigo: string; nomeSolucao: string; pdf: Buffer | null }): Promise<boolean> {
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(dados.para.trim())) {
