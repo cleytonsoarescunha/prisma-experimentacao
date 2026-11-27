@@ -37,7 +37,10 @@ export function Chip({ obrigatorio }: { obrigatorio: boolean }) {
   );
 }
 
-/** Rótulo ligado ao campo, com a etiqueta OBRIGATÓRIO ou OPCIONAL ao lado. */
+/**
+ * Rótulo ligado ao campo, com a etiqueta OBRIGATÓRIO ou OPCIONAL ao lado.
+ * Com obrigatorio = null, fica sem etiqueta (campos com a caixa "Não sei agora", que já explica o que fazer).
+ */
 export function Rotulo({
   htmlFor,
   id,
@@ -48,7 +51,7 @@ export function Rotulo({
   htmlFor?: string;
   id?: string;
   children: ReactNode;
-  obrigatorio: boolean;
+  obrigatorio: boolean | null;
   tamanho?: number;
 }) {
   const estilo: CSSProperties = { fontSize: tamanho, lineHeight: tamanho + 6 + "px", fontWeight: 700, margin: 0 };
@@ -63,7 +66,7 @@ export function Rotulo({
           {children}
         </p>
       )}
-      <Chip obrigatorio={obrigatorio} />
+      {obrigatorio !== null && <Chip obrigatorio={obrigatorio} />}
     </div>
   );
 }

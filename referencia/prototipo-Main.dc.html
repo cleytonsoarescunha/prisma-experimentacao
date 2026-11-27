@@ -245,15 +245,16 @@ button:focus-visible{outline:3px solid #f3a6a8;outline-offset:2px}
 <div style="display: flex; flex-direction: column; gap: 4px"><p style="margin: 0; font-size: 12px; line-height: 16px; font-weight: 700; letter-spacing: 0.12em; color: #c00000">TAMANHO DO PROBLEMA</p><p style="margin: 0; font-size: 14px; line-height: 20px; color: #53585f">Com estes números já estimamos o impacto no seu canvas. Valores aproximados servem.</p></div>
 <div style="display: flex; flex-wrap: wrap; gap: 16px">
 <div style="flex: 1 1 220px; display: flex; flex-direction: column; gap: 8px">
-<div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap"><label for="f-volume" style="font-size: 16px; line-height: 22px; font-weight: 700">Quantas vezes acontece por mês?</label><span style="padding: 2px 10px; border-radius: 9999px; background: #e2262b; color: #ffffff; font-size: 11px; line-height: 16px; font-weight: 700; letter-spacing: 0.08em">OBRIGATÓRIO</span></div>
+<div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap"><label for="f-volume" style="font-size: 16px; line-height: 22px; font-weight: 700">Quantas vezes acontece por mês?</label></div>
 <p style="margin: 0; font-size: 13px; line-height: 18px; color: #53585f">Pedidos, chamados, clientes afetados.</p>
 <input id="f-volume" type="text" inputmode="numeric" value="{{volume}}" onChange="{{onVolume}}" disabled="{{volNaoSei}}" style="width: 100%; box-sizing: border-box; min-height: 48px; padding: 10px 14px; border: 2px solid {{bVolume}}; border-radius: 10px; font-size: 16px; background: {{volBg}}">
 <label for="f-volume-ns" style="display: inline-flex; align-self: flex-start; align-items: center; gap: 6px; font-size: 13px; line-height: 18px; color: #53585f; cursor: pointer"><input id="f-volume-ns" type="checkbox" checked="{{volNaoSei}}" onChange="{{toggleVolNaoSei}}" style="width: 16px; height: 16px; accent-color: #e2262b; margin: 0">Não sei agora</label>
 </div>
 <div style="flex: 1 1 220px; display: flex; flex-direction: column; gap: 8px">
-<div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap"><label for="f-valor" style="font-size: 16px; line-height: 22px; font-weight: 700">Quanto custa cada caso? (R$)</label><span style="padding: 2px 10px; border-radius: 9999px; background: #d9d9d9; color: #262626; font-size: 11px; line-height: 16px; font-weight: 700; letter-spacing: 0.08em">OPCIONAL</span></div>
+<div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap"><label for="f-valor" style="font-size: 16px; line-height: 22px; font-weight: 700">Quanto custa cada caso? (R$)</label></div>
 <p style="margin: 0; font-size: 13px; line-height: 18px; color: #53585f">Custo de tratamento ou receita perdida por caso.</p>
-<input id="f-valor" type="text" inputmode="decimal" value="{{valorCaso}}" onChange="{{onValor}}" style="width: 100%; box-sizing: border-box; min-height: 48px; padding: 10px 14px; border: 2px solid #d9d9d9; border-radius: 10px; font-size: 16px">
+<input id="f-valor" type="text" inputmode="decimal" value="{{valorCaso}}" onChange="{{onValor}}" disabled="{{valorNaoSei}}" style="width: 100%; box-sizing: border-box; min-height: 48px; padding: 10px 14px; border: 2px solid {{bValor}}; border-radius: 10px; font-size: 16px; background: {{valorBg}}">
+<label for="f-valor-ns" style="display: inline-flex; align-self: flex-start; align-items: center; gap: 6px; font-size: 13px; line-height: 18px; color: #53585f; cursor: pointer"><input id="f-valor-ns" type="checkbox" checked="{{valorNaoSei}}" onChange="{{toggleValorNaoSei}}" style="width: 16px; height: 16px; accent-color: #e2262b; margin: 0">Não sei agora</label>
 </div>
 </div>
 <div style="display: flex; flex-direction: column; gap: 8px">
@@ -699,7 +700,7 @@ button:focus-visible{outline:3px solid #f3a6a8;outline-offset:2px}
 class Component extends DCLogic {
   constructor(props) {
     super(props);
-    this.state = { tela: 'entrada', volNaoSei: false, volume: '', valorCaso: '', consultaCod: '', consultaRes: null, consultaErro: false, ganho: '', ganhosSec: [], justPrinc: '', justSec: {}, problema: '', dados: '', arquivos: [], links: [], linkNovo: '', produto: '', interessados: '', stakeholders: '', nome: '', area: '', email: '', erro: false, erroEnvio: false, usouExemplo: false, iaStep: 0, ia: [], baixou: false, cvNivel: 0, cvNivelT: 0, imprimindo: false };
+    this.state = { tela: 'entrada', volNaoSei: false, volume: '', valorCaso: '', valorNaoSei: false, consultaCod: '', consultaRes: null, consultaErro: false, ganho: '', ganhosSec: [], justPrinc: '', justSec: {}, problema: '', dados: '', arquivos: [], links: [], linkNovo: '', produto: '', interessados: '', stakeholders: '', nome: '', area: '', email: '', erro: false, erroEnvio: false, usouExemplo: false, iaStep: 0, ia: [], baixou: false, cvNivel: 0, cvNivelT: 0, imprimindo: false };
     this.timers = [];
   }
   componentDidMount() { var self = this; this._onR = function () { self.medirCanvas(); }; try { window.addEventListener('resize', this._onR); } catch (e) {} }
@@ -793,7 +794,7 @@ class Component extends DCLogic {
         barColor: feito || ativo ? '#e2262b' : '#d9d9d9'
       };
     });
-    var obrig = ['problema', 'volume', 'ganho', 'justPrinc', 'produto', 'interessados', 'nome', 'area', 'email'];
+    var obrig = ['problema', 'volume', 'valorCaso', 'ganho', 'justPrinc', 'produto', 'interessados', 'nome', 'area', 'email'];
     function num(v) { var t = String(v).replace(/[^0-9,.]/g, '').replace(/\./g, '').replace(',', '.'); var n = parseFloat(t); return isFinite(n) ? n : 0; }
     function brl(n) { if (n >= 1e6) { return 'R$ ' + (n / 1e6).toFixed(1).replace('.', ',') + ' mi'; } if (n >= 1e3) { return 'R$ ' + Math.round(n / 1e3) + ' mil'; } return 'R$ ' + Math.round(n); }
     function inteiro(n) { return Math.round(n).toLocaleString('pt-BR'); }
@@ -802,9 +803,15 @@ class Component extends DCLogic {
     function fmtImp(x) { return val > 0 ? brl(x) + '/ano' : inteiro(x) + ' casos/ano'; }
     var ganhoDefs = ['Redução de custo', 'Aumento de receita', 'Experiência do cliente', 'Inovação'];
     var DICAS = { 'Redução de custo': 'Que custo diminui? Ex.: horas do backoffice, retrabalho, chamados repetidos.', 'Aumento de receita': 'De onde vem a receita? Ex.: vendas que hoje se perdem, clientes que desistem.', 'Experiência do cliente': 'O que melhora para o cliente? Ex.: menos espera, menos contatos, jornada mais simples.', 'Inovação': 'O que há de novo? Ex.: uma forma de atender que ainda não existe na empresa.' };
-    var rotulos = { problema: ['Conte o problema', 'f-problema'], volume: ['Quantas vezes acontece por mês', 'f-volume'], ganho: ['Tipo de ganho principal', 'l-ganho'], justPrinc: ['Por que esse ganho', 'f-just'], produto: ['Produto ou jornada', 'f-produto'], interessados: ['Time que vai receber a solução', 'f-interessados'], nome: ['Seu nome', 'f-nome'], area: ['Sua área', 'f-area'], email: ['Seu e-mail', 'f-email'] };
-    var faltando = obrig.filter(function (k) { if (k === 'volume' && s.volNaoSei) return false; if (k === 'justPrinc' && !s.ganho) return false; return !String(s[k] || '').trim(); });
-    function borda(k) { return s.erro && !String(s[k]).trim() ? '#e2262b' : '#53585f'; }
+    var rotulos = { problema: ['Conte o problema', 'f-problema'], volume: ['Quantas vezes acontece por mês (um número ou "Não sei agora")', 'f-volume'], valorCaso: ['Quanto custa cada caso (um número ou "Não sei agora")', 'f-valor'], ganho: ['Tipo de ganho principal', 'l-ganho'], justPrinc: ['Por que esse ganho', 'f-just'], produto: ['Produto ou jornada', 'f-produto'], interessados: ['Time que vai receber a solução', 'f-interessados'], nome: ['Seu nome', 'f-nome'], area: ['Sua área', 'f-area'], email: ['Seu e-mail', 'f-email'] };
+    // Os dois números do tamanho do problema: um número maior que zero ou a caixa "Não sei agora".
+    var faltando = obrig.filter(function (k) {
+      if (k === 'volume') return !s.volNaoSei && !(num(s.volume) > 0);
+      if (k === 'valorCaso') return !s.valorNaoSei && !(num(s.valorCaso) > 0);
+      if (k === 'justPrinc' && !s.ganho) return false;
+      return !String(s[k] || '').trim();
+    });
+    function borda(k) { return s.erro && faltando.indexOf(k) >= 0 ? '#e2262b' : '#53585f'; }
     function setter(k) { return function (e) { var o = {}; o[k] = e.target.value; self.setState(o); }; }
     var listaBen = (function () { var out = []; if (s.ganho && String(s.justPrinc || '').trim()) out.push({ tipo: s.ganho, texto: s.justPrinc }); (s.ganhosSec || []).forEach(function (l) { var t = (s.justSec || {})[l]; if (t && String(t).trim()) out.push({ tipo: l, texto: t }); }); return out; })();
     var cvFit = ((s.cvW || (compact ? 352 : 760)) - 2) / 1920;
@@ -986,8 +993,12 @@ class Component extends DCLogic {
       volNaoSei: !!s.volNaoSei,
       volBg: s.volNaoSei ? '#f5f3f1' : '#ffffff',
       toggleVolNaoSei: function (e) { var v = !!e.target.checked; self.setState(v ? { volNaoSei: true, volume: '' } : { volNaoSei: false }); },
-      temPendMetricas: !!s.volNaoSei || !String(s.valorCaso || '').trim(),
-      pendMetricas: [s.volNaoSei ? { t: 'Quantas vezes o problema acontece por mês (pedidos, chamados, clientes afetados)' } : null, !String(s.valorCaso || '').trim() ? { t: 'Quanto custa cada caso, ou quanto se perde de receita por caso' } : null].filter(function (x) { return x; }),
+      valorNaoSei: !!s.valorNaoSei,
+      valorBg: s.valorNaoSei ? '#f5f3f1' : '#ffffff',
+      bValor: s.valorNaoSei ? '#d9d9d9' : borda('valorCaso'),
+      toggleValorNaoSei: function (e) { var v = !!e.target.checked; self.setState(v ? { valorNaoSei: true, valorCaso: '' } : { valorNaoSei: false }); },
+      temPendMetricas: !!s.volNaoSei || !!s.valorNaoSei,
+      pendMetricas: [s.volNaoSei ? { t: 'Quantas vezes o problema acontece por mês (pedidos, chamados, clientes afetados)' } : null, s.valorNaoSei ? { t: 'Quanto custa cada caso, ou quanto se perde de receita por caso' } : null].filter(function (x) { return x; }),
       temGanho: !!s.ganho,
       ganhoMin: String(s.ganho || '').toLowerCase(),
       justPrinc: s.justPrinc || '',
@@ -1104,7 +1115,7 @@ class Component extends DCLogic {
           email: '[seu.email@empresa.com.br]',
           problema: 'No e-commerce, parte dos pedidos de banda larga trava porque o endereço do cliente não é encontrado na base, e o pedido vai para tratamento manual. Percebi pelo volume da fila do backoffice. O cliente conclui a compra, mas dias depois recebe contato pedindo para confirmar o endereço, e parte desiste da instalação.',
           dados: 'Exemplo ilustrativo: números aproximados para demonstrar o cálculo.',
-          volume: '3000', valorCaso: '25', ganho: 'Redução de custo', ganhosSec: ['Experiência do cliente'], justPrinc: 'Menos pedidos caem no tratamento manual do backoffice, que hoje confere cada endereço à mão.', justSec: { 'Experiência do cliente': 'O cliente não é chamado dias depois para confirmar o endereço.' },
+          volume: '3000', volNaoSei: false, valorCaso: '25', valorNaoSei: false, ganho: 'Redução de custo', ganhosSec: ['Experiência do cliente'], justPrinc: 'Menos pedidos caem no tratamento manual do backoffice, que hoje confere cada endereço à mão.', justSec: { 'Experiência do cliente': 'O cliente não é chamado dias depois para confirmar o endereço.' },
           produto: 'Banda larga no e-commerce',
           interessados: 'Time de e-commerce'
         });
@@ -1129,7 +1140,7 @@ class Component extends DCLogic {
       enviarOpacity: validados === s.ia.length ? '1' : '0.45',
       enviar: function () { if (validados < s.ia.length) { self.setState({ erroEnvio: true }); return; } var seq = (s.seq || 0) + 1; var d = new Date(); var mmaa = ('0' + (d.getMonth() + 1)).slice(-2) + String(d.getFullYear()).slice(-2); self.setState({ tela: 'fim', erroEnvio: false, cvNivel: 0, cvNivelT: 0, seq: seq, codigo: 'PR-' + mmaa + '-' + ('000' + seq).slice(-4), enviadoEm: d.toLocaleString('pt-BR'), baixouTeste: false, copiado: '' }); },
       voltarConta: function () { self.setState({ tela: 'conta' }); },
-      recomecar: function () { self.setState({ tela: 'conta', problema: '', dados: '', produto: '', interessados: '', erro: false, erroEnvio: false, usouExemplo: false, iaStep: 0, ia: [], stakeholders: '', nome: '', area: '', email: '', baixou: false, volume: '', volNaoSei: false, valorCaso: '', ganho: '', ganhosSec: [], justPrinc: '', justSec: {}, arquivos: [], links: [], linkNovo: '' }); }
+      recomecar: function () { self.setState({ tela: 'conta', problema: '', dados: '', produto: '', interessados: '', erro: false, erroEnvio: false, usouExemplo: false, iaStep: 0, ia: [], stakeholders: '', nome: '', area: '', email: '', baixou: false, volume: '', volNaoSei: false, valorCaso: '', valorNaoSei: false, ganho: '', ganhosSec: [], justPrinc: '', justSec: {}, arquivos: [], links: [], linkNovo: '' }); }
     };
   }
 }

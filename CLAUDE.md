@@ -46,8 +46,7 @@ A aplicação funciona no computador e no celular (layout responsivo; no celular
 Campos (OBRIGATÓRIO ou OPCIONAL indicado ao lado do rótulo):
 - Conte o problema (obrigatório, texto longo). Ajuda: "Do seu jeito, como contaria a um colega. Não precisa saber a causa nem a solução." Lista de apoio: o que está dando errado; como você percebeu; quem sofre com isso; o que acontece por causa disso.
 - Tamanho do problema:
-  - Quantas vezes acontece por mês? (obrigatório, numérico) com a caixa "Não sei agora" logo abaixo do campo. Marcada, o campo fica desabilitado e deixa de ser obrigatório.
-  - Quanto custa cada caso? R$ (opcional).
+  - Quantas vezes acontece por mês? e Quanto custa cada caso? (R$). Os dois seguem o mesmo padrão, sem etiqueta OBRIGATÓRIO/OPCIONAL: a pessoa escreve um número maior que zero ou marca a caixa "Não sei agora" logo abaixo do campo (marcada, o campo fica desabilitado). Texto que não é número não deixa avançar.
 - Que tipo de ganho você espera? (obrigatório) Principal: escolha um entre Redução de custo, Aumento de receita, Experiência do cliente, Inovação. Secundários: opcionais, quantos quiser.
   - Por que [ganho principal]? (obrigatório quando há ganho principal) e Por que [cada secundário]? (opcional). Dicas por ganho:
     - Redução de custo: "Que custo diminui? Ex.: horas do backoffice, retrabalho, chamados repetidos."
@@ -77,7 +76,7 @@ Só envia quando os quatro estiverem confirmados ("Enviar para o time InovAI").
 
 ### Tela final
 - "Recebemos o seu problema", com o CÓDIGO DA DEMANDA em destaque e, ao lado, o botão "Copiar código" (vira "Código copiado" por alguns segundos).
-- Se o volume ficou como "Não sei agora" ou o custo por caso ficou vazio: aviso amarelo "Leve estes números para a reunião", listando o que falta.
+- Se o volume ou o custo por caso ficou como "Não sei agora": aviso amarelo "Leve estes números para a reunião", listando o que falta.
 - O canvas pré-preenchido (ver abaixo) e o botão "Baixar [código].pdf".
 - Próximo passo: reunião de aprofundamento com o time InovAI.
 - Botão "Contar outro problema".

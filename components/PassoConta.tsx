@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { COR, Ajuda, Rotulo, Sobretitulo, botaoPrimario, botaoSecundario, estiloCampo, estiloTexto } from "./ui";
 import { DICAS_GANHO, GANHOS, type Formulario, type Ganho } from "@/lib/tipos";
-import { ROTULOS, camposFaltando, type CampoObrigatorio } from "@/lib/validacao";
+import { MENSAGENS_NUMERO, ROTULOS, camposFaltando, numerosInvalidos, type CampoObrigatorio } from "@/lib/validacao";
 
 export default function PassoConta({
   form,
@@ -20,14 +20,16 @@ export default function PassoConta({
   const [linkNovo, setLinkNovo] = useState("");
 
   const faltando = camposFaltando(form);
-  const falta = (k: CampoObrigatorio) => mostrarErro && faltando.includes(k);
+  const invalidos = numerosInvalidos(form);
+  const falta = (k: CampoObrigatorio) =>
+    mostrarErro && (faltando.includes(k) || ((k === "volume" || k === "valorCaso") && invalidos.includes(k)));
   const borda = (k: CampoObrigatorio) => (falta(k) ? COR.vermelho : COR.suave);
   const aria = (k: CampoObrigatorio) => ({ "aria-required": true as const, "aria-invalid": falta(k) || undefined });
 
   function continuar() {
-    if (faltando.length) {
+    if (faltando.length || invalidos.length) {
       setMostrarErro(true);
-      const alvo = ROTULOS[faltando[0]][1];
+      const alvo = faltando.length ? ROTULOS[faltando[0]][1] : MENSAGENS_NUMERO[invalidos[0]][1];
       setTimeout(() => {
         const el = document.getElementById(alvo);
         if (!el) return;
@@ -104,7 +106,7 @@ export default function PassoConta({
         </div>
         <div style={{ display: "flex", flexWrap: "wrap", gap: 16 }}>
           <div style={{ flex: "1 1 220px", display: "flex", flexDirection: "column", gap: 8 }}>
-            <Rotulo htmlFor="f-volume" obrigatorio>
+            <Rotulo htmlFor="f-volume" obrigatorio={null}>
               Quantas vezes acontece por mês?
             </Rotulo>
             <Ajuda id="d-volume" tamanho={13}>
@@ -137,7 +139,7 @@ export default function PassoConta({
             </label>
           </div>
           <div style={{ flex: "1 1 220px", display: "flex", flexDirection: "column", gap: 8 }}>
-            <Rotulo htmlFor="f-valor" obrigatorio={false}>
+            <Rotulo htmlFor="f-valor" obrigatorio={null}>
               Quanto custa cada caso? (R$)
             </Rotulo>
             <Ajuda id="d-valor" tamanho={13}>
@@ -149,9 +151,25 @@ export default function PassoConta({
               inputMode="decimal"
               value={form.valorCaso}
               onChange={(e) => setForm({ valorCaso: e.target.value })}
+              disabled={form.valorNaoSei}
               aria-describedby="d-valor"
-              style={estiloCampo(COR.linhas)}
+              aria-required={!form.valorNaoSei}
+              aria-invalid={falta("valorCaso") || undefined}
+              style={estiloCampo(form.valorNaoSei ? COR.linhas : borda("valorCaso"), { background: form.valorNaoSei ? COR.fundo : "#ffffff" })}
             />
+            <label
+              htmlFor="f-valor-ns"
+              style={{ display: "inline-flex", alignSelf: "flex-start", alignItems: "center", gap: 6, fontSize: 13, lineHeight: "18px", color: COR.suave, cursor: "pointer" }}
+            >
+              <input
+                id="f-valor-ns"
+                type="checkbox"
+                checked={form.valorNaoSei}
+                onChange={(e) => setForm(e.target.checked ? { valorNaoSei: true, valorCaso: "" } : { valorNaoSei: false })}
+                style={{ width: 16, height: 16, accentColor: COR.vermelho, margin: 0 }}
+              />
+              Não sei agora
+            </label>
           </div>
         </div>
 
@@ -404,10 +422,15 @@ export default function PassoConta({
         <p style={{ margin: 0, fontSize: 13, lineHeight: "18px", color: COR.suave }}>É para onde enviamos o canvas pré-preenchido e por onde marcamos a reunião.</p>
       </div>
 
-      {mostrarErro && faltando.length > 0 && (
-        <p role="alert" style={{ margin: 0, padding: "12px 16px", borderRadius: 10, background: COR.rosa, color: COR.erro, fontSize: 15, lineHeight: "22px", fontWeight: 700 }}>
-          Faltam campos obrigatórios: {faltando.map((k) => ROTULOS[k][0]).join(", ")}.
-        </p>
+      {mostrarErro && (faltando.length > 0 || invalidos.length > 0) && (
+        <div role="alert" style={{ display: "flex", flexDirection: "column", gap: 6, padding: "12px 16px", borderRadius: 10, background: COR.rosa, color: COR.erro, fontSize: 15, lineHeight: "22px", fontWeight: 700 }}>
+          {faltando.length > 0 && <p style={{ margin: 0 }}>Faltam campos obrigatórios: {faltando.map((k) => ROTULOS[k][0]).join(", ")}.</p>}
+          {invalidos.map((k) => (
+            <p key={k} style={{ margin: 0 }}>
+              {MENSAGENS_NUMERO[k][0]}
+            </p>
+          ))}
+        </div>
       )}
 
       <div style={{ display: "flex", flexWrap: "wrap", gap: 12, alignItems: "center" }}>

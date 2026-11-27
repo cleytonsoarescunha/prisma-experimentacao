@@ -7,8 +7,7 @@ import PassoConta from "./PassoConta";
 import { PassoConfere, PassoOrganizando } from "./PassosOrganiza";
 import TelaFim from "./TelaFim";
 import { COR, IconeFrasco } from "./ui";
-import { organizarRelato } from "@/lib/ia";
-import { EXEMPLO } from "@/lib/regras";
+import { EXEMPLO, organizarSemIA } from "@/lib/regras";
 import { FORMULARIO_VAZIO, type Demanda, type Formulario, type ItemOrganizado } from "@/lib/tipos";
 
 type Tela = "entrada" | "conta" | "ia" | "valida" | "fim";
@@ -55,14 +54,47 @@ export default function Prisma() {
     irPara("ia");
     setEtapaEspera(0);
     const inicio = Date.now();
-    const resultado = await organizarRelato(form);
-    setItens(resultado);
-    // A espera mostra as 3 etapas mesmo quando a organização é instantânea.
-    const passou = Date.now() - inicio;
-    [800, 1600, 2400].forEach((ms, i) => {
-      timers.current.push(window.setTimeout(() => setEtapaEspera(i + 1), Math.max(0, ms - passou)));
+    // As duas primeiras etapas da espera andam sozinhas; a terceira só termina quando a organização chega.
+    [800, 1600].forEach((ms, i) => {
+      timers.current.push(window.setTimeout(() => setEtapaEspera((e) => Math.max(e, i + 1)), ms));
     });
-    timers.current.push(window.setTimeout(() => irPara("valida"), Math.max(0, 3000 - passou)));
+
+    let resultado: ItemOrganizado[];
+    try {
+      // Só o relato vai para a organização: nome, área, e-mail, stakeholders, links e anexos ficam de fora.
+      const relato = {
+        problema: form.problema,
+        volume: form.volume,
+        volNaoSei: form.volNaoSei,
+        valorCaso: form.valorCaso,
+        valorNaoSei: form.valorNaoSei,
+        ganho: form.ganho,
+        ganhosSec: form.ganhosSec,
+        justPrinc: form.justPrinc,
+        justSec: form.justSec,
+        dados: form.dados,
+        produto: form.produto,
+        interessados: form.interessados,
+        usouExemplo: form.usouExemplo,
+      };
+      const resposta = await fetch("/api/organizar", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ form: relato }),
+      });
+      const corpo = await resposta.json();
+      if (!resposta.ok || !Array.isArray(corpo.itens)) throw new Error(corpo.erro || "Resposta inválida");
+      resultado = corpo.itens;
+    } catch {
+      // Sem conexão com o servidor: organiza aqui mesmo, com as regras sem IA.
+      resultado = organizarSemIA(form);
+    }
+    setItens(resultado);
+
+    // Mostra as 3 etapas por pelo menos 3 segundos no total, mesmo quando a resposta é rápida.
+    const passou = Date.now() - inicio;
+    timers.current.push(window.setTimeout(() => setEtapaEspera(3), Math.max(0, 2400 - passou)));
+    timers.current.push(window.setTimeout(() => irPara("valida"), Math.max(400, 3000 - passou)));
   }
 
   /** Envia para o servidor, que grava no banco e devolve o código. Devolve uma mensagem de erro, se houver. */

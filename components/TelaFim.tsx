@@ -5,6 +5,7 @@ import { CanvasTela } from "./Canvas";
 import { COR, botaoSecundario } from "./ui";
 import { montarCanvas } from "@/lib/regras";
 import type { Demanda } from "@/lib/tipos";
+import { temCustoPorCaso } from "@/lib/validacao";
 
 /** Tela final: código da demanda, aviso de números faltando, canvas e próximo passo. */
 export default function TelaFim({ demanda, onRecomecar }: { demanda: Demanda; onRecomecar: () => void }) {
@@ -46,7 +47,7 @@ export default function TelaFim({ demanda, onRecomecar }: { demanda: Demanda; on
 
   const pendencias = [
     form.volNaoSei ? "Quantas vezes o problema acontece por mês (pedidos, chamados, clientes afetados)" : null,
-    !form.valorCaso.trim() ? "Quanto custa cada caso, ou quanto se perde de receita por caso" : null,
+    !temCustoPorCaso(form) ? "Quanto custa cada caso, ou quanto se perde de receita por caso" : null,
   ].filter((x): x is string => !!x);
 
   function baixar() {

@@ -201,9 +201,16 @@ export function PassoConfere({
         </button>
       </div>
       {erroEnvio && (
-        <p role="alert" style={{ margin: 0, padding: "12px 16px", borderRadius: 10, background: COR.rosa, color: COR.erro, fontSize: 15, lineHeight: "22px", fontWeight: 700 }}>
-          {erroEnvio}
-        </p>
+        <div role="alert" style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 10, padding: "12px 16px", borderRadius: 10, background: COR.rosa, color: COR.erro, fontSize: 15, lineHeight: "22px", fontWeight: 700 }}>
+          <p style={{ margin: 0 }}>{erroEnvio}</p>
+          <button
+            type="button"
+            onClick={onEditarRelato}
+            style={{ minHeight: 40, padding: "8px 16px", border: `2px solid ${COR.vermelho}`, borderRadius: 9999, background: "#ffffff", color: COR.vermelhoEscuro, fontSize: 14, fontWeight: 700 }}
+          >
+            Voltar e corrigir o que você contou
+          </button>
+        </div>
       )}
     </div>
   );

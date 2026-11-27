@@ -3,7 +3,7 @@
 import { num } from "@/lib/regras";
 import { ConfiguracaoFaltando, PASTA_ANEXOS, supabaseServidor } from "@/lib/supabase-servidor";
 import { FORMULARIO_VAZIO, GANHOS, type Formulario, type Ganho, type IdItem } from "@/lib/tipos";
-import { ROTULOS, camposFaltando } from "@/lib/validacao";
+import { MENSAGENS_NUMERO, ROTULOS, camposFaltando, numerosInvalidos, temCustoPorCaso } from "@/lib/validacao";
 
 const MAX_ARQUIVOS = 10;
 const MAX_BYTES = 10 * 1024 * 1024;
@@ -54,7 +54,8 @@ export async function POST(request: Request) {
     problema: texto(f.problema),
     volume: texto(f.volume),
     volNaoSei: f.volNaoSei === true,
-    valorCaso: texto(f.valorCaso),
+    valorCaso: f.valorNaoSei === true ? "" : texto(f.valorCaso),
+    valorNaoSei: f.valorNaoSei === true,
     ganho,
     ganhosSec,
     justPrinc: texto(f.justPrinc),
@@ -72,8 +73,8 @@ export async function POST(request: Request) {
 
   const faltando = camposFaltando(form);
   if (faltando.length) return erro("Faltam campos obrigatórios: " + faltando.map((k) => ROTULOS[k][0]).join(", ") + ".");
-  if (!form.volNaoSei && num(form.volume) <= 0) return erro("Informe quantas vezes acontece por mês com um número, ou marque \"Não sei agora\".");
-  if (form.valorCaso && num(form.valorCaso) <= 0) return erro("O custo por caso precisa ser um número.");
+  const invalidos = numerosInvalidos(form);
+  if (invalidos.length) return erro(MENSAGENS_NUMERO[invalidos[0]][0]);
 
   const itens = new Map<IdItem, string>();
   (bruto.itens || []).forEach((it) => {
@@ -103,7 +104,7 @@ export async function POST(request: Request) {
       problema: form.problema,
       volume_mes: form.volNaoSei ? "" : String(num(form.volume)),
       volume_nao_sei: form.volNaoSei,
-      valor_caso: form.valorCaso ? String(num(form.valorCaso)) : "",
+      valor_caso: temCustoPorCaso(form) ? String(num(form.valorCaso)) : "",
       ganho_principal: form.ganho,
       justificativa_principal: form.justPrinc,
       ganhos_secundarios: form.ganhosSec,

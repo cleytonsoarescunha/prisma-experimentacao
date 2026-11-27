@@ -24,6 +24,8 @@ export interface Formulario {
   volume: string;
   volNaoSei: boolean;
   valorCaso: string;
+  /** Marcado quando a pessoa ainda não sabe quanto custa cada caso. */
+  valorNaoSei: boolean;
   ganho: Ganho | "";
   ganhosSec: Ganho[];
   justPrinc: string;
@@ -46,6 +48,7 @@ export const FORMULARIO_VAZIO: Formulario = {
   volume: "",
   volNaoSei: false,
   valorCaso: "",
+  valorNaoSei: false,
   ganho: "",
   ganhosSec: [],
   justPrinc: "",

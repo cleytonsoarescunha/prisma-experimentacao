@@ -173,7 +173,7 @@ export interface DadosCanvas {
 export function montarCanvas(s: Formulario, itens: ItemOrganizado[]): DadosCanvas {
   const campo = (id: IdItem) => itens.find((x) => x.id === id)?.texto.trim() || "";
   const vol = s.volNaoSei ? 0 : num(s.volume);
-  const val = num(s.valorCaso);
+  const val = s.valorNaoSei ? 0 : num(s.valorCaso);
 
   const classes = s.ganho ? [s.ganho, ...s.ganhosSec] : [];
   const equipes = lista(s.interessados);
@@ -265,6 +265,7 @@ export const EXEMPLO: Partial<Formulario> = {
   volume: "3000",
   volNaoSei: false,
   valorCaso: "25",
+  valorNaoSei: false,
   ganho: "Redução de custo",
   ganhosSec: ["Experiência do cliente"],
   justPrinc: "Menos pedidos caem no tratamento manual do backoffice, que hoje confere cada endereço à mão.",
