@@ -85,8 +85,8 @@ export interface Demanda {
   etapa: number;
   /** Nomes dos anexos que não conseguiram ser guardados. */
   anexosComFalha?: string[];
-  /** Assinatura que libera o download do PDF desta demanda. */
-  assinaturaPdf?: string;
+  /** PDF do canvas gerado no navegador no envio (para baixar na tela final sem gerar de novo). */
+  pdf?: Blob | null;
   /** Se o e-mail com o canvas foi aceito pelo serviço de e-mail. */
   emailEnviado?: boolean;
 }

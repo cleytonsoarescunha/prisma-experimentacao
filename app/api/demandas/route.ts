@@ -1,8 +1,10 @@
-// Recebe uma demanda nova: grava no banco (que gera o código) e guarda os anexos no Storage.
+// Recebe uma demanda nova: grava no banco (que gera o código), guarda o PDF do canvas e envia o e-mail.
+// Os anexos não passam por aqui (a hospedagem limita o tamanho de cada envio): o servidor devolve uma
+// autorização de uso único por arquivo, e o navegador manda cada um direto para o Storage.
+// Depois, o navegador confirma em /api/demandas/[codigo]/anexos quais chegaram.
 
 import { assinar } from "@/lib/assinatura";
 import { enviarEmailCanvas } from "@/lib/email";
-import { gerarEGuardarPdf } from "@/lib/pdf";
 import { nomeValido, num } from "@/lib/regras";
 import { ConfiguracaoFaltando, PASTA_ANEXOS, supabaseServidor } from "@/lib/supabase-servidor";
 import { FORMULARIO_VAZIO, GANHOS, type Formulario, type Ganho, type IdItem } from "@/lib/tipos";
@@ -86,13 +88,10 @@ export async function POST(request: Request) {
   if (IDS.some((id) => !itens.get(id))) return erro("Confirme os quatro itens antes de enviar.");
   if (!nomeValido(itens.get("nome") || "")) return erro("Dê um nome para a solução antes de enviar.");
 
-  const arquivos = corpo.getAll("anexos").filter((a): a is File => a instanceof File && a.size > 0);
-  if (arquivos.length > MAX_ARQUIVOS) return erro(`Envie no máximo ${MAX_ARQUIVOS} arquivos.`);
-  for (const a of arquivos) {
-    const ext = a.name.split(".").pop()?.toLowerCase() || "";
-    if (!EXTENSOES.includes(ext)) return erro(`O arquivo "${a.name}" não é de um tipo aceito.`);
-    if (a.size > MAX_BYTES) return erro(`O arquivo "${a.name}" passa de 10 MB.`);
-  }
+  // Anexos: só a lista (nome, tamanho). Os arquivos vão direto do navegador para o Storage depois.
+  const resultadoAnexos = lerListaAnexos(corpo.get("anexos"));
+  if (typeof resultadoAnexos === "string") return erro(resultadoAnexos);
+  const pdf = await lerPdf(corpo.get("pdf"));
 
   // 2. Grava no banco; a função do banco gera o código PR-MMAA-NNNN
   let supabase;
@@ -133,24 +132,29 @@ export async function POST(request: Request) {
     return erro("Não foi possível salvar a demanda agora. Tente de novo em instantes.", 500);
   }
 
-  // 3. Guarda os anexos em anexos/<código>/ e registra os caminhos na demanda
-  const caminhos: string[] = [];
-  const falharam: string[] = [];
-  for (const [i, a] of arquivos.entries()) {
-    const caminho = `${codigo}/${i + 1}-${nomeSeguro(a.name)}`;
-    const { error: e } = await supabase.storage.from(PASTA_ANEXOS).upload(caminho, a, { contentType: a.type || undefined, upsert: false });
-    if (e) {
-      console.error("Erro ao subir anexo:", a.name, e);
-      falharam.push(a.name);
-    } else caminhos.push(caminho);
-  }
-  if (caminhos.length) {
-    const { error: e } = await supabase.from("demandas").update({ anexos: caminhos }).eq("codigo", codigo);
-    if (e) console.error("Erro ao registrar anexos:", e);
+  // 3. Guarda o PDF do canvas (gerado no navegador) junto dos anexos
+  let pdfGuardado = false;
+  if (pdf) {
+    const caminho = `${codigo}/${codigo}.pdf`;
+    const { error: e } = await supabase.storage.from(PASTA_ANEXOS).upload(caminho, pdf, { contentType: "application/pdf", upsert: true });
+    if (e) console.error("[pdf] erro ao guardar:", e.message);
+    else {
+      pdfGuardado = true;
+      const { error: e2 } = await supabase.from("demandas").update({ pdf_canvas: caminho }).eq("codigo", codigo);
+      if (e2) console.error("[pdf] erro ao registrar:", e2.message);
+    }
   }
 
-  // 4. Gera o PDF do canvas, guarda no Storage e envia por e-mail. Se algo falhar, a demanda já está salva.
-  const pdf = await gerarEGuardarPdf(codigo, new URL(request.url).origin);
+  // 4. Autorizações de uso único para o navegador mandar cada anexo direto para o Storage
+  const envios: { nome: string; caminho: string; url: string }[] = [];
+  for (const [i, a] of resultadoAnexos.entries()) {
+    const caminho = `${codigo}/${i + 1}-${nomeSeguro(a.nome)}`;
+    const { data, error: e } = await supabase.storage.from(PASTA_ANEXOS).createSignedUploadUrl(caminho);
+    if (e || !data) console.error("[anexos] erro ao autorizar:", a.nome, e?.message);
+    else envios.push({ nome: a.nome, caminho, url: data.signedUrl });
+  }
+
+  // 5. E-mail para quem enviou, com o PDF. Se falhar, a demanda já está salva.
   const emailEnviado = await enviarEmailCanvas({
     para: form.email,
     nome: form.nome,
@@ -159,5 +163,43 @@ export async function POST(request: Request) {
     pdf,
   });
 
-  return Response.json({ codigo, anexosComFalha: falharam, assinaturaPdf: assinar(codigo), pdfGerado: !!pdf, emailEnviado }, { status: 201 });
+  return Response.json(
+    {
+      codigo,
+      envios,
+      anexosSemAutorizacao: resultadoAnexos.filter((a) => !envios.some((e) => e.nome === a.nome)).map((a) => a.nome),
+      assinatura: assinar(codigo),
+      pdfGuardado,
+      emailEnviado,
+    },
+    { status: 201 },
+  );
+}
+
+/** Lê a lista de anexos (nome e tamanho) e confere quantidade, tipo e tamanho. Devolve a lista ou a mensagem de erro. */
+function lerListaAnexos(bruto: FormDataEntryValue | null): { nome: string; tamanho: number }[] | string {
+  let lista: unknown;
+  try {
+    lista = JSON.parse(typeof bruto === "string" ? bruto : "[]");
+  } catch {
+    return "Lista de anexos em formato inválido.";
+  }
+  if (!Array.isArray(lista)) return "Lista de anexos em formato inválido.";
+  const anexos = lista
+    .map((a) => ({ nome: typeof a?.nome === "string" ? a.nome.slice(0, 200) : "", tamanho: Number(a?.tamanho) || 0 }))
+    .filter((a) => a.nome && a.tamanho > 0);
+  if (anexos.length > MAX_ARQUIVOS) return `Envie no máximo ${MAX_ARQUIVOS} arquivos.`;
+  for (const a of anexos) {
+    const ext = a.nome.split(".").pop()?.toLowerCase() || "";
+    if (!EXTENSOES.includes(ext)) return `O arquivo "${a.nome}" não é de um tipo aceito.`;
+    if (a.tamanho > MAX_BYTES) return `O arquivo "${a.nome}" passa de 10 MB.`;
+  }
+  return anexos;
+}
+
+/** Lê o PDF do canvas gerado no navegador. Aceita só PDF de até 5 MB; fora disso, segue sem PDF. */
+async function lerPdf(bruto: FormDataEntryValue | null): Promise<Buffer | null> {
+  if (!(bruto instanceof File) || bruto.size === 0 || bruto.size > 5 * 1024 * 1024) return null;
+  const conteudo = Buffer.from(await bruto.arrayBuffer());
+  return conteudo.subarray(0, 5).toString() === "%PDF-" ? conteudo : null;
 }

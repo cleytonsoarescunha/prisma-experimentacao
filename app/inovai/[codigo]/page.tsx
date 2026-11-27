@@ -5,7 +5,7 @@ import type { Metadata } from "next";
 import { MolduraTime, MudarSituacao } from "@/components/AreaTime";
 import { CanvasTela } from "@/components/Canvas";
 import { COR } from "@/components/ui";
-import { assinar } from "@/lib/assinatura";
+import BotaoPdf from "@/components/BotaoPdf";
 import { buscarDemanda } from "@/lib/demanda-banco";
 import { usuarioDoTime } from "@/lib/equipe";
 import { montarCanvas } from "@/lib/regras";
@@ -59,7 +59,13 @@ async function Conteudo({ params }: PageProps<"/inovai/[codigo]">) {
   const caminhos: string[] = extra?.anexos || [];
   const { data: links } = caminhos.length ? await supabase.storage.from(PASTA_ANEXOS).createSignedUrls(caminhos, 60 * 60) : { data: [] };
 
+  const { data: pdfAssinado } = demanda.pdfCanvas
+    ? await supabase.storage.from(PASTA_ANEXOS).createSignedUrl(demanda.pdfCanvas, 60 * 60, { download: `${codigo}.pdf` })
+    : { data: null };
+  const linkPdf = pdfAssinado?.signedUrl || null;
+
   const { form, itens } = demanda;
+  const dadosCanvas = montarCanvas(form, itens);
   const item = (id: string) => itens.find((x) => x.id === id)?.texto || "";
   const situacao: string = extra?.etapa || "";
   const ganhos = [form.ganho && `${form.ganho} (principal): ${form.justPrinc}`, ...form.ganhosSec.map((g) => `${g}: ${form.justSec[g] || "-"}`)].filter(Boolean).join("\n");
@@ -76,13 +82,7 @@ async function Conteudo({ params }: PageProps<"/inovai/[codigo]">) {
             <h1 style={{ margin: "2px 0 0", fontSize: 30, lineHeight: "36px" }}>{item("nome")}</h1>
             <p style={{ margin: "4px 0 0", fontSize: 15, color: COR.suave }}>{item("resumo")}</p>
           </div>
-          <a
-            href={`/api/demandas/${encodeURIComponent(codigo)}/pdf?t=${encodeURIComponent(assinar(codigo))}`}
-            download={`${codigo}.pdf`}
-            style={{ minHeight: 44, padding: "10px 20px", border: `2px solid ${COR.vermelho}`, borderRadius: 9999, background: "#ffffff", color: COR.vermelhoEscuro, fontSize: 15, fontWeight: 700, textDecoration: "none" }}
-          >
-            Baixar {codigo}.pdf
-          </a>
+          <BotaoPdf codigo={codigo} linkGuardado={linkPdf} dados={dadosCanvas} />
         </div>
 
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: 18, alignItems: "start" }}>
@@ -154,7 +154,7 @@ async function Conteudo({ params }: PageProps<"/inovai/[codigo]">) {
         </Bloco>
 
         <Bloco titulo="Canvas">
-          <CanvasTela d={montarCanvas(form, itens)} />
+          <CanvasTela d={dadosCanvas} />
         </Bloco>
       </div>
     </MolduraTime>

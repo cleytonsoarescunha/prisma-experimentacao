@@ -1,5 +1,5 @@
-// Assinatura curta que prova que um link de PDF foi gerado pelo próprio servidor.
-// Sem ela, qualquer pessoa que adivinhasse um código (eles são sequenciais) poderia baixar o canvas de outra.
+// Assinatura curta, entregue só a quem acabou de enviar a demanda, que libera confirmar os anexos dela.
+// Sem ela, qualquer pessoa que adivinhasse um código (eles são sequenciais) poderia mexer na demanda de outra.
 
 import "server-only";
 import { createHmac, timingSafeEqual } from "node:crypto";

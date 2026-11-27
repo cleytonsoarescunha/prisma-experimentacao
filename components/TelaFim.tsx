@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { CanvasTela } from "./Canvas";
 import { COR, botaoSecundario } from "./ui";
 import { montarCanvas } from "@/lib/regras";
+import { baixarArquivo, gerarPdfCanvas } from "@/lib/pdf-navegador";
 import type { Demanda } from "@/lib/tipos";
 import { temCustoPorCaso } from "@/lib/validacao";
 
@@ -50,18 +51,21 @@ export default function TelaFim({ demanda, onRecomecar }: { demanda: Demanda; on
     !temCustoPorCaso(form) ? "Quanto custa cada caso, ou quanto se perde de receita por caso" : null,
   ].filter((x): x is string => !!x);
 
-  function baixar() {
-    // PDF gerado no servidor, igual ao canvas da tela.
-    if (demanda.assinaturaPdf) {
-      const link = document.createElement("a");
-      link.href = `/api/demandas/${encodeURIComponent(codigo)}/pdf?t=${encodeURIComponent(demanda.assinaturaPdf)}`;
-      link.download = `${codigo}.pdf`;
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
+  const [gerando, setGerando] = useState(false);
+
+  async function baixar() {
+    // PDF gerado no navegador, igual ao canvas da tela (o mesmo que foi anexado ao e-mail).
+    setGerando(true);
+    try {
+      const pdf = demanda.pdf || (await gerarPdfCanvas(dados));
+      baixarArquivo(pdf, `${codigo}.pdf`);
+      setGerando(false);
       return;
+    } catch (e) {
+      console.warn("Não foi possível gerar o PDF:", e);
+      setGerando(false);
     }
-    // Plano B (sem assinatura do servidor): janela de impressão do navegador, "Salvar como PDF".
+    // Plano B: janela de impressão do navegador, "Salvar como PDF".
     const antes = document.title;
     document.title = codigo;
     const volta = () => {
@@ -148,8 +152,8 @@ export default function TelaFim({ demanda, onRecomecar }: { demanda: Demanda; on
       <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
           <p style={{ margin: 0, fontSize: 12, lineHeight: "16px", fontWeight: 700, letterSpacing: "0.12em", color: COR.suave }}>SEU CANVAS PRÉ-PREENCHIDO</p>
-          <button type="button" onClick={baixar} style={{ ...botaoSecundario, minHeight: 44, padding: "10px 20px" }}>
-            Baixar {codigo}.pdf
+          <button type="button" onClick={baixar} disabled={gerando} style={{ ...botaoSecundario, minHeight: 44, padding: "10px 20px" }}>
+            {gerando ? "Gerando PDF..." : `Baixar ${codigo}.pdf`}
           </button>
         </div>
         <CanvasTela d={dados} />

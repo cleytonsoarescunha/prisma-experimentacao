@@ -1,0 +1,10 @@
+# Configuração da hospedagem na Netlify.
+# A Netlify reconhece o Next.js sozinha e usa o adaptador oficial dela (OpenNext).
+# As chaves e senhas NÃO ficam aqui: vão no painel da Netlify (Site configuration > Environment variables).
+
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "22"

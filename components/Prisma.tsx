@@ -9,11 +9,14 @@ import { PassoConfere, PassoOrganizando } from "./PassosOrganiza";
 import TelaFim from "./TelaFim";
 import Rodape from "./Rodape";
 import { COR } from "./ui";
-import { EXEMPLO, organizarSemIA } from "@/lib/regras";
-
+import { EXEMPLO, montarCanvas, organizarSemIA } from "@/lib/regras";
+import { gerarPdfCanvas } from "@/lib/pdf-navegador";
 import { FORMULARIO_VAZIO, type Demanda, type Formulario, type ItemOrganizado } from "@/lib/tipos";
 
 type Tela = "entrada" | "conta" | "ia" | "valida" | "fim";
+
+/** Quantas vezes o Passo 2 tenta organizar com a IA antes de usar as regras automáticas. */
+const TENTATIVAS_IA = 3;
 
 const ORDEM: Record<Tela, number> = { entrada: 0, conta: 1, ia: 2, valida: 3, fim: 4 };
 
@@ -36,6 +39,8 @@ export default function Prisma() {
   const [form, setFormState] = useState<Formulario>(FORMULARIO_VAZIO);
   const [itens, setItens] = useState<ItemOrganizado[]>([]);
   const [etapaEspera, setEtapaEspera] = useState(0);
+  /** Número da tentativa atual de organizar com a IA (0 quando não está tentando). */
+  const [tentativaIA, setTentativaIA] = useState(0);
   const [atual, setAtual] = useState<Demanda | null>(null);
   const [consulta, setConsulta] = useState<EstadoConsulta>({ cod: "", erro: false, res: null });
   const timers = useRef<number[]>([]);
@@ -62,10 +67,8 @@ export default function Prisma() {
       timers.current.push(window.setTimeout(() => setEtapaEspera((e) => Math.max(e, i + 1)), ms));
     });
 
-    let resultado: ItemOrganizado[];
-    try {
-      // Só o relato vai para a organização: nome, área, e-mail, stakeholders, links e anexos ficam de fora.
-      const relato = {
+    // Só o relato vai para a organização: nome, área, e-mail, stakeholders, links e anexos ficam de fora.
+    const relato = {
         problema: form.problema,
         volume: form.volume,
         volNaoSei: form.volNaoSei,
@@ -80,19 +83,28 @@ export default function Prisma() {
         interessados: form.interessados,
         usouExemplo: form.usouExemplo,
       };
-      const resposta = await fetch("/api/organizar", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ form: relato }),
-      });
-      const corpo = await resposta.json();
-      if (!resposta.ok || !Array.isArray(corpo.itens)) throw new Error(corpo.erro || "Resposta inválida");
-      resultado = corpo.itens;
-    } catch {
-      // Sem conexão com o servidor: organiza aqui mesmo, com as regras sem IA.
-      resultado = organizarSemIA(form);
+
+    // Até 3 tentativas com a IA. Cada uma dura no máximo cerca de 8,5 segundos no servidor.
+    // Se as três falharem, ficam os itens das regras automáticas (o servidor já devolve esses itens como plano B).
+    let resultado: ItemOrganizado[] | null = null;
+    for (let tentativa = 1; tentativa <= TENTATIVAS_IA; tentativa++) {
+      setTentativaIA(tentativa);
+      try {
+        const resposta = await fetch("/api/organizar", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ form: relato }),
+        });
+        const corpo = await resposta.json();
+        if (!resposta.ok || !Array.isArray(corpo.itens)) throw new Error(corpo.erro || "Resposta inválida");
+        resultado = corpo.itens;
+        if (corpo.origem !== "regras") break; // a IA respondeu
+      } catch {
+        // Sem conexão ou erro do servidor: tenta de novo; na última, usa as regras aqui mesmo.
+      }
     }
-    setItens(resultado);
+    setTentativaIA(0);
+    setItens(resultado || organizarSemIA(form));
 
     // Mostra as 3 etapas por pelo menos 3 segundos no total, mesmo quando a resposta é rápida.
     const passou = Date.now() - inicio;
@@ -102,10 +114,21 @@ export default function Prisma() {
 
   /** Envia para o servidor, que grava no banco e devolve o código. Devolve uma mensagem de erro, se houver. */
   async function enviar(): Promise<string | null> {
-    const dados = new FormData();
     const { arquivos, ...semArquivos } = form;
+
+    // 1. PDF do canvas, gerado aqui no navegador. Se falhar, a demanda segue sem ele.
+    let pdf: Blob | null = null;
+    try {
+      pdf = await gerarPdfCanvas(montarCanvas(form, itens));
+    } catch (e) {
+      console.warn("Não foi possível gerar o PDF do canvas:", e);
+    }
+
+    // 2. Demanda, PDF e a lista de anexos (só nome e tamanho; os arquivos vão depois, direto para o Storage)
+    const dados = new FormData();
     dados.set("dados", JSON.stringify({ form: semArquivos, itens: itens.map((x) => ({ id: x.id, texto: x.texto })) }));
-    arquivos.forEach((a) => dados.append("anexos", a));
+    dados.set("anexos", JSON.stringify(arquivos.map((a) => ({ nome: a.name, tamanho: a.size }))));
+    if (pdf) dados.set("pdf", pdf, "canvas.pdf");
 
     let resposta: Response;
     try {
@@ -116,14 +139,36 @@ export default function Prisma() {
     const corpo = await resposta.json().catch(() => ({}));
     if (!resposta.ok || !corpo.codigo) return corpo.erro || "Não foi possível enviar agora. Tente de novo em instantes.";
 
+    // 3. Cada anexo vai direto para o Storage, com a autorização de uso único que o servidor devolveu.
+    const falharam: string[] = [...(corpo.anexosSemAutorizacao || [])];
+    const envios: { nome: string; url: string }[] = corpo.envios || [];
+    await Promise.all(
+      envios.map(async (e, i) => {
+        const arquivo = arquivos.find((a) => a.name === e.nome) || arquivos[i];
+        try {
+          const r = await fetch(e.url, { method: "PUT", headers: { "Content-Type": arquivo.type || "application/octet-stream" }, body: arquivo });
+          if (!r.ok) falharam.push(e.nome);
+        } catch {
+          falharam.push(e.nome);
+        }
+      }),
+    );
+    if (envios.length) {
+      await fetch(`/api/demandas/${encodeURIComponent(corpo.codigo)}/anexos`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ t: corpo.assinatura }),
+      }).catch(() => {});
+    }
+
     setAtual({
       codigo: corpo.codigo,
       enviadoEm: new Date(),
       form,
       itens,
       etapa: 0,
-      anexosComFalha: corpo.anexosComFalha || [],
-      assinaturaPdf: corpo.assinaturaPdf,
+      anexosComFalha: falharam,
+      pdf,
       emailEnviado: corpo.emailEnviado === true,
     });
     irPara("fim");
@@ -303,7 +348,7 @@ export default function Prisma() {
                 <ConteudoInicio consulta={consulta} onCod={(v) => setConsulta({ ...consulta, cod: v, erro: false })} onConsultar={consultar} />
               )}
               {tela === "conta" && <PassoConta form={form} setForm={setForm} onContinuar={organizar} onExemplo={() => setForm(EXEMPLO)} />}
-              {tela === "ia" && <PassoOrganizando etapa={etapaEspera} />}
+              {tela === "ia" && <PassoOrganizando etapa={etapaEspera} tentativa={tentativaIA} total={TENTATIVAS_IA} />}
               {tela === "valida" && (
                 <PassoConfere problema={form.problema} itens={itens} onItens={setItens} onEditarRelato={() => irPara("conta")} onEnviar={enviar} />
               )}

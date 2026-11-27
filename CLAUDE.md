@@ -27,7 +27,11 @@ O Prisma não resolve o problema. Ele organiza o relato, estima o tamanho do pro
 - Next.js com TypeScript, rodando localmente (`npm run dev`).
 - Supabase (plano gratuito): banco Postgres, Storage para anexos e Auth por link no e-mail.
 - IA: Gemini, plano gratuito (chave do Google AI Studio). Toda chamada de IA passa por um único módulo (ex.: `lib/ia.ts`) com uma interface própria, para trocar de fornecedor (por exemplo, para o Claude) mudando só uma variável de ambiente. Se a IA falhar ou estourar o limite, use as regras de fallback descritas em "Organização pela IA" para o usuário nunca ficar travado.
-- Publicação na internet fica para o fim; até lá, tudo roda no computador do Cleyton.
+- Publicação: Netlify, plano gratuito (escolhido por permitir uso por empresa). Limites que guiam o código: cada ação do servidor dura no máximo 10 segundos e cada envio para o servidor tem no máximo cerca de 6 MB. Por isso:
+  - o PDF do canvas é gerado no navegador de quem envia (o canvas vira imagem dentro do PDF) e enviado junto com a demanda;
+  - os anexos vão direto do navegador para o Storage do Supabase, com autorização de uso único criada pelo servidor;
+  - cada pedido à IA dura no máximo cerca de 8,5 segundos.
+- E-mail pelo Gmail (senha de app). Hospedagens que bloqueiam o envio de e-mail (ex.: Render grátis) não servem.
 
 ## Telas e fluxo
 
@@ -93,7 +97,7 @@ A IA recebe o relato e devolve, em JSON validado: resumo do problema, nome da so
 - Nome: mistura criatividade com clareza; ao ler, fica nítido do que se trata (ex.: "Fatura Clara", "Fila Zero"). Quando o problema cair no tema de uma solução que já existe no portfólio, use o nome oficial dela, nunca invente outro: endereço ou CEP: "Match HP"; documentos: "Validador de Documentos"; agendamento ou instalação: "Agente de Agendamento"; dúvidas ou atendimento: "Agente de Suporte"; escolha de planos ou ofertas: "Buscador de Produtos". Fora desses temas, a IA sempre cria um nome: a demanda nunca é enviada sem um nome válido (nem vazio, nem "[a ser preenchido]"). Sem IA, as regras usam um nome pelo ganho principal (Redução de custo: "Processo Enxuto"; Aumento de receita: "Venda Garantida"; Experiência do cliente: "Jornada Simples"; Inovação: "Nova Rota"). No Passo 3, o item Nome não pode ser confirmado vazio.
 - Hipótese no formato clássico: "Acredito que [ação], porque [razão], o que resultará em [resultado mensurável]." Se houver volume, cite os casos por mês no resultado.
 - Riscos: 3 a 4, um por linha, com o tipo na frente.
-- Fallback sem IA: as regras do protótipo (função `montarIA` no arquivo de referência) geram esses quatro itens por palavras-chave. Use-as se a IA falhar.
+- Fallback sem IA: as regras do protótipo (função `montarIA` no arquivo de referência) geram esses quatro itens por palavras-chave. O Passo 2 tenta a IA até 3 vezes (na tela aparece "Tentando de novo (2 de 3)..."); só se as três falharem é que ficam os itens das regras. Um item que a IA devolver fora da regra é trocado pelo das regras na hora.
 
 ## Código da demanda
 

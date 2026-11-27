@@ -33,8 +33,11 @@ type Fornecedor = (instrucoes: string, entrada: EntradaIA) => Promise<RespostaIA
 
 export type Origem = "ia" | "ia-parcial" | "regras";
 
-/** Tempo máximo somando todas as tentativas de IA; depois disso entram as regras. */
-const TEMPO_MAXIMO_MS = 22000;
+/**
+ * Tempo máximo somando todas as tentativas de IA; depois disso entram as regras.
+ * A hospedagem (Netlify, plano grátis) encerra cada ação do servidor em 10 segundos, então fica abaixo disso.
+ */
+const TEMPO_MAXIMO_MS = 8500;
 
 /** Nomes oficiais do portfólio: quando o tema bate, a IA deve usar exatamente estes. */
 const PORTFOLIO = ["Match HP", "Validador de Documentos", "Agente de Agendamento", "Agente de Suporte", "Buscador de Produtos"];
@@ -78,7 +81,7 @@ const ESQUEMA = {
  */
 const MODELOS_PADRAO = "gemini-3.1-flash-lite, gemini-3.8-flash";
 /** Prazo de cada tentativa. O último modelo ganha mais tempo, porque depois dele só restam as regras. */
-const PRAZO_POR_MODELO_MS = 9000;
+const PRAZO_POR_MODELO_MS = 5500;
 
 /** Gemini (Google AI Studio), pela API REST. A chave fica só no servidor. */
 const gemini: Fornecedor = async (instrucoes, entrada) => {
@@ -89,7 +92,7 @@ const gemini: Fornecedor = async (instrucoes, entrada) => {
   for (let i = 0; i < modelos.length; i++) {
     const prazo = i === modelos.length - 1 ? TEMPO_MAXIMO_MS - PRAZO_POR_MODELO_MS * i : PRAZO_POR_MODELO_MS;
     try {
-      return await chamarGemini(chave, modelos[i], instrucoes, entrada, Math.max(5000, prazo));
+      return await chamarGemini(chave, modelos[i], instrucoes, entrada, Math.max(2000, prazo));
     } catch (e) {
       ultimoErro = e;
       console.warn(`[ia] modelo ${modelos[i]} falhou:`, e instanceof Error ? e.message : e);

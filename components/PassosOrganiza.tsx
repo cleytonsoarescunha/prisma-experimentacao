@@ -9,7 +9,7 @@ import type { IdItem, ItemOrganizado } from "@/lib/tipos";
 const ETAPAS_ESPERA = ["Lendo o que você contou", "Organizando a hipótese", "Preparando o resumo para o time InovAI"];
 
 /** Passo 2: tela de espera enquanto o relato é organizado. */
-export function PassoOrganizando({ etapa }: { etapa: number }) {
+export function PassoOrganizando({ etapa, tentativa = 0, total = 3 }: { etapa: number; tentativa?: number; total?: number }) {
   return (
     <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 20, padding: "24px 0", textAlign: "center" }}>
       <div style={{ width: 260, maxWidth: "80%" }}>
@@ -38,6 +38,11 @@ export function PassoOrganizando({ etapa }: { etapa: number }) {
           );
         })}
       </ul>
+      {tentativa > 1 && (
+        <p role="status" style={{ margin: 0, fontSize: 14, lineHeight: "20px", color: COR.suave }}>
+          Está demorando um pouco mais que o normal. Tentando de novo ({tentativa} de {total})...
+        </p>
+      )}
     </div>
   );
 }
