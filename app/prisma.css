@@ -1,0 +1,176 @@
+/* Estilos do Prisma. Computador por padrão; celular abaixo de 768px (uma coluna). */
+
+.pz-app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--fundo);
+  color: var(--tinta);
+}
+
+.pz-app button,
+.pz-app input,
+.pz-app textarea {
+  font-family: inherit;
+}
+
+.pz-app textarea:focus,
+.pz-app input:focus {
+  outline: 3px solid #f3a6a8;
+  outline-offset: 1px;
+}
+
+.pz-app button:focus-visible,
+.pz-app label:focus-within {
+  outline: 3px solid #f3a6a8;
+  outline-offset: 2px;
+}
+
+.pz-app button {
+  cursor: pointer;
+}
+
+.pz-app a {
+  color: var(--vermelho-escuro);
+}
+
+/* Texto só para leitor de tela */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Mostrar só no computador / só no celular */
+.so-mob {
+  display: none !important;
+}
+
+/* Medidas que mudam entre computador e celular */
+.pz-x {
+  padding-left: 32px;
+  padding-right: 32px;
+}
+.pz-simbolo {
+  width: 46px;
+}
+.pz-marca {
+  font-size: 22px;
+}
+.pz-hero-in {
+  padding: 56px 32px 64px 32px;
+}
+.pz-h1 {
+  font-size: 46px;
+}
+.pz-h2 {
+  font-size: 30px;
+}
+.pz-banda {
+  font-size: 26px;
+}
+.pz-wrap {
+  padding: 32px 32px 40px 32px;
+}
+.pz-cartao {
+  border-radius: 16px;
+}
+.pz-main {
+  padding: 40px 48px 48px 48px;
+}
+
+@keyframes pzPulse {
+  0% {
+    opacity: 0.25;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.25;
+  }
+}
+.pz-esp {
+  animation: pzPulse 1.6s ease-in-out infinite;
+}
+
+@media (max-width: 767px) {
+  .so-mob {
+    display: flex !important;
+  }
+  .so-desk {
+    display: none !important;
+  }
+  .pz-x {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+  .pz-simbolo {
+    width: 38px;
+  }
+  .pz-marca {
+    font-size: 19px;
+  }
+  .pz-hero-in {
+    padding: 32px 16px 28px 16px;
+  }
+  .pz-h1 {
+    font-size: 32px;
+  }
+  .pz-h2 {
+    font-size: 24px;
+  }
+  .pz-banda {
+    font-size: 20px;
+  }
+  .pz-wrap {
+    padding: 12px 12px 20px 12px;
+  }
+  .pz-cartao {
+    border-radius: 14px;
+  }
+  .pz-main {
+    padding: 20px 18px 28px 18px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pz-esp {
+    animation: none;
+  }
+}
+
+/* Canvas para impressão / PDF: escondido na tela, sozinho na impressão */
+.cv-impressao {
+  display: none;
+}
+
+@page {
+  size: 1920px 1080px;
+  margin: 0;
+}
+
+@media print {
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+    background: #ffffff;
+  }
+  * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .pz-app {
+    display: none !important;
+  }
+  .cv-impressao {
+    display: block !important;
+  }
+}
