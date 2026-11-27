@@ -1,0 +1,1092 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Prisma de Experimentação</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#c00000}a:hover{color:#960000}
+textarea,input{font-family:Roboto,Arial,sans-serif}
+textarea:focus,input:focus{outline:3px solid #f3a6a8;outline-offset:1px}
+button:focus-visible{outline:3px solid #f3a6a8;outline-offset:2px}
+@keyframes pzPulse{0%{opacity:.25}50%{opacity:1}100%{opacity:.25}}
+.pz-esp{animation:pzPulse 1.6s ease-in-out infinite}
+@page{size:1920px 1080px;margin:0}
+@media print{.pz-noprint{display:none}html,body{margin:0;padding:0}*{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+.hero{background:#e2262b}
+</style>
+</helmet>
+<div style="width: {{rootW}}; height: {{rootH}}; min-height: {{rootMinH}}; overflow-y: auto; box-sizing: border-box; background: #f5f3f1; font-family: Roboto, Arial, sans-serif; color: #262626; display: flex; flex-direction: column">
+<sc-if value="{{naoImprimindo}}" hint-placeholder-val="{{ true }}">
+
+<header style="background: #ffffff; border-bottom: 1px solid #d9d9d9; flex: none">
+<div style="max-width: 1240px; margin: 0 auto; padding: 14px {{padX}}; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap">
+<button type="button" onClick="{{irInicio}}" aria-label="Ir para a página inicial do Prisma" style="display: flex; align-items: center; gap: 12px; background: transparent; border: none; padding: 0; margin: 0; cursor: pointer; text-align: left; font-family: Roboto, Arial, sans-serif; color: #262626">
+<div style="width: {{symW}}; flex: none"><svg role="img" aria-label="Prisma de vidro refratando a luz em cores" viewBox="0 0 900 700" style="width: {{symW}}; height: auto; display: block">
+<defs><linearGradient id="mzSp" gradientUnits="userSpaceOnUse" x1="840" y1="90" x2="880" y2="300"><stop offset="0.000" stop-color="#4b2a91"></stop><stop offset="0.167" stop-color="#1f5fd1"></stop><stop offset="0.333" stop-color="#1aa8b0"></stop><stop offset="0.500" stop-color="#3bbf3b"></stop><stop offset="0.667" stop-color="#ffd400"></stop><stop offset="0.833" stop-color="#ff8a00"></stop><stop offset="1.000" stop-color="#e2262b"></stop></linearGradient><linearGradient id="mzBeam" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#d9d9d9" stop-opacity="0"></stop><stop offset="0.35" stop-color="#bfbfbf"></stop><stop offset="1" stop-color="#898989"></stop></linearGradient></defs>
+<path d="M30 200 L231 361" stroke="url(#mzBeam)" stroke-width="12" stroke-linecap="round"></path>
+<polygon points="515,362 840,90 900,300 515,370" fill="url(#mzSp)"></polygon>
+<defs>
+<linearGradient id="mzL" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8a8f96" stop-opacity="0.55"></stop><stop offset="0.55" stop-color="#c9cdd2" stop-opacity="0.45"></stop><stop offset="1" stop-color="#eef0f2" stop-opacity="0.6"></stop></linearGradient>
+<linearGradient id="mzF" x1="0.2" y1="0" x2="0.8" y2="1"><stop offset="0" stop-color="#ffffff" stop-opacity="0.9"></stop><stop offset="0.6" stop-color="#d5d8dc" stop-opacity="0.55"></stop><stop offset="1" stop-color="#b4b9bf" stop-opacity="0.6"></stop></linearGradient>
+<linearGradient id="mzRay" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ffffff"></stop><stop offset="0.4" stop-color="#7f5af0"></stop><stop offset="0.7" stop-color="#1fb5a0"></stop><stop offset="1" stop-color="#ff5a1f"></stop></linearGradient>
+<radialGradient id="mzGlow" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"></stop><stop offset="1" stop-color="#ffffff" stop-opacity="0"></stop></radialGradient>
+<radialGradient id="mzSh" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#262626" stop-opacity="0.2"></stop><stop offset="1" stop-color="#262626" stop-opacity="0"></stop></radialGradient>
+</defs>
+<ellipse cx="380" cy="640" rx="340" ry="30" fill="url(#mzSh)"></ellipse>
+<path d="M352 80 L537 503 M60 561 L537 503 L667 617" fill="none" stroke="#898989" stroke-width="2" opacity="0.35"></path>
+<polygon points="352,80 60,561 195,645" fill="url(#mzL)"></polygon>
+<polygon points="352,80 195,645 667,617" fill="url(#mzF)"></polygon>
+<polygon points="352,80 242,600 280,612" fill="#ffffff" opacity="0.45"></polygon>
+<polygon points="60,561 195,645 667,617 537,503" fill="#ffffff" opacity="0.12"></polygon>
+<path d="M231 361 L515 366" stroke="url(#mzRay)" stroke-width="5" stroke-linecap="round"></path>
+<circle cx="231" cy="361" r="38" fill="url(#mzGlow)"></circle>
+<path d="M60 561 L352 80 L667 617 L195 645 Z M352 80 L195 645" fill="none" stroke="#53585f" stroke-width="3" stroke-linejoin="round" opacity="0.7"></path>
+<path d="M352 80 L195 645" stroke="#ffffff" stroke-width="4" stroke-linecap="round" opacity="0.9"></path>
+</svg></div>
+<div style="display: flex; flex-direction: column">
+<span style="font-size: {{brandSize}}; line-height: 1.15; font-weight: 700; letter-spacing: -0.01em">Prisma <span style="color: #e2262b">de Experimentação</span></span>
+<span style="font-size: 12px; line-height: 16px; color: #53585f">Time InovAI · CoE Digital</span>
+</div>
+</button>
+<nav aria-label="Navegação principal" style="display: flex; align-items: center; gap: 24px">
+
+</nav>
+</div>
+</header>
+<section class="hero" style="color: #ffffff; flex: none">
+<sc-if value="{{isEntrada}}" hint-placeholder-val="{{ true }}">
+<div style="max-width: 1240px; margin: 0 auto; padding: {{heroPad}}; box-sizing: border-box; display: flex; align-items: center; justify-content: space-between; gap: 32px; flex-wrap: wrap">
+<div style="flex: 1 1 340px; min-width: 0; display: flex; flex-direction: column; gap: 18px">
+<span style="font-size: 13px; font-weight: 700; letter-spacing: 0.14em; color: #ffc000">TIME INOVAI · EXPERIMENTAÇÃO</span>
+<h1 style="margin: 0; font-size: {{h1Size}}; line-height: 1.1; font-weight: 900; letter-spacing: -0.01em">Qual problema você quer resolver?</h1>
+<p style="margin: 0; font-size: 18px; line-height: 28px; max-width: 560px">Conte o que está travando seu time ou incomodando o cliente. O time InovAI usa essas informações para entender o problema e levá-lo para a esteira de experimentação.</p>
+<div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap">
+<button type="button" onClick="{{comecar}}" style="min-height: 52px; padding: 14px 32px; border: none; border-radius: 9999px; background: #ffffff; color: #c00000; font-family: Roboto, Arial, sans-serif; font-size: 17px; font-weight: 700; cursor: pointer">Contar meu problema</button>
+</div>
+</div>
+<div style="flex: 1 1 260px; min-width: 0; max-width: 440px">
+<svg role="img" aria-label="Prisma de vidro refratando a luz em cores" viewBox="0 0 900 700" style="width: 100%; height: auto; display: block">
+<defs><linearGradient id="hrSp" gradientUnits="userSpaceOnUse" x1="840" y1="90" x2="880" y2="300"><stop offset="0.000" stop-color="#5b2ea6"></stop><stop offset="0.200" stop-color="#2a6be0"></stop><stop offset="0.400" stop-color="#1fb5c9"></stop><stop offset="0.600" stop-color="#43c463"></stop><stop offset="0.800" stop-color="#ffe14d"></stop><stop offset="1.000" stop-color="#ffffff"></stop></linearGradient><linearGradient id="hrBeam" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ffffff" stop-opacity="0"></stop><stop offset="0.4" stop-color="#ffffff" stop-opacity="0.9"></stop><stop offset="1" stop-color="#ffffff"></stop></linearGradient></defs>
+<path d="M30 200 L231 361" stroke="url(#hrBeam)" stroke-width="13" stroke-linecap="round"></path>
+<polygon points="515,362 840,90 900,300 515,370" fill="url(#hrSp)"></polygon>
+<defs>
+<linearGradient id="hrL" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff" stop-opacity="0.18"></stop><stop offset="0.55" stop-color="#f3c2c3" stop-opacity="0.3"></stop><stop offset="1" stop-color="#ffffff" stop-opacity="0.55"></stop></linearGradient>
+<linearGradient id="hrF" x1="0.2" y1="0" x2="0.8" y2="1"><stop offset="0" stop-color="#ffffff" stop-opacity="0.55"></stop><stop offset="0.6" stop-color="#ffffff" stop-opacity="0.22"></stop><stop offset="1" stop-color="#ffffff" stop-opacity="0.42"></stop></linearGradient>
+<linearGradient id="hrRay" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ffffff"></stop><stop offset="0.4" stop-color="#7f5af0"></stop><stop offset="0.7" stop-color="#1fb5a0"></stop><stop offset="1" stop-color="#ff5a1f"></stop></linearGradient>
+<radialGradient id="hrGlow" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"></stop><stop offset="1" stop-color="#ffffff" stop-opacity="0"></stop></radialGradient>
+<radialGradient id="hrSh" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#7a0000" stop-opacity="0.45"></stop><stop offset="1" stop-color="#262626" stop-opacity="0"></stop></radialGradient>
+</defs>
+<ellipse cx="380" cy="640" rx="340" ry="30" fill="url(#hrSh)"></ellipse>
+<path d="M352 80 L537 503 M60 561 L537 503 L667 617" fill="none" stroke="#ffffff" stroke-width="2" opacity="0.35"></path>
+<polygon points="352,80 60,561 195,645" fill="url(#hrL)"></polygon>
+<polygon points="352,80 195,645 667,617" fill="url(#hrF)"></polygon>
+<polygon points="352,80 242,600 280,612" fill="#ffffff" opacity="0.18"></polygon>
+<polygon points="60,561 195,645 667,617 537,503" fill="#ffffff" opacity="0.12"></polygon>
+<path d="M231 361 L515 366" stroke="url(#hrRay)" stroke-width="5" stroke-linecap="round"></path>
+<circle cx="231" cy="361" r="38" fill="url(#hrGlow)"></circle>
+<path d="M60 561 L352 80 L667 617 L195 645 Z M352 80 L195 645" fill="none" stroke="#ffffff" stroke-width="3" stroke-linejoin="round" opacity="0.85"></path>
+<path d="M352 80 L195 645" stroke="#ffffff" stroke-width="4" stroke-linecap="round" opacity="0.9"></path>
+</svg>
+</div>
+<sc-if value="{{showMobileEsteira}}" hint-placeholder-val="{{ false }}">
+<div style="flex: 1 1 100%; display: flex; flex-direction: column; gap: 8px">
+<label for="f-consulta" style="font-size: 15px; line-height: 21px; font-weight: 700">Já enviou um problema? Acompanhe pelo código</label>
+<div style="display: flex; gap: 8px; flex-wrap: wrap">
+<input id="f-consulta" type="text" value="{{consultaCod}}" onChange="{{onConsultaCod}}" placeholder="PR-1126-0001" style="flex: 1 1 180px; min-width: 0; box-sizing: border-box; min-height: 48px; padding: 10px 14px; border: 2px solid #ffffff; border-radius: 10px; font-size: 16px; font-weight: 700; letter-spacing: 0.04em; color: #262626; background: #ffffff">
+<button type="button" onClick="{{consultar}}" style="min-height: 48px; padding: 10px 22px; border: 2px solid #ffffff; border-radius: 10px; background: transparent; color: #ffffff; font-family: Roboto, Arial, sans-serif; font-size: 15px; font-weight: 700; cursor: pointer">Consultar</button>
+</div>
+<sc-if value="{{consultaErro}}" hint-placeholder-val="{{ false }}"><p role="alert" style="margin: 0; font-size: 14px; line-height: 20px; font-weight: 700; color: #ffffff">Código não encontrado. Confira o formato, por exemplo PR-1126-0001.</p></sc-if>
+<sc-if value="{{temConsulta}}" hint-placeholder-val="{{ false }}">
+<div role="status" style="background: #ffffff; color: #262626; border-radius: 12px; padding: 16px 18px; display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; align-items: baseline; justify-content: space-between; gap: 10px; flex-wrap: wrap"><span style="font-size: 18px; font-weight: 900; color: #c00000">{{cRes.codigo}}</span><span style="font-size: 13px; color: #53585f">Etapa {{cRes.n}} de 8</span></div>
+<div aria-hidden="true" style="display: flex; gap: 4px"><sc-for list="{{cRes.barra}}" as="b" hint-placeholder-count="8"><span style="flex: 1; height: 8px; border-radius: 9999px; background: {{b.cor}}"></span></sc-for></div>
+<p style="margin: 0; font-size: 15px; line-height: 21px">Etapa atual: <strong>{{cRes.etapa}}</strong></p>
+<p style="margin: 0; font-size: 13px; line-height: 19px; color: #53585f">{{cRes.nota}}</p>
+</div>
+</sc-if>
+</div>
+</sc-if>
+</div>
+</sc-if>
+<sc-if value="{{notEntrada}}" hint-placeholder-val="{{ false }}">
+<div style="max-width: 1240px; margin: 0 auto; padding: 22px {{padX}}; box-sizing: border-box; display: flex; flex-direction: column; gap: 4px">
+<span style="font-size: 12px; font-weight: 700; letter-spacing: 0.14em; color: #ffc000">TIME INOVAI · EXPERIMENTAÇÃO</span>
+<p style="margin: 0; font-size: {{bandSize}}; line-height: 1.2; font-weight: 700">{{bandTitle}}</p>
+</div>
+</sc-if>
+</section>
+
+<sc-if value="{{showMobileSteps}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; gap: 6px; padding: 14px 16px 0 16px; flex: none; background: #ffffff">
+<sc-for list="{{steps}}" as="s" hint-placeholder-count="4">
+<div style="flex: 1; display: flex; flex-direction: column; gap: 6px">
+<div style="height: 6px; border-radius: 3px; background: {{s.barColor}}"></div>
+<p style="margin: 0; font-size: 12px; line-height: 16px; font-weight: 700; color: {{s.textColor}}">{{s.label}}</p>
+</div>
+</sc-for>
+</div>
+</sc-if>
+
+<div style="width: 100%; max-width: 1240px; margin: 0 auto; padding: {{wrapPad}}; box-sizing: border-box; flex: 1">
+<div style="background: #ffffff; border: 1px solid #d9d9d9; border-radius: {{cardRadius}}; overflow: hidden; display: flex; flex-direction: row; min-height: 0">
+
+<sc-if value="{{showAside}}" hint-placeholder-val="{{ true }}">
+<aside style="width: 300px; flex: none; background: #f5f3f1; padding: 36px 28px; box-sizing: border-box; display: flex; flex-direction: column; gap: 32px">
+<div style="display: flex; flex-direction: column; gap: 20px">
+<p style="margin: 0; font-size: 13px; line-height: 18px; font-weight: 700; letter-spacing: 0.12em; color: #53585f">SEU CAMINHO NO PRISMA</p>
+<sc-for list="{{steps}}" as="s" hint-placeholder-count="4">
+<div style="display: flex; align-items: center; gap: 14px">
+<div style="width: 36px; height: 36px; border-radius: 9999px; box-sizing: border-box; border: 2px solid {{s.ring}}; background: {{s.dotBg}}; color: {{s.dotColor}}; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 700; flex: none">{{s.mark}}</div>
+<div style="display: flex; flex-direction: column">
+<p style="margin: 0; font-size: 16px; line-height: 20px; font-weight: 700; color: {{s.textColor}}">{{s.label}}</p>
+<p style="margin: 0; font-size: 13px; line-height: 18px; color: #53585f">{{s.sub}}</p>
+</div>
+</div>
+</sc-for>
+</div>
+<div style="display: flex; flex-direction: column; gap: 12px; padding-top: 24px; border-top: 2px solid #d9d9d9">
+<p style="margin: 0; font-size: 13px; line-height: 18px; font-weight: 700; letter-spacing: 0.12em; color: #53585f">COMO LER OS CAMPOS</p>
+<div style="display: flex; align-items: center; gap: 10px"><div style="width: 28px; height: 20px; border: 2px solid #53585f; border-radius: 6px; background: #ffffff; flex: none"></div><p style="margin: 0; font-size: 14px; line-height: 18px">Você preenche (obrigatório)</p></div>
+<div style="display: flex; align-items: center; gap: 10px"><div style="width: 28px; height: 20px; border: 2px dashed #e2262b; border-radius: 6px; background: #fdeeee; flex: none"></div><p style="margin: 0; font-size: 14px; line-height: 18px">Nós organizamos, você confere</p></div>
+</div>
+<p style="margin: 0; font-size: 13px; line-height: 19px; color: #53585f">Depois da reunião, o time InovAI leva o problema pela esteira de experimentação: mapeamento, desenho da solução, protótipo e testes.</p>
+</aside>
+</sc-if>
+
+<main style="flex: 1; min-width: 0; padding: {{mainPad}}; box-sizing: border-box">
+<div style="max-width: 820px; display: flex; flex-direction: column; gap: 24px">
+
+<sc-if value="{{isEntrada}}" hint-placeholder-val="{{ true }}">
+<div style="display: flex; flex-direction: column; gap: 20px">
+<h2 style="margin: 0; font-size: {{h2Size}}; line-height: 1.2; font-weight: 700">Seu problema entra na nossa esteira de experimentação</h2>
+<p style="margin: 0; font-size: 16px; line-height: 24px; color: #53585f">Você conta o problema e o time InovAI conduz o resto: entende, desenha a solução e testa antes de chegar ao cliente.</p>
+<sc-if value="{{showDeskEsteira}}" hint-placeholder-val="{{ true }}">
+<div style="display: flex; flex-direction: column; gap: 8px; padding: 16px 18px; border-radius: 12px; background: #f5f3f1">
+<label for="f-consulta-web" style="font-size: 15px; line-height: 21px; font-weight: 700">Já enviou um problema? Digite o código e veja onde ele está na esteira</label>
+<div style="display: flex; gap: 8px; flex-wrap: wrap; max-width: 460px">
+<input id="f-consulta-web" type="text" value="{{consultaCod}}" onChange="{{onConsultaCod}}" placeholder="PR-1126-0001" style="flex: 1 1 180px; min-width: 0; box-sizing: border-box; min-height: 48px; padding: 10px 14px; border: 2px solid #bfbfbf; border-radius: 10px; font-size: 16px; font-weight: 700; letter-spacing: 0.04em; color: #262626; background: #ffffff">
+<button type="button" onClick="{{consultar}}" style="min-height: 48px; padding: 10px 22px; border: none; border-radius: 10px; background: #e2262b; color: #ffffff; font-family: Roboto, Arial, sans-serif; font-size: 15px; font-weight: 700; cursor: pointer">Consultar</button>
+</div>
+<sc-if value="{{consultaErro}}" hint-placeholder-val="{{ false }}"><p role="alert" style="margin: 0; font-size: 14px; line-height: 20px; font-weight: 700; color: #960000">Código não encontrado. Confira o formato, por exemplo PR-1126-0001.</p></sc-if>
+<sc-if value="{{temConsulta}}" hint-placeholder-val="{{ false }}">
+<p role="status" style="margin: 0; font-size: 15px; line-height: 22px"><strong style="color: #c00000">{{cRes.codigo}}</strong> está na etapa {{cRes.n}} de 8: <strong>{{cRes.etapa}}</strong>. {{cRes.nota}}</p>
+</sc-if>
+</div>
+</sc-if>
+<sc-if value="{{showDeskEsteira}}" hint-placeholder-val="{{ true }}">
+<div style="display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 10px">
+<sc-for list="{{esteira}}" as="e" hint-placeholder-count="8">
+<div style="display: flex; flex-direction: column; gap: 8px">
+<div style="display: flex; align-items: center; gap: 6px">
+<span style="width: 36px; height: 36px; flex: 0 0 auto; border-radius: 9999px; box-sizing: border-box; border: {{e.cBorder}}; background: {{e.cBg}}; color: {{e.cColor}}; font-size: 15px; font-weight: 700; display: flex; align-items: center; justify-content: center">{{e.n}}</span>
+<span style="flex-grow: 1; height: 3px; background: {{e.lnR}}"></span>
+</div>
+<span style="font-size: 13px; font-weight: 700; line-height: 17px; color: {{e.nmColor}}">{{e.label}}</span>
+<sc-if value="{{e.atual}}" hint-placeholder-val="{{ false }}"><span style="align-self: flex-start; font-size: 10px; font-weight: 700; letter-spacing: 0.1em; color: #ffffff; background: #e2262b; padding: 3px 8px; border-radius: 9999px">ETAPA ATUAL</span></sc-if>
+</div>
+</sc-for>
+</div>
+</sc-if>
+<sc-if value="{{showMobileEsteira}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<span style="align-self: flex-end; font-size: 12px; font-weight: 700; letter-spacing: 0.12em; color: #c00000">ARRASTE →</span>
+<div style="border: 1px solid #d9d9d9; border-radius: 14px; background: #ffffff; padding: 14px 0; overflow-x: auto">
+<div style="display: flex; width: max-content; padding: 0 16px">
+<sc-for list="{{esteira}}" as="e" hint-placeholder-count="8">
+<div style="flex: 0 0 112px; display: flex; flex-direction: column; align-items: center; gap: 8px">
+<div style="width: 100%; display: flex; align-items: center; gap: 6px">
+<span style="flex-grow: 1; height: 3px; background: {{e.lnL}}"></span>
+<span style="width: 36px; height: 36px; flex: 0 0 auto; border-radius: 9999px; box-sizing: border-box; border: {{e.cBorder}}; background: {{e.cBg}}; color: {{e.cColor}}; font-size: 15px; font-weight: 700; display: flex; align-items: center; justify-content: center">{{e.n}}</span>
+<span style="flex-grow: 1; height: 3px; background: {{e.lnR}}"></span>
+</div>
+<span style="font-size: 13px; font-weight: 700; line-height: 17px; text-align: center; padding: 0 6px; color: {{e.nmColor}}">{{e.label}}</span>
+<sc-if value="{{e.atual}}" hint-placeholder-val="{{ false }}"><span style="font-size: 10px; font-weight: 700; letter-spacing: 0.1em; color: #ffffff; background: #e2262b; padding: 3px 8px; border-radius: 9999px">ATUAL</span></sc-if>
+</div>
+</sc-for>
+</div>
+</div>
+</div>
+</sc-if>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px">
+<div style="border: 1px solid #d9d9d9; border-top: 4px solid #e2262b; border-radius: 16px; padding: 20px 22px 22px; display: flex; flex-direction: column; gap: 10px; background: #ffffff"><div style="display: flex; align-items: center; gap: 10px"><span style="width: 44px; height: 44px; border-radius: 9999px; background: #e2262b; color: #ffffff; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 700; flex: none">1</span><span style="flex: 1; height: 2px; background: linear-gradient(90deg, #e2262b, rgba(226,38,43,0.15))"></span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#e2262b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex: none"><path d="M9 6l6 6-6 6"></path></svg></div><span style="font-size: 18px; line-height: 24px; font-weight: 700">Você conta o problema</span><span style="font-size: 15px; line-height: 22px; color: #53585f">O que acontece, quem sente e o tamanho do problema.</span></div>
+<div style="border: 1px solid #d9d9d9; border-top: 4px solid #e2262b; border-radius: 16px; padding: 20px 22px 22px; display: flex; flex-direction: column; gap: 10px; background: #ffffff"><div style="display: flex; align-items: center; gap: 10px"><span style="width: 44px; height: 44px; border-radius: 9999px; background: #e2262b; color: #ffffff; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 700; flex: none">2</span><span style="flex: 1; height: 2px; background: linear-gradient(90deg, #e2262b, rgba(226,38,43,0.15))"></span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#e2262b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex: none"><path d="M9 6l6 6-6 6"></path></svg></div><span style="font-size: 18px; line-height: 24px; font-weight: 700">Organizamos as informações</span><span style="font-size: 15px; line-height: 22px; color: #53585f">Objetivo, hipótese, riscos e uma primeira ideia de teste, para você conferir.</span></div>
+<div style="border: 1px solid #d9d9d9; border-top: 4px solid #e2262b; border-radius: 16px; padding: 20px 22px 22px; display: flex; flex-direction: column; gap: 10px; background: #ffffff"><div style="display: flex; align-items: center; gap: 10px"><span style="width: 44px; height: 44px; border-radius: 9999px; background: #e2262b; color: #ffffff; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 700; flex: none">3</span><span style="flex: 1; height: 2px; background: linear-gradient(90deg, #e2262b, rgba(226,38,43,0.15))"></span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#e2262b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex: none"><path d="M5 21V4"></path><path d="M5 4h11l-2 4 2 4H5"></path></svg></div><span style="font-size: 18px; line-height: 24px; font-weight: 700">Conversamos e experimentamos</span><span style="font-size: 15px; line-height: 22px; color: #53585f">Você recebe o canvas pré-preenchido por e-mail, marcamos uma reunião e o time InovAI segue na esteira.</span></div>
+</div>
+<p style="margin: 0; font-size: 14px; line-height: 20px; color: #53585f">O Piloto só acontece depois dos testes, com os resultados em mãos.</p>
+</div>
+</sc-if>
+
+<sc-if value="{{isConta}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; gap: 22px">
+<div style="display: flex; flex-direction: column; gap: 8px">
+<p style="margin: 0; font-size: 13px; line-height: 18px; font-weight: 700; letter-spacing: 0.12em; color: #e2262b">PASSO 1 · VOCÊ CONTA</p>
+<h2 style="margin: 0; font-size: {{h2Size}}; line-height: 1.2; font-weight: 700">Conte o problema com as suas palavras</h2>
+<p style="margin: 0; font-size: 16px; line-height: 24px; color: #53585f">Os campos obrigatórios são o que o time InovAI precisa para entender o problema. Não precisa estar perfeito.</p>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap"><label for="f-problema" style="font-size: 16px; line-height: 22px; font-weight: 700">Conte o problema</label><span style="padding: 2px 10px; border-radius: 9999px; background: #e2262b; color: #ffffff; font-size: 11px; line-height: 16px; font-weight: 700; letter-spacing: 0.08em">OBRIGATÓRIO</span></div>
+<p style="margin: 0; font-size: 14px; line-height: 20px; color: #53585f">Do seu jeito, como contaria a um colega. Não precisa saber a causa nem a solução.</p>
+<div style="background: #f5f3f1; border-radius: 10px; padding: 12px 16px; display: flex; flex-direction: column; gap: 6px">
+<p style="margin: 0; font-size: 14px; line-height: 20px; font-weight: 700">Para ajudar, tente contar:</p>
+<ul style="margin: 0; padding-left: 20px; font-size: 14px; line-height: 22px; color: #53585f"><li>O que está dando errado</li><li>Como você percebeu</li><li>Quem sofre com isso: clientes, um time ou os dois</li><li>O que acontece por causa disso</li></ul>
+</div>
+<textarea id="f-problema" rows="6" value="{{problema}}" onChange="{{onProblema}}" placeholder="Ex.: No WhatsApp, muitos clientes desistem do agendamento da instalação porque não acham horário. Percebi pelas reclamações que chegam toda semana no backoffice." style="width: 100%; box-sizing: border-box; padding: 12px 14px; border: 2px solid {{bProblema}}; border-radius: 10px; font-size: 16px; line-height: 24px; resize: vertical"></textarea>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 8px">
+<div style="display: flex; flex-direction: column; gap: 14px; padding: 18px; border-radius: 14px; border: 2px solid #53585f">
+<div style="display: flex; flex-direction: column; gap: 4px"><p style="margin: 0; font-size: 12px; line-height: 16px; font-weight: 700; letter-spacing: 0.12em; color: #c00000">TAMANHO DO PROBLEMA</p><p style="margin: 0; font-size: 14px; line-height: 20px; color: #53585f">Com estes números já estimamos o impacto no seu canvas. Valores aproximados servem.</p></div>
+<div style="display: flex; flex-wrap: wrap; gap: 16px">
+<div style="flex: 1 1 220px; display: flex; flex-direction: column; gap: 8px">
+<div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap"><label for="f-volume" style="font-size: 16px; line-height: 22px; font-weight: 700">Quantas vezes acontece por mês?</label><span style="padding: 2px 10px; border-radius: 9999px; background: #e2262b; color: #ffffff; font-size: 11px; line-height: 16px; font-weight: 700; letter-spacing: 0.08em">OBRIGATÓRIO</span></div>
+<p style="margin: 0; font-size: 13px; line-height: 18px; color: #53585f">Pedidos, chamados, clientes afetados.</p>
+<input id="f-volume" type="text" inputmode="numeric" value="{{volume}}" onChange="{{onVolume}}" disabled="{{volNaoSei}}" style="width: 100%; box-sizing: border-box; min-height: 48px; padding: 10px 14px; border: 2px solid {{bVolume}}; border-radius: 10px; font-size: 16px; background: {{volBg}}">
+<label for="f-volume-ns" style="display: inline-flex; align-self: flex-start; align-items: center; gap: 6px; font-size: 13px; line-height: 18px; color: #53585f; cursor: pointer"><input id="f-volume-ns" type="checkbox" checked="{{volNaoSei}}" onChange="{{toggleVolNaoSei}}" style="width: 16px; height: 16px; accent-color: #e2262b; margin: 0">Não sei agora</label>
+</div>
+<div style="flex: 1 1 220px; display: flex; flex-direction: column; gap: 8px">
+<div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap"><label for="f-valor" style="font-size: 16px; line-height: 22px; font-weight: 700">Quanto custa cada caso? (R$)</label><span style="padding: 2px 10px; border-radius: 9999px; background: #d9d9d9; color: #262626; font-size: 11px; line-height: 16px; font-weight: 700; letter-spacing: 0.08em">OPCIONAL</span></div>
+<p style="margin: 0; font-size: 13px; line-height: 18px; color: #53585f">Custo de tratamento ou receita perdida por caso.</p>
+<input id="f-valor" type="text" inputmode="decimal" value="{{valorCaso}}" onChange="{{onValor}}" style="width: 100%; box-sizing: border-box; min-height: 48px; padding: 10px 14px; border: 2px solid #d9d9d9; border-radius: 10px; font-size: 16px">
+</div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 8px">
+<div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap"><p id="l-ganho" style="margin: 0; font-size: 16px; line-height: 22px; font-weight: 700">Que tipo de ganho você espera?</p><span style="padding: 2px 10px; border-radius: 9999px; background: #e2262b; color: #ffffff; font-size: 11px; line-height: 16px; font-weight: 700; letter-spacing: 0.08em">OBRIGATÓRIO</span></div>
+<p id="l-ganho-p" style="margin: 0; font-size: 14px; line-height: 20px; color: #53585f"><strong style="color: #262626">Principal:</strong> escolha um.</p>
+<div role="group" aria-labelledby="l-ganho l-ganho-p" style="display: flex; flex-wrap: wrap; gap: 10px">
+<sc-for list="{{ganhos}}" as="g" hint-placeholder-count="4">
+<button type="button" onClick="{{g.pick}}" aria-pressed="{{g.pressed}}" style="min-height: 44px; padding: 10px 18px; border: 2px solid {{g.border}}; border-radius: 9999px; background: {{g.bg}}; color: {{g.color}}; font-family: Roboto, Arial, sans-serif; font-size: 15px; font-weight: 700; cursor: pointer">{{g.label}}</button>
+</sc-for>
+</div>
+<sc-if value="{{temGanho}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; gap: 6px; padding: 12px 14px; border-left: 3px solid #e2262b; background: #fdeeee; border-radius: 0 10px 10px 0">
+<div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap"><label for="f-just" style="font-size: 15px; line-height: 21px; font-weight: 700">Por que {{ganhoMin}}?</label><span style="padding: 2px 10px; border-radius: 9999px; background: #e2262b; color: #ffffff; font-size: 11px; line-height: 16px; font-weight: 700; letter-spacing: 0.08em">OBRIGATÓRIO</span></div>
+<textarea id="f-just" rows="2" value="{{justPrinc}}" onChange="{{onJustPrinc}}" placeholder="{{dicaPrinc}}" style="width: 100%; box-sizing: border-box; padding: 10px 12px; border: 2px solid {{bJust}}; border-radius: 10px; font-size: 15px; line-height: 22px; resize: vertical; background: #ffffff"></textarea>
+</div>
+</sc-if>
+<p id="l-ganho-s" style="margin: 4px 0 0; font-size: 14px; line-height: 20px; color: #53585f"><strong style="color: #262626">Secundários:</strong> opcional, marque quantos quiser.</p>
+<div role="group" aria-labelledby="l-ganho l-ganho-s" style="display: flex; flex-wrap: wrap; gap: 10px">
+<sc-for list="{{ganhosSec}}" as="g" hint-placeholder-count="3">
+<button type="button" onClick="{{g.pick}}" aria-pressed="{{g.pressed}}" style="min-height: 40px; padding: 8px 16px; border: 2px dashed {{g.border}}; border-radius: 9999px; background: {{g.bg}}; color: {{g.color}}; font-family: Roboto, Arial, sans-serif; font-size: 14px; font-weight: 700; cursor: pointer">{{g.label}}</button>
+</sc-for>
+</div>
+<sc-for list="{{secJust}}" as="j" hint-placeholder-count="1">
+<div style="display: flex; flex-direction: column; gap: 6px; padding: 10px 14px; border-left: 3px dashed #bfbfbf; border-radius: 0 10px 10px 0; background: #f5f3f1">
+<div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap"><label for="{{j.fid}}" style="font-size: 14px; line-height: 20px; font-weight: 700">Por que {{j.min}}?</label><span style="padding: 2px 10px; border-radius: 9999px; background: #d9d9d9; color: #262626; font-size: 11px; line-height: 16px; font-weight: 700; letter-spacing: 0.08em">OPCIONAL</span></div>
+<input id="{{j.fid}}" type="text" value="{{j.texto}}" onChange="{{j.onChange}}" placeholder="{{j.dica}}" style="width: 100%; box-sizing: border-box; min-height: 44px; padding: 8px 12px; border: 2px solid #d9d9d9; border-radius: 10px; font-size: 15px; background: #ffffff">
+</div>
+</sc-for>
+</div>
+</div>
+<div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap"><p style="margin: 0; font-size: 16px; line-height: 22px; font-weight: 700">Outras evidências</p><span style="padding: 2px 10px; border-radius: 9999px; background: #d9d9d9; color: #262626; font-size: 11px; line-height: 16px; font-weight: 700; letter-spacing: 0.08em">OPCIONAL</span></div>
+<p style="margin: 0; font-size: 14px; line-height: 20px; color: #53585f">Reclamações, prints, relatórios, links ou o que você já sabe sobre o tema. Use uma ou mais formas abaixo.</p>
+<p style="margin: 6px 0 0; font-size: 14px; line-height: 20px; font-weight: 700">Arquivos</p>
+<label for="f-arquivos" style="display: flex; align-items: center; justify-content: center; gap: 10px; min-height: 64px; padding: 14px; border: 2px dashed #bfbfbf; border-radius: 10px; background: #ffffff; color: #c00000; font-size: 15px; font-weight: 700; cursor: pointer; text-align: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><path d="M17 8l-5-5-5 5"></path><path d="M12 3v12"></path></svg>Anexar arquivos<span style="font-weight: 400; color: #53585f">Word, Excel, PDF, PowerPoint ou imagem</span></label>
+<input id="f-arquivos" type="file" multiple accept=".doc,.docx,.xls,.xlsx,.csv,.pdf,.ppt,.pptx,.png,.jpg,.jpeg,.gif,.webp" onChange="{{onArquivos}}" style="position: absolute; width: 1px; height: 1px; opacity: 0">
+<sc-if value="{{temArquivos}}" hint-placeholder-val="{{false}}"><div style="display: flex; flex-wrap: wrap; gap: 8px"><sc-for list="{{arquivosLista}}" as="a" hint-placeholder-count="2"><span style="display: flex; align-items: center; gap: 6px; padding: 6px 6px 6px 12px; border-radius: 9999px; background: #f5f3f1; font-size: 13px; line-height: 18px">{{a.nome}}<button type="button" onClick="{{a.remover}}" aria-label="Remover {{a.nome}}" style="width: 28px; height: 28px; border: none; border-radius: 9999px; background: transparent; color: #53585f; font-size: 16px; cursor: pointer">×</button></span></sc-for></div></sc-if>
+<label for="f-link" style="margin: 6px 0 0; font-size: 14px; line-height: 20px; font-weight: 700">Links</label>
+<div style="display: flex; gap: 8px; flex-wrap: wrap">
+<input id="f-link" type="url" value="{{linkNovo}}" onChange="{{onLinkNovo}}" placeholder="Cole um link: Figma, Confluence, SharePoint, painel..." style="flex: 1 1 240px; min-width: 0; box-sizing: border-box; min-height: 48px; padding: 10px 14px; border: 2px solid #d9d9d9; border-radius: 10px; font-size: 16px">
+<button type="button" onClick="{{addLink}}" style="min-height: 48px; padding: 10px 20px; border: 2px solid #e2262b; border-radius: 10px; background: #ffffff; color: #c00000; font-family: Roboto, Arial, sans-serif; font-size: 15px; font-weight: 700; cursor: pointer">Adicionar</button>
+</div>
+<sc-if value="{{temLinks}}" hint-placeholder-val="{{false}}"><div style="display: flex; flex-direction: column; gap: 6px"><sc-for list="{{linksLista}}" as="k" hint-placeholder-count="1"><span style="display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 6px 6px 6px 12px; border-radius: 10px; background: #f5f3f1; font-size: 13px; line-height: 18px; word-break: break-all">{{k.url}}<button type="button" onClick="{{k.remover}}" aria-label="Remover link" style="flex: none; width: 28px; height: 28px; border: none; border-radius: 9999px; background: transparent; color: #53585f; font-size: 16px; cursor: pointer">×</button></span></sc-for></div></sc-if>
+<label for="f-dados" style="margin: 6px 0 0; font-size: 14px; line-height: 20px; font-weight: 700">Dados ou observações</label>
+<textarea id="f-dados" rows="2" value="{{dados}}" onChange="{{onDados}}" placeholder="Ex.: cerca de 200 reclamações por semana no canal X." style="width: 100%; box-sizing: border-box; padding: 12px 14px; border: 2px solid #d9d9d9; border-radius: 10px; font-size: 16px; line-height: 24px; resize: vertical"></textarea>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; gap: 16px">
+<div style="flex: 1 1 240px; display: flex; flex-direction: column; gap: 8px">
+<div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap"><label for="f-produto" style="font-size: 16px; line-height: 22px; font-weight: 700">Produto ou jornada</label><span style="padding: 2px 10px; border-radius: 9999px; background: #e2262b; color: #ffffff; font-size: 11px; line-height: 16px; font-weight: 700; letter-spacing: 0.08em">OBRIGATÓRIO</span></div>
+<p style="margin: 0; font-size: 14px; line-height: 20px; color: #53585f">Onde o problema acontece.</p>
+<input id="f-produto" type="text" value="{{produto}}" onChange="{{onProduto}}" style="width: 100%; box-sizing: border-box; min-height: 48px; padding: 10px 14px; border: 2px solid {{bProduto}}; border-radius: 10px; font-size: 16px">
+</div>
+<div style="flex: 1 1 240px; display: flex; flex-direction: column; gap: 8px">
+<div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap"><label for="f-interessados" style="font-size: 16px; line-height: 22px; font-weight: 700">Time que vai receber a solução</label><span style="padding: 2px 10px; border-radius: 9999px; background: #e2262b; color: #ffffff; font-size: 11px; line-height: 16px; font-weight: 700; letter-spacing: 0.08em">OBRIGATÓRIO</span></div>
+<p style="margin: 0; font-size: 14px; line-height: 20px; color: #53585f">Qual time vai operar a solução se o experimento der certo.</p>
+<input id="f-interessados" type="text" value="{{interessados}}" onChange="{{onInteressados}}" style="width: 100%; box-sizing: border-box; min-height: 48px; padding: 10px 14px; border: 2px solid {{bInteressados}}; border-radius: 10px; font-size: 16px">
+</div>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 8px">
+<div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap"><label for="f-stakeholders" style="font-size: 16px; line-height: 22px; font-weight: 700">Stakeholders</label><span style="padding: 2px 10px; border-radius: 9999px; background: #d9d9d9; color: #262626; font-size: 11px; line-height: 16px; font-weight: 700; letter-spacing: 0.08em">OPCIONAL</span></div>
+<p style="margin: 0; font-size: 14px; line-height: 20px; color: #53585f">Pessoas que precisam acompanhar ou decidir sobre o tema.</p>
+<input id="f-stakeholders" type="text" value="{{stakeholders}}" onChange="{{onStakeholders}}" style="width: 100%; box-sizing: border-box; min-height: 48px; padding: 10px 14px; border: 2px solid #d9d9d9; border-radius: 10px; font-size: 16px">
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 12px; padding: 18px; border-radius: 14px; background: #f5f3f1">
+<p style="margin: 0; font-size: 12px; line-height: 16px; font-weight: 700; letter-spacing: 0.12em; color: #53585f">QUEM ESTÁ ENVIANDO</p>
+<div style="display: flex; flex-wrap: wrap; gap: 16px">
+<div style="flex: 1 1 240px; display: flex; flex-direction: column; gap: 8px">
+<div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap"><label for="f-nome" style="font-size: 16px; line-height: 22px; font-weight: 700">Seu nome</label><span style="padding: 2px 10px; border-radius: 9999px; background: #e2262b; color: #ffffff; font-size: 11px; line-height: 16px; font-weight: 700; letter-spacing: 0.08em">OBRIGATÓRIO</span></div>
+<input id="f-nome" type="text" value="{{nome}}" onChange="{{onNome}}" style="width: 100%; box-sizing: border-box; min-height: 48px; padding: 10px 14px; border: 2px solid {{bNome}}; border-radius: 10px; font-size: 16px; background: #ffffff">
+</div>
+<div style="flex: 1 1 240px; display: flex; flex-direction: column; gap: 8px">
+<div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap"><label for="f-area" style="font-size: 16px; line-height: 22px; font-weight: 700">Sua área</label><span style="padding: 2px 10px; border-radius: 9999px; background: #e2262b; color: #ffffff; font-size: 11px; line-height: 16px; font-weight: 700; letter-spacing: 0.08em">OBRIGATÓRIO</span></div>
+<input id="f-area" type="text" value="{{area}}" onChange="{{onArea}}" style="width: 100%; box-sizing: border-box; min-height: 48px; padding: 10px 14px; border: 2px solid {{bArea}}; border-radius: 10px; font-size: 16px; background: #ffffff">
+</div>
+<div style="flex: 1 1 240px; display: flex; flex-direction: column; gap: 8px">
+<div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap"><label for="f-email" style="font-size: 16px; line-height: 22px; font-weight: 700">Seu e-mail</label><span style="padding: 2px 10px; border-radius: 9999px; background: #e2262b; color: #ffffff; font-size: 11px; line-height: 16px; font-weight: 700; letter-spacing: 0.08em">OBRIGATÓRIO</span></div>
+<input id="f-email" type="email" value="{{email}}" onChange="{{onEmail}}" style="width: 100%; box-sizing: border-box; min-height: 48px; padding: 10px 14px; border: 2px solid {{bEmail}}; border-radius: 10px; font-size: 16px; background: #ffffff">
+</div>
+</div>
+<p style="margin: 0; font-size: 13px; line-height: 18px; color: #53585f">É para onde enviamos o canvas pré-preenchido e por onde marcamos a reunião.</p>
+</div>
+
+<sc-if value="{{erro}}" hint-placeholder-val="{{ false }}">
+<p role="alert" style="margin: 0; padding: 12px 16px; border-radius: 10px; background: #fdeeee; color: #960000; font-size: 15px; line-height: 22px; font-weight: 700">Faltam campos obrigatórios: {{faltandoTxt}}.</p>
+</sc-if>
+
+<div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center">
+<button type="button" onClick="{{gerar}}" style="min-height: 48px; padding: 12px 28px; border: none; border-radius: 9999px; background: #e2262b; color: #ffffff; font-family: Roboto, Arial, sans-serif; font-size: 16px; font-weight: 700; cursor: pointer">Continuar</button>
+<button type="button" onClick="{{exemplo}}" style="min-height: 48px; padding: 12px 22px; border: 2px solid #e2262b; border-radius: 9999px; background: #ffffff; color: #c00000; font-family: Roboto, Arial, sans-serif; font-size: 15px; font-weight: 700; cursor: pointer">Preencher com exemplo</button>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{isIA}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; align-items: center; gap: 20px; padding: 24px 0; text-align: center">
+<div style="width: 260px; max-width: 80%">
+<svg role="img" aria-label="Prisma de vidro refratando a luz em cores" viewBox="0 0 900 700" style="width: 100%; height: auto; display: block">
+<defs><linearGradient id="haSp" gradientUnits="userSpaceOnUse" x1="840" y1="90" x2="880" y2="300"><stop offset="0.000" stop-color="#4b2a91"></stop><stop offset="0.167" stop-color="#1f5fd1"></stop><stop offset="0.333" stop-color="#1aa8b0"></stop><stop offset="0.500" stop-color="#3bbf3b"></stop><stop offset="0.667" stop-color="#ffd400"></stop><stop offset="0.833" stop-color="#ff8a00"></stop><stop offset="1.000" stop-color="#e2262b"></stop></linearGradient><linearGradient id="haBeam" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#d9d9d9" stop-opacity="0"></stop><stop offset="0.35" stop-color="#bfbfbf"></stop><stop offset="1" stop-color="#898989"></stop></linearGradient></defs>
+<path d="M30 200 L231 361" stroke="url(#haBeam)" stroke-width="12" stroke-linecap="round"></path>
+<polygon class="pz-esp" points="515,362 840,90 900,300 515,370" fill="url(#haSp)"></polygon>
+<defs>
+<linearGradient id="haL" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8a8f96" stop-opacity="0.55"></stop><stop offset="0.55" stop-color="#c9cdd2" stop-opacity="0.45"></stop><stop offset="1" stop-color="#eef0f2" stop-opacity="0.6"></stop></linearGradient>
+<linearGradient id="haF" x1="0.2" y1="0" x2="0.8" y2="1"><stop offset="0" stop-color="#ffffff" stop-opacity="0.9"></stop><stop offset="0.6" stop-color="#d5d8dc" stop-opacity="0.55"></stop><stop offset="1" stop-color="#b4b9bf" stop-opacity="0.6"></stop></linearGradient>
+<linearGradient id="haRay" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ffffff"></stop><stop offset="0.4" stop-color="#7f5af0"></stop><stop offset="0.7" stop-color="#1fb5a0"></stop><stop offset="1" stop-color="#ff5a1f"></stop></linearGradient>
+<radialGradient id="haGlow" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"></stop><stop offset="1" stop-color="#ffffff" stop-opacity="0"></stop></radialGradient>
+<radialGradient id="haSh" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#262626" stop-opacity="0.2"></stop><stop offset="1" stop-color="#262626" stop-opacity="0"></stop></radialGradient>
+</defs>
+<ellipse cx="380" cy="640" rx="340" ry="30" fill="url(#haSh)"></ellipse>
+<path d="M352 80 L537 503 M60 561 L537 503 L667 617" fill="none" stroke="#898989" stroke-width="2" opacity="0.35"></path>
+<polygon points="352,80 60,561 195,645" fill="url(#haL)"></polygon>
+<polygon points="352,80 195,645 667,617" fill="url(#haF)"></polygon>
+<polygon points="352,80 242,600 280,612" fill="#ffffff" opacity="0.45"></polygon>
+<polygon points="60,561 195,645 667,617 537,503" fill="#ffffff" opacity="0.12"></polygon>
+<path d="M231 361 L515 366" stroke="url(#haRay)" stroke-width="5" stroke-linecap="round"></path>
+<circle cx="231" cy="361" r="38" fill="url(#haGlow)"></circle>
+<path d="M60 561 L352 80 L667 617 L195 645 Z M352 80 L195 645" fill="none" stroke="#53585f" stroke-width="3" stroke-linejoin="round" opacity="0.7"></path>
+<path d="M352 80 L195 645" stroke="#ffffff" stroke-width="4" stroke-linecap="round" opacity="0.9"></path>
+</svg>
+</div>
+<p style="margin: 0; font-size: 13px; line-height: 18px; font-weight: 700; letter-spacing: 0.12em; color: #e2262b">PASSO 2 · ORGANIZAMOS</p>
+<h2 style="margin: 0; font-size: {{h2Size}}; line-height: 1.2; font-weight: 700">Organizando o que você contou</h2>
+<div style="display: flex; flex-direction: column; gap: 10px; align-items: flex-start">
+<sc-for list="{{iaSteps}}" as="st" hint-placeholder-count="3">
+<div style="display: flex; align-items: center; gap: 10px">
+<div style="width: 24px; height: 24px; border-radius: 9999px; background: {{st.bg}}; color: #ffffff; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; flex: none">{{st.mark}}</div>
+<p style="margin: 0; font-size: 16px; line-height: 22px; color: {{st.color}}">{{st.label}}</p>
+</div>
+</sc-for>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{isValida}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; gap: 20px">
+<div style="display: flex; flex-direction: column; gap: 8px">
+<p style="margin: 0; font-size: 13px; line-height: 18px; font-weight: 700; letter-spacing: 0.12em; color: #e2262b">PASSO 3 · VOCÊ CONFERE</p>
+<h2 style="margin: 0; font-size: {{h2Size}}; line-height: 1.2; font-weight: 700">Confira o resumo do seu problema</h2>
+<p style="margin: 0; font-size: 16px; line-height: 24px; color: #53585f">Organizamos o que você contou em um resumo do problema, um nome para a solução, uma hipótese e os riscos iniciais. Confirme ou ajuste: isso prepara a conversa com o time InovAI, que desenha e conduz o experimento.</p>
+</div>
+<div style="border: 2px solid #53585f; border-radius: 14px; padding: 16px 18px; display: flex; flex-direction: column; gap: 8px">
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 12px"><p style="margin: 0; font-size: 12px; line-height: 16px; font-weight: 700; letter-spacing: 0.12em; color: #53585f">VOCÊ CONTOU</p><button type="button" onClick="{{voltarConta}}" style="min-height: 36px; padding: 6px 14px; border: none; background: transparent; color: #c00000; font-family: Roboto, Arial, sans-serif; font-size: 14px; font-weight: 700; cursor: pointer; text-decoration: underline">Editar</button></div>
+<p style="margin: 0; font-size: 15px; line-height: 22px">{{problemaResumo}}</p>
+</div>
+<sc-for list="{{iaItems}}" as="it" hint-placeholder-count="3">
+<div style="border: 2px {{it.borderStyle}} #e2262b; background: {{it.bg}}; border-radius: 14px; padding: 18px; display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap">
+<div style="display: flex; flex-direction: column; gap: 2px"><p style="margin: 0; font-size: 17px; line-height: 22px; font-weight: 700">{{it.titulo}}</p><sc-if value="{{it.temDica}}" hint-placeholder-val="{{ false }}"><p style="margin: 0; font-size: 13px; line-height: 18px; color: #53585f">{{it.dica}}</p></sc-if></div>
+<span style="padding: 3px 10px; border-radius: 9999px; border: 2px {{it.borderStyle}} #e2262b; background: {{it.chipBg}}; color: {{it.chipColor}}; font-size: 11px; line-height: 14px; font-weight: 700; letter-spacing: 0.08em">{{it.chip}}</span>
+</div>
+<sc-if value="{{it.editando}}" hint-placeholder-val="{{ false }}">
+<label for="{{it.fid}}" style="font-size: 13px; line-height: 18px; color: #53585f">Ajuste o texto sugerido</label>
+<textarea id="{{it.fid}}" rows="3" value="{{it.texto}}" onChange="{{it.onChange}}" style="width: 100%; box-sizing: border-box; padding: 12px 14px; border: 2px solid #53585f; border-radius: 10px; font-size: 15px; line-height: 22px; background: #ffffff; resize: vertical"></textarea>
+</sc-if>
+<sc-if value="{{it.lendo}}" hint-placeholder-val="{{ true }}">
+<p style="margin: 0; font-size: 15px; line-height: 23px; white-space: pre-line">{{it.texto}}</p>
+</sc-if>
+<div style="display: flex; gap: 10px; flex-wrap: wrap">
+<sc-if value="{{it.mostraAceitar}}" hint-placeholder-val="{{ true }}">
+<button type="button" onClick="{{it.aceitar}}" style="min-height: 44px; padding: 10px 22px; border: none; border-radius: 9999px; background: #e2262b; color: #ffffff; font-family: Roboto, Arial, sans-serif; font-size: 15px; font-weight: 700; cursor: pointer">{{it.aceitarLabel}}</button>
+</sc-if>
+<sc-if value="{{it.mostraEditar}}" hint-placeholder-val="{{ true }}">
+<button type="button" onClick="{{it.editar}}" style="min-height: 44px; padding: 10px 20px; border: 2px solid #e2262b; border-radius: 9999px; background: #ffffff; color: #c00000; font-family: Roboto, Arial, sans-serif; font-size: 15px; font-weight: 700; cursor: pointer">Editar</button>
+</sc-if>
+</div>
+</div>
+</sc-for>
+<div style="display: flex; flex-wrap: wrap; gap: 14px; align-items: center; justify-content: space-between; padding-top: 8px; border-top: 2px solid #d9d9d9">
+<p style="margin: 0; font-size: 15px; line-height: 22px; font-weight: 700; color: #53585f">{{validadosTxt}}</p>
+<button type="button" onClick="{{enviar}}" style="min-height: 48px; padding: 12px 28px; border: none; border-radius: 9999px; background: #e2262b; opacity: {{enviarOpacity}}; color: #ffffff; font-family: Roboto, Arial, sans-serif; font-size: 16px; font-weight: 700; cursor: pointer">Enviar para o time InovAI</button>
+</div>
+<sc-if value="{{erroEnvio}}" hint-placeholder-val="{{ false }}">
+<p role="alert" style="margin: 0; padding: 12px 16px; border-radius: 10px; background: #fdeeee; color: #960000; font-size: 15px; line-height: 22px; font-weight: 700">Confirme todos os campos antes de enviar.</p>
+</sc-if>
+</div>
+</sc-if>
+
+<sc-if value="{{isFim}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; gap: 22px">
+<div style="display: flex; align-items: center; gap: 16px">
+<div style="width: 56px; height: 56px; border-radius: 9999px; background: #e2262b; display: flex; align-items: center; justify-content: center; flex: none"><svg aria-hidden="true" viewBox="0 0 24 24" style="width: 30px; height: 30px" fill="none" stroke="#ffffff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"></path></svg></div>
+<h2 style="margin: 0; font-size: {{h2Size}}; line-height: 1.2; font-weight: 700">Recebemos o seu problema</h2>
+</div>
+<div style="display: inline-flex; align-self: flex-start; align-items: center; gap: 10px; padding: 8px 16px; border: 2px solid #e2262b; border-radius: 10px; background: #ffffff"><span style="font-size: 12px; line-height: 16px; font-weight: 700; letter-spacing: 0.12em; color: #53585f">CÓDIGO DA DEMANDA</span><span style="font-size: 20px; line-height: 26px; font-weight: 900; color: #c00000">{{codigo}}</span></div>
+<p style="margin: 0; font-size: 16px; line-height: 24px; color: #53585f">Enviamos o seu canvas pré-preenchido para {{email}}. Use o código {{codigo}} para falar sobre esta demanda. O próximo passo é uma reunião rápida com o time InovAI.</p>
+<sc-if value="{{temPendMetricas}}" hint-placeholder-val="{{ false }}">
+<div role="note" style="display: flex; gap: 14px; align-items: flex-start; padding: 16px 18px; border-radius: 12px; background: #fff7e0; border: 2px solid #ffc000">
+<svg aria-hidden="true" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#262626" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex: none"><path d="M9 4h6l1 2h3v14H5V6h3z"></path><path d="M9 12h6M9 16h4"></path></svg>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<p style="margin: 0; font-size: 16px; line-height: 22px; font-weight: 700">Leve estes números para a reunião</p>
+<ul style="margin: 0; padding-left: 18px; font-size: 15px; line-height: 22px"><sc-for list="{{pendMetricas}}" as="pm" hint-placeholder-count="1"><li>{{pm.t}}</li></sc-for></ul>
+<p style="margin: 0; font-size: 14px; line-height: 20px; color: #53585f">Com eles, o time InovAI calcula o tamanho do problema e o impacto no seu canvas.</p>
+</div>
+</div>
+</sc-if>
+<div style="display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap">
+<p style="margin: 0; font-size: 12px; line-height: 16px; font-weight: 700; letter-spacing: 0.12em; color: #53585f">SEU CANVAS PRÉ-PREENCHIDO</p>
+<button type="button" onClick="{{baixar}}" style="min-height: 44px; padding: 10px 20px; border: 2px solid #e2262b; border-radius: 9999px; background: #ffffff; color: #c00000; font-family: Roboto, Arial, sans-serif; font-size: 15px; font-weight: 700; cursor: pointer">Baixar {{codigoArquivo}}.pdf</button>
+</div>
+<div style="display: flex; justify-content: flex-end"><button type="button" onClick="{{toggleCvZoom}}" aria-pressed="{{cvZoomPressed}}" style="min-height: 40px; padding: 8px 16px; border: 1px solid #bfbfbf; border-radius: 9999px; background: #ffffff; color: #262626; font-family: Roboto, Arial, sans-serif; font-size: 14px; font-weight: 700; cursor: pointer">{{cvZoomLabel}}</button></div>
+<div id="cv-wrap" style="width: 100%; overflow-x: {{cvOverflow}}; border: 1px solid #d9d9d9; border-radius: 10px; background: #ffffff">
+<div style="position: relative; width: {{cvBoxW}}; height: {{cvBoxH}}; overflow: hidden">
+<div role="img" aria-label="Canvas de iniciativa pré-preenchido" style="position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform: scale({{cvScale}}); transform-origin: 0 0; background: #ffffff; color: #262626; font-family: Roboto, Arial, sans-serif; display: flex; flex-direction: row; text-align: left">
+<div style="position: absolute; left: 0; top: 0; width: 490px; height: 1080px; background: #e2262b"></div>
+<div id="{{cvIdLado}}" style="position: relative; width: 490px; height: 1080px; flex: none; box-sizing: border-box; padding: 52px 48px 44px 48px; display: flex; flex-direction: column; overflow: hidden">
+<h1 style="margin: 0; font-size: {{cvTit}}; line-height: 1.06; font-weight: 700; color: #ffffff; padding: 0 0 14px 0">{{cv.titulo}}</h1>
+<p style="margin: 0; font-size: 24px; line-height: 32px; color: #ffffff">{{cv.subtitulo}}</p>
+<div style="display: flex; flex-direction: row; flex-wrap: wrap; gap: 10px; padding: 22px 0 0 0">
+<sc-for list="{{cv.classes}}" as="cl" hint-placeholder-count="1"><p style="margin: 0; font-size: 20px; line-height: 24px; font-weight: 700; color: {{cl.cor}}; background: {{cl.bg}}; border: 2px solid #ffffff; border-radius: 999px; padding: 6px 14px">{{cl.t}}</p></sc-for>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px; padding: 30px 0 0 0">
+<p style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 700; letter-spacing: 3px; color: #ffc000">PRODUTO BENEFICIADO</p>
+<p style="margin: 0; font-size: 40px; line-height: 44px; font-weight: 700; color: #ffffff">{{cv.produto}}</p>
+</div>
+<div style="display: flex; flex-direction: column; padding: 36px 0 0 0">
+<p style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 700; letter-spacing: 3px; color: #ffc000">CENÁRIO REALISTA</p>
+<sc-if value="{{cv.temHero}}" hint-placeholder-val="{{ true }}">
+<div style="display: flex; flex-direction: row; gap: 10px; align-items: baseline">
+<p style="margin: 0; font-size: 44px; line-height: 1; font-weight: 700; color: #ffffff; white-space: nowrap">{{cv.heroPre}}</p>
+<p style="margin: 0; font-size: 96px; line-height: 1; font-weight: 700; color: #ffffff; letter-spacing: -2px; white-space: nowrap">{{cv.heroNum}}</p>
+<p style="margin: 0; font-size: 44px; line-height: 1; font-weight: 700; color: #ffffff; white-space: nowrap">{{cv.heroUni}}</p>
+</div>
+<p style="margin: 0; font-size: 30px; line-height: 38px; font-weight: 700; color: #ffffff">{{cv.heroLinha}}</p>
+<p style="margin: 0; font-size: 22px; line-height: 30px; color: #ffffff">{{cv.heroNota}}</p>
+</sc-if>
+<sc-if value="{{cv.semHero}}" hint-placeholder-val="{{ false }}">
+<p style="margin: 6px 0 0 0; font-size: 34px; line-height: 42px; font-weight: 700; color: #ffffff">[a ser preenchido]</p>
+</sc-if>
+</div>
+<div style="flex: 1"></div>
+<div style="height: 2px; background: #ee7c80"></div>
+<div style="display: flex; flex-direction: column; gap: 2px; padding: 20px 0 0 0">
+<p style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 700; color: #ffc000">Custo estimado</p>
+<p style="margin: 0; font-size: 28px; line-height: 34px; font-weight: 700; color: #ffffff">[a ser preenchido]</p>
+</div>
+<div style="display: grid; grid-template-columns: 150px 1fr; gap: 10px 14px; padding: 16px 0 0 0">
+<p style="margin: 0; font-size: 20px; line-height: 28px; font-weight: 700; color: #ffc000">Equipes</p><p style="margin: 0; font-size: 22px; line-height: 28px; color: #ffffff">{{cv.equipes}}</p>
+<p style="margin: 0; font-size: 20px; line-height: 28px; font-weight: 700; color: #ffc000">Stakeholders</p><p style="margin: 0; font-size: 22px; line-height: 28px; color: #ffffff; white-space: pre-line">{{cv.stakeholders}}</p>
+</div>
+</div>
+<div id="{{cvIdCorpo}}" style="flex: 1; min-width: 0; height: 1080px; box-sizing: border-box; padding: 56px 56px 96px 56px; display: flex; flex-direction: column; gap: {{cvGap}}; overflow: hidden">
+<div style="display: flex; flex-direction: row; gap: 48px; align-items: flex-start">
+<div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 20px">
+<div style="display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; flex-direction: row; gap: 14px; align-items: center"><svg aria-hidden="true" viewBox="0 0 24 24" style="width: 34px; height: 34px" fill="none" stroke="#e2262b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg><h3 style="margin: 0; font-size: 28px; line-height: 36px; font-weight: 700; color: #262626">Problema</h3></div>
+<p style="margin: 0; font-size: {{cvF}}; line-height: {{cvLH}}; color: #262626">{{cv.problema}}</p>
+</div>
+<div style="height: 1px; background: #e6e3e0"></div>
+<div style="display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; flex-direction: row; gap: 14px; align-items: center"><svg aria-hidden="true" viewBox="0 0 24 24" style="width: 34px; height: 34px" fill="none" stroke="#e2262b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4"></path><path d="M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2z"></path></svg><h3 style="margin: 0; font-size: 28px; line-height: 36px; font-weight: 700; color: #262626">Proposta</h3></div>
+<p style="margin: 0; font-size: {{cvF}}; line-height: {{cvLH}}; color: #262626">{{cv.proposta}}</p>
+</div>
+<div style="height: 1px; background: #e6e3e0"></div>
+<div style="display: flex; flex-direction: row; gap: 32px; align-items: flex-start">
+<div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; flex-direction: row; gap: 14px; align-items: center"><svg aria-hidden="true" viewBox="0 0 24 24" style="width: 34px; height: 34px" fill="none" stroke="#e2262b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 10v11H3V10z"></path><path d="M7 10l4-8a3 3 0 0 1 3 3v4h5.5a2 2 0 0 1 2 2.3l-1.4 8A2 2 0 0 1 18.1 21H7"></path></svg><h3 style="margin: 0; font-size: 28px; line-height: 36px; font-weight: 700; color: #262626">Benefícios</h3></div>
+<sc-if value="{{cv.temBeneficios}}" hint-placeholder-val="{{ true }}"><ul style="margin: 0; font-size: {{cvF}}; line-height: {{cvLH}}; color: #262626; padding: 0 0 0 28px"><sc-for list="{{cv.beneficios}}" as="bn" hint-placeholder-count="2"><li>{{bn.texto}}</li></sc-for></ul></sc-if>
+<sc-if value="{{cv.semBeneficios}}" hint-placeholder-val="{{ false }}"><p style="margin: 0; font-size: {{cvF}}; line-height: {{cvLH}}; color: #262626">[a ser preenchido]</p></sc-if>
+</div>
+<div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; flex-direction: row; gap: 14px; align-items: center"><svg aria-hidden="true" viewBox="0 0 24 24" style="width: 34px; height: 34px" fill="none" stroke="#e2262b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l3-8 4 16 3-8h4"></path></svg><h3 style="margin: 0; font-size: 28px; line-height: 36px; font-weight: 700; color: #262626">Hipótese</h3></div>
+<p style="margin: 0; font-size: {{cvF}}; line-height: {{cvLH}}; color: #262626">{{cv.hipotese}}</p>
+</div>
+</div>
+</div>
+<div style="width: 500px; flex: none; box-sizing: border-box; background: #fdeeee; border-radius: 16px; padding: 28px 32px; display: flex; flex-direction: column; gap: 6px">
+<p style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 700; letter-spacing: 3px; color: #c00000; padding: 0 0 8px 0">DA BASE AO IMPACTO</p>
+<div style="display: grid; grid-template-columns: 136px 1fr; gap: 4px 10px">
+<sc-for list="{{cv.linhas}}" as="ln" hint-placeholder-count="4"><p style="margin: 0; font-size: 22px; line-height: 30px; font-weight: 700">{{ln.a}}</p><p style="margin: 0; font-size: 22px; line-height: 30px">{{ln.b}}</p></sc-for>
+</div>
+<div style="height: 1px; background: #e8b4b6; width: 436px"></div>
+<div style="display: flex; flex-direction: column; gap: 8px; padding: 8px 0 0 0">
+<div style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; background: #ffffff; border-left: 6px solid #898989; border-radius: 8px; padding: 10px 18px"><p style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 700; letter-spacing: 2px; color: #53585f">PESSIMISTA | 30%</p><p style="margin: 0; font-size: 26px; line-height: 32px; font-weight: 700">{{cv.cPess}}</p></div>
+<div style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; background: #e2262b; border-radius: 8px; padding: 12px 18px"><p style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 700; letter-spacing: 2px; color: #ffffff">REALISTA | 50%</p><p style="margin: 0; font-size: 28px; line-height: 34px; font-weight: 700; color: #ffffff">{{cv.cReal}}</p></div>
+<div style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; background: #ffffff; border-left: 6px solid #f58428; border-radius: 8px; padding: 10px 18px"><p style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 700; letter-spacing: 2px; color: #53585f">OTIMISTA | 70%</p><p style="margin: 0; font-size: 26px; line-height: 32px; font-weight: 700">{{cv.cOtim}}</p></div>
+</div>
+<p style="margin: 0; font-size: 20px; line-height: 26px; color: #53585f; padding: 8px 0 0 0">{{cv.premissa}}</p>
+</div>
+</div>
+<div style="height: 2px; background: #e2262b; width: 96px"></div>
+<div style="display: flex; flex-direction: row; gap: 48px">
+<div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; flex-direction: row; gap: 14px; align-items: center"><svg aria-hidden="true" viewBox="0 0 24 24" style="width: 34px; height: 34px" fill="none" stroke="#e2262b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="m8 12 3 3 5-6"></path></svg><h3 style="margin: 0; font-size: 28px; line-height: 36px; font-weight: 700; color: #262626">Critérios de sucesso da PoC</h3></div>
+<p style="margin: 0; font-size: {{cvF}}; line-height: {{cvLH}}; color: #262626">[a ser preenchido]</p>
+</div>
+<div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; flex-direction: row; gap: 14px; align-items: center"><svg aria-hidden="true" viewBox="0 0 24 24" style="width: 34px; height: 34px" fill="none" stroke="#e2262b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 2 21h20z"></path><path d="M12 10v5M12 18h.01"></path></svg><h3 style="margin: 0; font-size: 28px; line-height: 36px; font-weight: 700; color: #262626">Riscos</h3></div>
+<ul style="margin: 0; font-size: {{cvF}}; line-height: {{cvLH}}; color: #262626; padding: 0 0 0 28px"><sc-for list="{{cv.riscos}}" as="rk" hint-placeholder-count="3"><li>{{rk.t}}</li></sc-for></ul>
+</div>
+</div>
+</div>
+<div style="position: absolute; left: 546px; top: 1004px; width: 52px; height: 52px; background: #e2262b; display: flex; align-items: center; justify-content: center"><svg aria-label="Frasco" viewBox="0 0 24 24" style="width: 30px; height: 30px" fill="none" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6"></path><path d="M10 3v6.5L4.6 18.2A1.8 1.8 0 0 0 6.1 21h11.8a1.8 1.8 0 0 0 1.5-2.8L14 9.5V3"></path><path d="M7 15h10"></path></svg></div>
+<div style="position: absolute; left: 614px; top: 1004px; width: 520px; height: 52px; display: flex; flex-direction: column; justify-content: center; gap: 5px">
+<div style="display: flex; flex-direction: row; align-items: center; gap: 16px"><p style="margin: 0; font-size: 22px; line-height: 26px; font-weight: 700; letter-spacing: 0.08em; color: #e2262b; white-space: nowrap">EXPERIMENTAÇÃO</p><div style="width: 1px; height: 24px; background: #bfbfbf"></div><p style="margin: 0; font-size: 22px; line-height: 26px; color: #53585f; white-space: nowrap">CoE Digital</p></div>
+<div style="width: 96px; height: 3px; background: linear-gradient(90deg, #e2262b, rgba(226,38,43,0))"></div>
+</div>
+</div>
+</div>
+</div>
+<p style="margin: 0; font-size: 13px; line-height: 19px; color: #53585f">Os campos [a ser preenchido] são completados com o time InovAI na reunião de aprofundamento.</p>
+<sc-if value="{{baixou}}" hint-placeholder-val="{{ false }}"><p role="status" style="margin: 0; font-size: 13px; line-height: 19px; color: #c00000; font-weight: 700">Na janela que abriu, escolha "Salvar como PDF". Se ela não abrir, abra o protótipo em tela cheia e tente de novo.</p></sc-if>
+<div style="border: 2px dashed #bfbfbf; border-radius: 12px; padding: 16px 18px; display: flex; flex-direction: column; gap: 10px; background: #ffffff">
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap"><div style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 11px; line-height: 14px; font-weight: 700; letter-spacing: 0.12em; color: #53585f">SÓ NO PROTÓTIPO</span><span style="font-size: 15px; line-height: 21px; font-weight: 700">Guardar as respostas deste teste</span></div>
+<button type="button" onClick="{{baixarTeste}}" style="min-height: 44px; padding: 10px 20px; border: none; border-radius: 9999px; background: #262626; color: #ffffff; font-family: Roboto, Arial, sans-serif; font-size: 15px; font-weight: 700; cursor: pointer">Baixar respostas</button></div>
+<sc-if value="{{baixouTeste}}" hint-placeholder-val="{{ false }}"><p role="status" style="margin: 0; font-size: 13px; line-height: 19px; color: #53585f">Se o download não começar, copie o texto abaixo.</p></sc-if>
+<details><summary style="font-size: 14px; font-weight: 700; color: #c00000; cursor: pointer">Ver respostas para copiar</summary><pre style="margin: 8px 0 0; padding: 12px; background: #f5f3f1; border-radius: 8px; font-family: Roboto, Arial, sans-serif; font-size: 13px; line-height: 19px; white-space: pre-wrap; word-break: break-word">{{respostasTexto}}</pre></details>
+</div>
+</div>
+<div style="border: 2px dashed #e2262b; border-radius: 14px; padding: 20px; display: flex; align-items: flex-start; gap: 16px">
+<div style="width: 48px; height: 48px; border-radius: 9999px; background: #e2262b; display: flex; align-items: center; justify-content: center; flex: none"><svg aria-hidden="true" viewBox="0 0 24 24" style="width: 24px; height: 24px" fill="none" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"></rect><path d="M16 2v4M8 2v4M3 10h18"></path></svg></div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<h3 style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 700">Próximo passo: reunião de aprofundamento</h3>
+<p style="margin: 0; font-size: 15px; line-height: 22px; color: #53585f">O time InovAI vai entrar em contato para agendar uma conversa com você. Nela, confirmamos os dados e aprofundamos o problema e os benefícios.</p>
+</div>
+</div>
+<button type="button" onClick="{{recomecar}}" style="align-self: flex-start; min-height: 44px; padding: 10px 22px; border: 2px solid #e2262b; border-radius: 9999px; background: #ffffff; color: #c00000; font-family: Roboto, Arial, sans-serif; font-size: 15px; font-weight: 700; cursor: pointer">Contar outro problema</button>
+</div>
+</sc-if>
+
+</div>
+</main>
+</div>
+</div>
+<footer style="width: 100%; max-width: 1240px; margin: 0 auto; padding: 8px {{padX}} 36px; box-sizing: border-box; flex: none">
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; border-top: 1px solid #d9d9d9; padding-top: 22px">
+<div style="display: flex; align-items: center; gap: 14px">
+<span style="width: 44px; height: 44px; background: #e2262b; display: flex; align-items: center; justify-content: center"><svg aria-hidden="true" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6"></path><path d="M10 3v6.5L4.6 18.2A1.8 1.8 0 0 0 6.1 21h11.8a1.8 1.8 0 0 0 1.5-2.8L14 9.5V3"></path><path d="M7 15h10"></path></svg></span>
+<div style="display: flex; flex-direction: column; gap: 5px">
+<div style="display: flex; align-items: center"><span style="font-size: 17px; font-weight: 700; letter-spacing: 0.08em; color: #c00000">EXPERIMENTAÇÃO</span><span style="width: 1px; height: 20px; background: #bfbfbf; margin: 0 14px"></span><span style="font-size: 15px; color: #53585f">CoE Digital</span></div>
+<div style="width: 90px; height: 3px; background: linear-gradient(90deg, #e2262b, rgba(226,38,43,0))"></div>
+</div>
+</div>
+<span style="font-size: 13px; color: #53585f">Os problemas recebidos entram na esteira de experimentação do time InovAI</span>
+</div>
+</footer>
+</sc-if>
+<sc-if value="{{imprimindo}}" hint-placeholder-val="{{ false }}">
+<button type="button" class="pz-noprint" onClick="{{sairImpressao}}" style="position: fixed; right: 16px; top: 16px; z-index: 10; min-height: 44px; padding: 10px 18px; border: none; border-radius: 9999px; background: #262626; color: #ffffff; font-family: Roboto, Arial, sans-serif; font-size: 15px; font-weight: 700; cursor: pointer">Voltar ao Prisma</button>
+<div role="img" aria-label="Canvas de iniciativa pré-preenchido" style="position: relative; width: 1920px; height: 1080px; background: #ffffff; color: #262626; font-family: Roboto, Arial, sans-serif; display: flex; flex-direction: row; text-align: left">
+<div style="position: absolute; left: 0; top: 0; width: 490px; height: 1080px; background: #e2262b"></div>
+<div id="cv-lado-p" style="position: relative; width: 490px; height: 1080px; flex: none; box-sizing: border-box; padding: 52px 48px 44px 48px; display: flex; flex-direction: column; overflow: hidden">
+<h1 style="margin: 0; font-size: {{cvTit}}; line-height: 1.06; font-weight: 700; color: #ffffff; padding: 0 0 14px 0">{{cv.titulo}}</h1>
+<p style="margin: 0; font-size: 24px; line-height: 32px; color: #ffffff">{{cv.subtitulo}}</p>
+<div style="display: flex; flex-direction: row; flex-wrap: wrap; gap: 10px; padding: 22px 0 0 0">
+<sc-for list="{{cv.classes}}" as="cl" hint-placeholder-count="1"><p style="margin: 0; font-size: 20px; line-height: 24px; font-weight: 700; color: {{cl.cor}}; background: {{cl.bg}}; border: 2px solid #ffffff; border-radius: 999px; padding: 6px 14px">{{cl.t}}</p></sc-for>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px; padding: 30px 0 0 0">
+<p style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 700; letter-spacing: 3px; color: #ffc000">PRODUTO BENEFICIADO</p>
+<p style="margin: 0; font-size: 40px; line-height: 44px; font-weight: 700; color: #ffffff">{{cv.produto}}</p>
+</div>
+<div style="display: flex; flex-direction: column; padding: 36px 0 0 0">
+<p style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 700; letter-spacing: 3px; color: #ffc000">CENÁRIO REALISTA</p>
+<sc-if value="{{cv.temHero}}" hint-placeholder-val="{{ true }}">
+<div style="display: flex; flex-direction: row; gap: 10px; align-items: baseline">
+<p style="margin: 0; font-size: 44px; line-height: 1; font-weight: 700; color: #ffffff; white-space: nowrap">{{cv.heroPre}}</p>
+<p style="margin: 0; font-size: 96px; line-height: 1; font-weight: 700; color: #ffffff; letter-spacing: -2px; white-space: nowrap">{{cv.heroNum}}</p>
+<p style="margin: 0; font-size: 44px; line-height: 1; font-weight: 700; color: #ffffff; white-space: nowrap">{{cv.heroUni}}</p>
+</div>
+<p style="margin: 0; font-size: 30px; line-height: 38px; font-weight: 700; color: #ffffff">{{cv.heroLinha}}</p>
+<p style="margin: 0; font-size: 22px; line-height: 30px; color: #ffffff">{{cv.heroNota}}</p>
+</sc-if>
+<sc-if value="{{cv.semHero}}" hint-placeholder-val="{{ false }}">
+<p style="margin: 6px 0 0 0; font-size: 34px; line-height: 42px; font-weight: 700; color: #ffffff">[a ser preenchido]</p>
+</sc-if>
+</div>
+<div style="flex: 1"></div>
+<div style="height: 2px; background: #ee7c80"></div>
+<div style="display: flex; flex-direction: column; gap: 2px; padding: 20px 0 0 0">
+<p style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 700; color: #ffc000">Custo estimado</p>
+<p style="margin: 0; font-size: 28px; line-height: 34px; font-weight: 700; color: #ffffff">[a ser preenchido]</p>
+</div>
+<div style="display: grid; grid-template-columns: 150px 1fr; gap: 10px 14px; padding: 16px 0 0 0">
+<p style="margin: 0; font-size: 20px; line-height: 28px; font-weight: 700; color: #ffc000">Equipes</p><p style="margin: 0; font-size: 22px; line-height: 28px; color: #ffffff">{{cv.equipes}}</p>
+<p style="margin: 0; font-size: 20px; line-height: 28px; font-weight: 700; color: #ffc000">Stakeholders</p><p style="margin: 0; font-size: 22px; line-height: 28px; color: #ffffff; white-space: pre-line">{{cv.stakeholders}}</p>
+</div>
+</div>
+<div id="cv-corpo-p" style="flex: 1; min-width: 0; height: 1080px; box-sizing: border-box; padding: 56px 56px 96px 56px; display: flex; flex-direction: column; gap: {{cvGap}}; overflow: hidden">
+<div style="display: flex; flex-direction: row; gap: 48px; align-items: flex-start">
+<div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 20px">
+<div style="display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; flex-direction: row; gap: 14px; align-items: center"><svg aria-hidden="true" viewBox="0 0 24 24" style="width: 34px; height: 34px" fill="none" stroke="#e2262b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg><h3 style="margin: 0; font-size: 28px; line-height: 36px; font-weight: 700; color: #262626">Problema</h3></div>
+<p style="margin: 0; font-size: {{cvF}}; line-height: {{cvLH}}; color: #262626">{{cv.problema}}</p>
+</div>
+<div style="height: 1px; background: #e6e3e0"></div>
+<div style="display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; flex-direction: row; gap: 14px; align-items: center"><svg aria-hidden="true" viewBox="0 0 24 24" style="width: 34px; height: 34px" fill="none" stroke="#e2262b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4"></path><path d="M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2z"></path></svg><h3 style="margin: 0; font-size: 28px; line-height: 36px; font-weight: 700; color: #262626">Proposta</h3></div>
+<p style="margin: 0; font-size: {{cvF}}; line-height: {{cvLH}}; color: #262626">{{cv.proposta}}</p>
+</div>
+<div style="height: 1px; background: #e6e3e0"></div>
+<div style="display: flex; flex-direction: row; gap: 32px; align-items: flex-start">
+<div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; flex-direction: row; gap: 14px; align-items: center"><svg aria-hidden="true" viewBox="0 0 24 24" style="width: 34px; height: 34px" fill="none" stroke="#e2262b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 10v11H3V10z"></path><path d="M7 10l4-8a3 3 0 0 1 3 3v4h5.5a2 2 0 0 1 2 2.3l-1.4 8A2 2 0 0 1 18.1 21H7"></path></svg><h3 style="margin: 0; font-size: 28px; line-height: 36px; font-weight: 700; color: #262626">Benefícios</h3></div>
+<sc-if value="{{cv.temBeneficios}}" hint-placeholder-val="{{ true }}"><ul style="margin: 0; font-size: {{cvF}}; line-height: {{cvLH}}; color: #262626; padding: 0 0 0 28px"><sc-for list="{{cv.beneficios}}" as="bn" hint-placeholder-count="2"><li>{{bn.texto}}</li></sc-for></ul></sc-if>
+<sc-if value="{{cv.semBeneficios}}" hint-placeholder-val="{{ false }}"><p style="margin: 0; font-size: {{cvF}}; line-height: {{cvLH}}; color: #262626">[a ser preenchido]</p></sc-if>
+</div>
+<div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; flex-direction: row; gap: 14px; align-items: center"><svg aria-hidden="true" viewBox="0 0 24 24" style="width: 34px; height: 34px" fill="none" stroke="#e2262b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l3-8 4 16 3-8h4"></path></svg><h3 style="margin: 0; font-size: 28px; line-height: 36px; font-weight: 700; color: #262626">Hipótese</h3></div>
+<p style="margin: 0; font-size: {{cvF}}; line-height: {{cvLH}}; color: #262626">{{cv.hipotese}}</p>
+</div>
+</div>
+</div>
+<div style="width: 500px; flex: none; box-sizing: border-box; background: #fdeeee; border-radius: 16px; padding: 28px 32px; display: flex; flex-direction: column; gap: 6px">
+<p style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 700; letter-spacing: 3px; color: #c00000; padding: 0 0 8px 0">DA BASE AO IMPACTO</p>
+<div style="display: grid; grid-template-columns: 136px 1fr; gap: 4px 10px">
+<sc-for list="{{cv.linhas}}" as="ln" hint-placeholder-count="4"><p style="margin: 0; font-size: 22px; line-height: 30px; font-weight: 700">{{ln.a}}</p><p style="margin: 0; font-size: 22px; line-height: 30px">{{ln.b}}</p></sc-for>
+</div>
+<div style="height: 1px; background: #e8b4b6; width: 436px"></div>
+<div style="display: flex; flex-direction: column; gap: 8px; padding: 8px 0 0 0">
+<div style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; background: #ffffff; border-left: 6px solid #898989; border-radius: 8px; padding: 10px 18px"><p style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 700; letter-spacing: 2px; color: #53585f">PESSIMISTA | 30%</p><p style="margin: 0; font-size: 26px; line-height: 32px; font-weight: 700">{{cv.cPess}}</p></div>
+<div style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; background: #e2262b; border-radius: 8px; padding: 12px 18px"><p style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 700; letter-spacing: 2px; color: #ffffff">REALISTA | 50%</p><p style="margin: 0; font-size: 28px; line-height: 34px; font-weight: 700; color: #ffffff">{{cv.cReal}}</p></div>
+<div style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; background: #ffffff; border-left: 6px solid #f58428; border-radius: 8px; padding: 10px 18px"><p style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 700; letter-spacing: 2px; color: #53585f">OTIMISTA | 70%</p><p style="margin: 0; font-size: 26px; line-height: 32px; font-weight: 700">{{cv.cOtim}}</p></div>
+</div>
+<p style="margin: 0; font-size: 20px; line-height: 26px; color: #53585f; padding: 8px 0 0 0">{{cv.premissa}}</p>
+</div>
+</div>
+<div style="height: 2px; background: #e2262b; width: 96px"></div>
+<div style="display: flex; flex-direction: row; gap: 48px">
+<div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; flex-direction: row; gap: 14px; align-items: center"><svg aria-hidden="true" viewBox="0 0 24 24" style="width: 34px; height: 34px" fill="none" stroke="#e2262b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="m8 12 3 3 5-6"></path></svg><h3 style="margin: 0; font-size: 28px; line-height: 36px; font-weight: 700; color: #262626">Critérios de sucesso da PoC</h3></div>
+<p style="margin: 0; font-size: {{cvF}}; line-height: {{cvLH}}; color: #262626">[a ser preenchido]</p>
+</div>
+<div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; flex-direction: row; gap: 14px; align-items: center"><svg aria-hidden="true" viewBox="0 0 24 24" style="width: 34px; height: 34px" fill="none" stroke="#e2262b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 2 21h20z"></path><path d="M12 10v5M12 18h.01"></path></svg><h3 style="margin: 0; font-size: 28px; line-height: 36px; font-weight: 700; color: #262626">Riscos</h3></div>
+<ul style="margin: 0; font-size: {{cvF}}; line-height: {{cvLH}}; color: #262626; padding: 0 0 0 28px"><sc-for list="{{cv.riscos}}" as="rk" hint-placeholder-count="3"><li>{{rk.t}}</li></sc-for></ul>
+</div>
+</div>
+</div>
+<div style="position: absolute; left: 546px; top: 1004px; width: 52px; height: 52px; background: #e2262b; display: flex; align-items: center; justify-content: center"><svg aria-label="Frasco" viewBox="0 0 24 24" style="width: 30px; height: 30px" fill="none" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6"></path><path d="M10 3v6.5L4.6 18.2A1.8 1.8 0 0 0 6.1 21h11.8a1.8 1.8 0 0 0 1.5-2.8L14 9.5V3"></path><path d="M7 15h10"></path></svg></div>
+<div style="position: absolute; left: 614px; top: 1004px; width: 520px; height: 52px; display: flex; flex-direction: column; justify-content: center; gap: 5px">
+<div style="display: flex; flex-direction: row; align-items: center; gap: 16px"><p style="margin: 0; font-size: 22px; line-height: 26px; font-weight: 700; letter-spacing: 0.08em; color: #e2262b; white-space: nowrap">EXPERIMENTAÇÃO</p><div style="width: 1px; height: 24px; background: #bfbfbf"></div><p style="margin: 0; font-size: 22px; line-height: 26px; color: #53585f; white-space: nowrap">CoE Digital</p></div>
+<div style="width: 96px; height: 3px; background: linear-gradient(90deg, #e2262b, rgba(226,38,43,0))"></div>
+</div>
+</div>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"compact":{"editor":"boolean","default":false},"$preview":{"width":1280,"height":900}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { tela: 'entrada', volNaoSei: false, volume: '', valorCaso: '', consultaCod: '', consultaRes: null, consultaErro: false, ganho: '', ganhosSec: [], justPrinc: '', justSec: {}, problema: '', dados: '', arquivos: [], links: [], linkNovo: '', produto: '', interessados: '', stakeholders: '', nome: '', area: '', email: '', erro: false, erroEnvio: false, usouExemplo: false, iaStep: 0, ia: [], baixou: false, cvNivel: 0, cvNivelT: 0, imprimindo: false };
+    this.timers = [];
+  }
+  componentDidMount() { var self = this; this._onR = function () { self.medirCanvas(); }; try { window.addEventListener('resize', this._onR); } catch (e) {} }
+  componentDidUpdate() { this.medirCanvas(); }
+  componentWillUnmount() { this.timers.forEach(function (t) { clearTimeout(t); }); try { window.removeEventListener('resize', this._onR); } catch (e) {} }
+  medirCanvas() {
+    try {
+      var st = this.state;
+      if (st.tela === 'fim') {
+        var corpo = document.getElementById(st.imprimindo ? 'cv-corpo-p' : 'cv-corpo');
+        var lado = document.getElementById(st.imprimindo ? 'cv-lado-p' : 'cv-lado');
+        if (corpo && corpo.scrollHeight > corpo.clientHeight + 1 && (st.cvNivel || 0) < 4) { this.setState({ cvNivel: (st.cvNivel || 0) + 1 }); return; }
+        if (lado && lado.scrollHeight > lado.clientHeight + 1 && (st.cvNivelT || 0) < 3) { this.setState({ cvNivelT: (st.cvNivelT || 0) + 1 }); return; }
+      }
+    } catch (e) {}
+    try { var el = document.getElementById('cv-wrap'); if (!el) return; var w = el.clientWidth; if (w > 0 && Math.abs(w - (this.state.cvW || 0)) > 2) this.setState({ cvW: w }); } catch (e) {} }
+  montarIA() {
+    var s = this.state;
+    if (s.usouExemplo) {
+      return [
+        { id: 'resumo', titulo: 'Resumo do problema', texto: 'Pedidos de banda larga no e-commerce travam porque o endereço não é encontrado na base' },
+        { id: 'nome', titulo: 'Nome da solução', texto: 'Match HP' },
+        { id: 'hipotese', titulo: 'Hipótese', texto: 'Acredito que validar e sugerir o endereço correto ainda no checkout, porque o cliente corrige o dado antes de concluir a compra, o que resultará em menos pedidos no tratamento manual do backoffice, entre os cerca de 3.000 casos por mês.' },
+        { id: 'riscos', titulo: 'Riscos iniciais', texto: 'Técnico: a base de endereços pode estar desatualizada e limitar as sugestões.\nNegócio: o ganho depende de quantos pedidos realmente travam por endereço.\nOperacional: o backoffice precisa ajustar o fluxo de tratamento.\nAdoção: o cliente pode ignorar a sugestão no checkout.' }
+      ];
+    }
+    var produto = String(s.produto || '').trim();
+    var txt = String(s.problema || '').toLowerCase();
+    function tem(lista) { return lista.some(function (w) { return txt.indexOf(w) >= 0; }); }
+    function minus(t) { return String(t || '').replace(/^./, function (c) { return c.toLowerCase(); }); }
+    // 1. Nome: quando o tema já tem solução no InovAI, usa o nome oficial (nunca renomear); nomes criativos só para temas novos
+    var temas = [
+      { k: ['endereço', 'endereco', 'cep', 'hp '], n: 'Match HP', a: 'validar e sugerir o endereço correto automaticamente', r: 'o dado é corrigido antes de o pedido seguir' },
+      { k: ['documento', 'rg', 'cnh', 'comprovante'], n: 'Validador de Documentos', a: 'conferir os documentos do cliente automaticamente', r: 'a conferência deixa de depender de uma pessoa' },
+      { k: ['agend', 'horário', 'horario', 'visita', 'instalação', 'instalacao'], n: 'Agente de Agendamento', a: 'sugerir horários disponíveis de forma automática', r: 'o cliente encontra um horário sem precisar de outro canal' },
+      { k: ['dúvida', 'duvida', 'pergunta', 'faq', 'atendimento'], n: 'Agente de Suporte', a: 'responder as dúvidas do cliente com um agente digital', r: 'o cliente tem a resposta na hora, no canal em que já está' },
+      { k: ['fatura', 'cobrança', 'cobranca', 'pagamento', 'boleto'], n: 'Fatura Clara', a: 'explicar a fatura ao cliente de forma simples e automática', r: 'o cliente entende a cobrança sem precisar ligar' },
+      { k: ['plano', 'oferta', 'escolher', 'escolha'], n: 'Buscador de Produtos', a: 'recomendar o plano certo para o perfil do cliente', r: 'a escolha passa a considerar o uso real do cliente' },
+      { k: ['cadastro', 'formulário', 'formulario', 'preench'], n: 'Cadastro Sem Erro', a: 'validar os dados do cadastro no momento do preenchimento', r: 'o erro é corrigido na origem' },
+      { k: ['fila', 'manual', 'backoffice', 'bko', 'retrabalho'], n: 'Fila Zero', a: 'automatizar a tratativa que hoje é feita à mão', r: 'o caso é resolvido sem passar pela fila' }
+    ];
+    var tema = temas.filter(function (t) { return tem(t.k); })[0];
+    var nome = tema ? tema.n : '[a ser preenchido]';
+    // 2. Hipótese clássica: Acredito que [ação], porque [razão], o que resultará em [resultado mensurável]
+    var vol = parseFloat(String(s.volume || '').replace(/[^0-9]/g, '')) || 0;
+    var volTxt = vol > 0 && !s.volNaoSei ? ', entre os cerca de ' + Math.round(vol).toLocaleString('pt-BR') + ' casos por mês' : '';
+    var acao = tema ? tema.a : 'criar uma solução para esse problema' + (produto ? ' em ' + minus(produto) : '');
+    var razao = tema ? tema.r : 'isso ataca a causa do problema relatado';
+    var resultado = { 'Redução de custo': 'menos casos em tratamento manual e menor custo por caso' + volTxt, 'Aumento de receita': 'mais vendas concluídas' + volTxt, 'Experiência do cliente': 'menos esforço do cliente, com menos contatos e etapas' + volTxt, 'Inovação': 'uma nova forma de resolver o caso, adotada por quem usa' }[s.ganho] || 'menos ocorrências do problema' + volTxt;
+    var hip = 'Acredito que ' + acao + ', porque ' + razao + ', o que resultará em ' + resultado + '.';
+    // 3. Riscos: comuns + do ganho + dos dados que faltam
+    var riscos = ['Técnico: os dados necessários podem não estar disponíveis ou completos.'];
+    if (s.volNaoSei || !vol) riscos.push('Negócio: o tamanho do problema ainda não foi medido; o volume precisa ser levantado antes do teste.');
+    else riscos.push('Negócio: o volume informado pode não se confirmar nos dados reais.');
+    if (s.ganho === 'Aumento de receita') riscos.push('Negócio: parte das vendas recuperadas pode não se converter.');
+    if (s.ganho === 'Experiência do cliente') riscos.push('Adoção: o cliente pode não perceber a mudança se ela ficar escondida na jornada.');
+    riscos.push('Adoção: ' + (String(s.interessados || '').trim() ? 'o ' + s.interessados.trim().replace(/^./, function (c) { return c.toLowerCase(); }) : 'o time recebedor') + ' precisa incorporar a solução na rotina.');
+    // 4. Resumo do problema: primeira frase, sem reticências (vira o subtítulo do canvas)
+    var frase = String(s.problema || '').split(/[.!?\n]/)[0].trim();
+    if (frase.length > 110) { var corte = -1; [',', ' porque ', ' quando ', ' e '].forEach(function (sep) { var ix = frase.lastIndexOf(sep, 110); if (ix > 40 && corte < 0) corte = ix; }); frase = corte > 0 ? frase.slice(0, corte).trim() : frase.slice(0, frase.lastIndexOf(' ', 110)).trim(); }
+    return [
+      { id: 'resumo', titulo: 'Resumo do problema', texto: frase || '[a ser preenchido]' },
+      { id: 'nome', titulo: 'Nome da solução', texto: nome },
+      { id: 'hipotese', titulo: 'Hipótese', texto: hip },
+      { id: 'riscos', titulo: 'Riscos iniciais', texto: riscos.join('\n') }
+    ];
+  }
+  renderVals() {
+    var self = this;
+    var s = this.state;
+    var compact = this.props.compact === true || this.props.compact === 'true';
+    var ordem = { entrada: 0, conta: 1, ia: 2, valida: 3, fim: 4 };
+    var atual = ordem[s.tela];
+    var defs = [
+      { label: 'Você conta', sub: 'O problema e os dados' },
+      { label: 'Organizamos', sub: 'Nome e hipótese' },
+      { label: 'Você confere', sub: 'Confirma ou ajusta' },
+      { label: 'Reunião', sub: 'E entrada na esteira' }
+    ];
+    var steps = defs.map(function (d, i) {
+      var n = i + 1;
+      var feito = atual > n;
+      var ativo = atual === n;
+      return {
+        label: d.label, sub: d.sub,
+        mark: feito ? '✓' : String(n),
+        ring: feito || ativo ? '#e2262b' : '#bfbfbf',
+        dotBg: feito ? '#e2262b' : '#ffffff',
+        dotColor: feito ? '#ffffff' : (ativo ? '#e2262b' : '#53585f'),
+        textColor: feito || ativo ? '#262626' : '#53585f',
+        barColor: feito || ativo ? '#e2262b' : '#d9d9d9'
+      };
+    });
+    var obrig = ['problema', 'volume', 'ganho', 'justPrinc', 'produto', 'interessados', 'nome', 'area', 'email'];
+    function num(v) { var t = String(v).replace(/[^0-9,.]/g, '').replace(/\./g, '').replace(',', '.'); var n = parseFloat(t); return isFinite(n) ? n : 0; }
+    function brl(n) { if (n >= 1e6) { return 'R$ ' + (n / 1e6).toFixed(1).replace('.', ',') + ' mi'; } if (n >= 1e3) { return 'R$ ' + Math.round(n / 1e3) + ' mil'; } return 'R$ ' + Math.round(n); }
+    function inteiro(n) { return Math.round(n).toLocaleString('pt-BR'); }
+    var vol = num(s.volume), val = num(s.valorCaso);
+    var anual = val > 0 ? vol * 12 * val : vol * 12;
+    function fmtImp(x) { return val > 0 ? brl(x) + '/ano' : inteiro(x) + ' casos/ano'; }
+    var ganhoDefs = ['Redução de custo', 'Aumento de receita', 'Experiência do cliente', 'Inovação'];
+    var DICAS = { 'Redução de custo': 'Que custo diminui? Ex.: horas do backoffice, retrabalho, chamados repetidos.', 'Aumento de receita': 'De onde vem a receita? Ex.: vendas que hoje se perdem, clientes que desistem.', 'Experiência do cliente': 'O que melhora para o cliente? Ex.: menos espera, menos contatos, jornada mais simples.', 'Inovação': 'O que há de novo? Ex.: uma forma de atender que ainda não existe na empresa.' };
+    var rotulos = { problema: ['Conte o problema', 'f-problema'], volume: ['Quantas vezes acontece por mês', 'f-volume'], ganho: ['Tipo de ganho principal', 'l-ganho'], justPrinc: ['Por que esse ganho', 'f-just'], produto: ['Produto ou jornada', 'f-produto'], interessados: ['Time que vai receber a solução', 'f-interessados'], nome: ['Seu nome', 'f-nome'], area: ['Sua área', 'f-area'], email: ['Seu e-mail', 'f-email'] };
+    var faltando = obrig.filter(function (k) { if (k === 'volume' && s.volNaoSei) return false; if (k === 'justPrinc' && !s.ganho) return false; return !String(s[k] || '').trim(); });
+    function borda(k) { return s.erro && !String(s[k]).trim() ? '#e2262b' : '#53585f'; }
+    function setter(k) { return function (e) { var o = {}; o[k] = e.target.value; self.setState(o); }; }
+    var listaBen = (function () { var out = []; if (s.ganho && String(s.justPrinc || '').trim()) out.push({ tipo: s.ganho, texto: s.justPrinc }); (s.ganhosSec || []).forEach(function (l) { var t = (s.justSec || {})[l]; if (t && String(t).trim()) out.push({ tipo: l, texto: t }); }); return out; })();
+    var cvFit = ((s.cvW || (compact ? 352 : 760)) - 2) / 1920;
+    var cvZoomAtivo = !!s.cvZoom && cvFit < 0.5;
+    var cvEsc = cvZoomAtivo ? 0.5 : cvFit;
+    var respostasTexto = (function () {
+      var L = [];
+      L.push('PRISMA DE EXPERIMENTAÇÃO · RESPOSTAS DO TESTE');
+      L.push('Código: ' + (s.codigo || '-'));
+      L.push('Enviado em: ' + (s.enviadoEm || '-'));
+      L.push('');
+      L.push('Problema: ' + s.problema);
+      L.push('Quantas vezes por mês: ' + (s.volNaoSei ? 'não sabe agora (levar na reunião)' : s.volume));
+      L.push('Custo por caso (R$): ' + (s.valorCaso || '-'));
+      L.push('Ganho principal: ' + (s.ganho || '-'));
+      L.push('Por que o ganho principal: ' + (s.justPrinc || '-'));
+      L.push('Ganhos secundários: ' + ((s.ganhosSec || []).join(', ') || '-'));
+      (s.ganhosSec || []).forEach(function (l) { L.push('Por que ' + l.toLowerCase() + ': ' + (((s.justSec || {})[l]) || '-')); });
+      L.push('Evidências (texto): ' + (s.dados || '-'));
+      L.push('Arquivos: ' + ((s.arquivos || []).join(', ') || '-'));
+      L.push('Links: ' + ((s.links || []).join(' | ') || '-'));
+      L.push('Produto ou jornada: ' + s.produto);
+      L.push('Time que vai receber: ' + s.interessados);
+      L.push('Stakeholders: ' + (s.stakeholders || '-'));
+      L.push('Nome: ' + s.nome);
+      L.push('Área: ' + s.area);
+      L.push('E-mail: ' + s.email);
+      L.push('');
+      L.push('RESUMO ORGANIZADO E CONFERIDO');
+      (s.ia || []).forEach(function (x) { L.push(x.titulo + ': ' + x.texto); });
+      return L.join('\n');
+    })();
+    var validados = s.ia.filter(function (x) { return x.aceito; }).length;
+    var iaItems = s.ia.map(function (x, i) {
+      function atualiza(patch) {
+        var lista = self.state.ia.map(function (y, j) { return j === i ? Object.assign({}, y, patch) : y; });
+        self.setState({ ia: lista, erroEnvio: false });
+      }
+      return {
+        titulo: x.titulo, tituloCaps: x.titulo.toUpperCase(), texto: x.texto, fid: 'ia-' + x.id,
+        dica: ({ resumo: 'Uma frase curta sobre o problema. Ela vira o subtítulo do canvas.', nome: 'Criativo e claro: ao ler, já dá para entender o que a solução faz.', hipotese: 'Formato: Acredito que [ação], porque [razão], o que resultará em [resultado].' })[x.id] || '',
+        temDica: x.id === 'resumo' || x.id === 'nome' || x.id === 'hipotese',
+        editando: !!x.editando, lendo: !x.editando,
+        borderStyle: x.aceito ? 'solid' : 'dashed',
+        bg: x.aceito ? '#ffffff' : '#fdeeee',
+        chip: x.aceito ? 'CONFIRMADO' : 'PARA CONFERIR',
+        chipBg: x.aceito ? '#e2262b' : '#ffffff',
+        chipColor: x.aceito ? '#ffffff' : '#c00000',
+        mostraAceitar: !x.aceito,
+        aceitarLabel: x.editando ? 'Salvar e confirmar' : 'Confirmar',
+        mostraEditar: !x.editando,
+        aceitar: function () { atualiza({ aceito: true, editando: false }); },
+        editar: function () { atualiza({ editando: true, aceito: false }); },
+        onChange: function (e) { atualiza({ texto: e.target.value }); }
+      };
+    });
+    var iaDefs = ['Lendo o que você contou', 'Organizando a hipótese', 'Preparando o resumo para o time InovAI'];
+    var iaSteps = iaDefs.map(function (l, i) {
+      var feito = s.iaStep > i;
+      return { label: l, mark: feito ? '✓' : '', bg: feito ? '#e2262b' : '#d9d9d9', color: feito ? '#262626' : '#53585f' };
+    });
+    var resumo = s.problema.length > 180 ? s.problema.slice(0, 177) + '...' : s.problema;
+    return {
+      rootW: s.imprimindo ? '1920px' : (compact ? '390px' : '100%'),
+      rootH: s.imprimindo ? 'auto' : (compact ? '844px' : 'auto'),
+      rootMinH: s.imprimindo ? '0' : (compact ? '0' : '900px'),
+      imprimindo: !!s.imprimindo, naoImprimindo: !s.imprimindo,
+      cvIdLado: 'cv-lado', cvIdCorpo: 'cv-corpo',
+      cvF: [22, 21, 20, 19, 18][s.cvNivel || 0] + 'px',
+      cvLH: [29, 28, 27, 25, 24][s.cvNivel || 0] + 'px',
+      cvGap: (s.cvNivel || 0) >= 2 ? '16px' : '22px',
+      cvTit: (function () { var n = (s.ia.filter(function (x) { return x.id === 'nome'; })[0] || {}).texto || ''; var base = n.length > 34 ? 46 : 54; return Math.max(34, base - 6 * (s.cvNivelT || 0)) + 'px'; })(),
+      mainPad: compact ? '20px 18px 28px 18px' : '40px 48px 48px 48px',
+      h1Size: compact ? '32px' : '46px',
+      h2Size: compact ? '24px' : '30px',
+      showAside: !compact && s.tela !== 'entrada',
+      symW: compact ? '38px' : '46px',
+      consultaCod: s.consultaCod || '',
+      onConsultaCod: function (e) { self.setState({ consultaCod: e.target.value, consultaErro: false }); },
+      consultaErro: !!s.consultaErro,
+      temConsulta: !!s.consultaRes,
+      cRes: s.consultaRes || { codigo: '', n: '', etapa: '', nota: '', barra: [] },
+      consultar: function () {
+        var c = String(s.consultaCod || '').trim().toUpperCase();
+        if (!/^PR-\d{4}-\d{4}$/.test(c)) { self.setState({ consultaRes: null, consultaErro: true }); return; }
+        var nomes = ['Mapeamento de problemas', 'Desenho de solução', 'Prototipação', 'Testes', 'Decisão de pilotar', 'Priorização', 'Piloto', 'Crescimento'];
+        var propria = c === s.codigo;
+        var idx = propria ? 0 : (parseInt(c.slice(-4), 10) % 6);
+        self.setState({ consultaErro: false, consultaCod: c, consultaRes: {
+          codigo: c, idx: idx, n: String(idx + 1), etapa: nomes[idx],
+          nota: propria ? 'Recebemos seu problema. O time InovAI vai entrar em contato para a reunião de aprofundamento.' : 'No protótipo, a etapa é simulada. Na solução, ela vem do registro da demanda.',
+          barra: nomes.map(function (_, i) { return { cor: i < idx ? '#e2262b' : (i === idx ? '#960000' : '#d9d9d9') }; })
+        } });
+      },
+      showDeskEsteira: !compact,
+      showMobileEsteira: compact,
+      esteira: ['Mapeamento de problemas', 'Desenho de solução', 'Prototipação', 'Testes', 'Decisão de pilotar', 'Priorização', 'Piloto', 'Crescimento'].map(function (l, i, arr) {
+        var atualIdx = s.consultaRes ? s.consultaRes.idx : 0;
+        var feito = i < atualIdx, atual = i === atualIdx;
+        return {
+          n: String(i + 1), label: l, atual: atual,
+          cBorder: feito ? 'none' : (atual ? '3px solid #e2262b' : '2px solid #d9d9d9'),
+          cBg: feito ? '#e2262b' : '#ffffff',
+          cColor: feito ? '#ffffff' : (atual ? '#c00000' : '#898989'),
+          nmColor: feito ? '#262626' : (atual ? '#c00000' : '#53585f'),
+          lnL: i === 0 ? 'transparent' : (i <= atualIdx ? '#e2262b' : '#d9d9d9'),
+          lnR: i === arr.length - 1 ? 'transparent' : (i < atualIdx ? '#e2262b' : '#d9d9d9')
+        };
+      }),
+      symSize: compact ? '34' : '42',
+      brandSize: compact ? '19px' : '22px',
+      logoH: compact ? '34px' : '42px',
+      padX: compact ? '16px' : '32px',
+      showNav: !compact,
+      heroPad: compact ? '32px 16px 28px 16px' : '56px 32px 64px 32px',
+      notEntrada: s.tela !== 'entrada',
+      bandSize: compact ? '20px' : '26px',
+      bandTitle: ({ conta: 'Passo 1 · Conte o problema', ia: 'Passo 2 · Organizando as informações', valida: 'Passo 3 · Confira o resumo', fim: 'Problema recebido · seu canvas está pronto' })[s.tela] || '',
+      wrapPad: compact ? '12px 12px 20px 12px' : '32px 32px 40px 32px',
+      cardRadius: compact ? '14px' : '16px',
+      showMobileSteps: compact && s.tela !== 'entrada',
+      steps: steps,
+      isEntrada: s.tela === 'entrada', isConta: s.tela === 'conta', isIA: s.tela === 'ia', isValida: s.tela === 'valida', isFim: s.tela === 'fim',
+      problema: s.problema, dados: s.dados, produto: s.produto, interessados: s.interessados,
+      arquivosLista: (s.arquivos || []).map(function (n, i) { return { nome: n, remover: function () { self.setState({ arquivos: s.arquivos.filter(function (_, j) { return j !== i; }) }); } }; }),
+      temArquivos: (s.arquivos || []).length > 0,
+      onArquivos: function (e) { var fs = Array.prototype.map.call(e.target.files || [], function (f) { return f.name; }); self.setState({ arquivos: (s.arquivos || []).concat(fs) }); e.target.value = ''; },
+      linksLista: (s.links || []).map(function (u, i) { return { url: u, remover: function () { self.setState({ links: s.links.filter(function (_, j) { return j !== i; }) }); } }; }),
+      temLinks: (s.links || []).length > 0,
+      linkNovo: s.linkNovo || '',
+      onLinkNovo: function (e) { self.setState({ linkNovo: e.target.value }); },
+      addLink: function () { var u = String(s.linkNovo || '').trim(); if (u) self.setState({ links: (s.links || []).concat([u]), linkNovo: '' }); },
+      onProblema: setter('problema'), onDados: setter('dados'), onProduto: setter('produto'), onInteressados: setter('interessados'),
+      bProblema: borda('problema'), bDados: borda('dados'), bProduto: borda('produto'), bInteressados: borda('interessados'),
+      stakeholders: s.stakeholders, nome: s.nome, area: s.area, email: s.email,
+      onStakeholders: setter('stakeholders'), onNome: setter('nome'), onArea: setter('area'), onEmail: setter('email'),
+      bNome: borda('nome'), bArea: borda('area'), bEmail: borda('email'),
+      volume: s.volume, valorCaso: s.valorCaso,
+      onVolume: setter('volume'), onValor: setter('valorCaso'),
+      bVolume: s.volNaoSei ? '#d9d9d9' : borda('volume'),
+      volNaoSei: !!s.volNaoSei,
+      volBg: s.volNaoSei ? '#f5f3f1' : '#ffffff',
+      toggleVolNaoSei: function (e) { var v = !!e.target.checked; self.setState(v ? { volNaoSei: true, volume: '' } : { volNaoSei: false }); },
+      temPendMetricas: !!s.volNaoSei || !String(s.valorCaso || '').trim(),
+      pendMetricas: [s.volNaoSei ? { t: 'Quantas vezes o problema acontece por mês (pedidos, chamados, clientes afetados)' } : null, !String(s.valorCaso || '').trim() ? { t: 'Quanto custa cada caso, ou quanto se perde de receita por caso' } : null].filter(function (x) { return x; }),
+      temGanho: !!s.ganho,
+      ganhoMin: String(s.ganho || '').toLowerCase(),
+      justPrinc: s.justPrinc || '',
+      onJustPrinc: setter('justPrinc'),
+      bJust: borda('justPrinc'),
+      dicaPrinc: DICAS[s.ganho] || '',
+      secJust: (s.ganhosSec || []).map(function (l, i) {
+        var js = s.justSec || {};
+        return { fid: 'f-just-sec-' + i, min: l.toLowerCase(), dica: DICAS[l] || '', texto: js[l] || '', onChange: function (e) { var o = {}; for (var k in js) o[k] = js[k]; o[l] = e.target.value; self.setState({ justSec: o }); } };
+      }),
+      ganhos: ganhoDefs.map(function (l) {
+        var sel = s.ganho === l;
+        var falta = s.erro && !s.ganho;
+        return { label: l, pressed: sel ? 'true' : 'false', bg: sel ? '#e2262b' : '#ffffff', color: sel ? '#ffffff' : '#c00000', border: falta ? '#960000' : '#e2262b', pick: function () { self.setState({ ganho: l, ganhosSec: (s.ganhosSec || []).filter(function (x) { return x !== l; }) }); } };
+      }),
+      ganhosSec: ganhoDefs.filter(function (l) { return l !== s.ganho; }).map(function (l) {
+        var lista = s.ganhosSec || [];
+        var sel = lista.indexOf(l) >= 0;
+        return { label: l, pressed: sel ? 'true' : 'false', bg: sel ? '#fdeeee' : '#ffffff', color: '#c00000', border: sel ? '#c00000' : '#bfbfbf', pick: function () { self.setState({ ganhosSec: sel ? lista.filter(function (x) { return x !== l; }) : lista.concat([l]) }); } };
+      }),
+      cv: (function () {
+        var PF = '[a ser preenchido]';
+        function campo(id) { var f = s.ia.filter(function (x) { return x.id === id; })[0]; return f ? f.texto : ''; }
+        function lista(t) { return String(t || '').split(/[,;\n]| e /).map(function (x) { return x.trim(); }).filter(function (x) { return x; }); }
+        function ordena(a) { return a.slice().sort(function (x, y) { return x.localeCompare(y, 'pt-BR'); }); }
+        var frase = String(s.problema || '').split(/[.!?\n]/)[0].trim();
+        if (frase.length > 110) { var corte = -1; [',', ' porque ', ' quando ', ' e '].forEach(function (sep) { var ix = frase.lastIndexOf(sep, 110); if (ix > 40 && corte < 0) corte = ix; }); frase = corte > 0 ? frase.slice(0, corte).trim() : frase.slice(0, frase.lastIndexOf(' ', 110)).trim(); }
+        var classes = s.ganho ? [s.ganho].concat(s.ganhosSec || []) : [];
+        var equipes = lista(s.interessados);
+        if (equipes.length && equipes.indexOf('InovAI') < 0) equipes.push('InovAI');
+        var stk = ordena(lista(s.stakeholders));
+        var temHero = vol > 0 && val > 0;
+        var real = vol * 0.5 * val * 12;
+        function partes(n) { if (n >= 1e6) return { num: (n / 1e6).toFixed(1).replace('.', ','), uni: 'mi' }; if (n >= 1e3) return { num: (n / 1e3 >= 100 ? Math.round(n / 1e3) : (n / 1e3).toFixed(1).replace('.', ',')).toString(), uni: 'mil' }; return { num: String(Math.round(n)), uni: '' }; }
+        var hp = partes(real);
+        var linhaGanho = { 'Redução de custo': 'de economia por ano', 'Aumento de receita': 'de receita por ano' }[s.ganho] || 'de impacto por ano';
+        var linhas = vol > 0 ? [
+          { a: inteiro(vol), b: 'casos/mês' },
+          { a: '× 50%', b: 'resolvidos = ' + inteiro(vol * 0.5) + ' casos/mês' }
+        ].concat(val > 0 ? [
+          { a: '× ' + preco(val), b: 'por caso = ' + brl(vol * 0.5 * val) + '/mês' },
+          { a: '× 12', b: '= ' + brl(real) + '/ano' }
+        ] : [
+          { a: '× ' + PF, b: 'valor por caso' }
+        ]) : [{ a: PF, b: '' }];
+        function preco(n) { return n < 1000 ? 'R$ ' + n.toFixed(2).replace('.', ',') : brl(n); }
+        function cen(p) { return temHero ? brl(vol * p * val * 12) : PF; }
+        var rk = String(campo('riscos') || '').split('\n').map(function (x) { return x.trim(); }).filter(function (x) { return x; });
+        return {
+          titulo: campo('nome') || PF,
+          subtitulo: campo('resumo') || frase || PF,
+          classes: classes.length ? classes.map(function (t, ix) { return { t: t, bg: ix === 0 ? '#ffffff' : 'transparent', cor: ix === 0 ? '#e2262b' : '#ffffff' }; }) : [{ t: PF, bg: 'transparent', cor: '#ffffff' }],
+          hipotese: campo('hipotese') || PF,
+          produto: String(s.produto || '').trim() || PF,
+          temHero: temHero, semHero: !temHero,
+          heroPre: 'R$', heroNum: hp.num, heroUni: hp.uni,
+          heroLinha: linhaGanho,
+          heroNota: temHero ? '50% de resolução: ' + inteiro(vol * 0.5) + ' casos/mês a ' + preco(val) + '.' : '',
+          equipes: equipes.length ? ordena(equipes).join(', ') : PF,
+          stakeholders: stk.length ? stk.join('\n') : PF,
+          problema: String(s.problema || '').trim() || PF,
+          proposta: PF,
+          beneficios: listaBen,
+          temBeneficios: listaBen.length > 0,
+          semBeneficios: listaBen.length === 0,
+          linhas: linhas,
+          cPess: cen(0.3), cReal: cen(0.5), cOtim: cen(0.7),
+          premissa: 'Valores por ano. % de casos resolvidos pela solução.',
+          riscos: (rk.length ? rk : [PF]).map(function (t) { return { t: t }; })
+        };
+      })(),
+      cvZoomLabel: s.cvZoom ? 'Ajustar à tela' : 'Ampliar canvas',
+      cvZoomPressed: s.cvZoom ? 'true' : 'false',
+      toggleCvZoom: function () { self.setState({ cvZoom: !s.cvZoom }); },
+      cvOverflow: cvZoomAtivo ? 'auto' : 'hidden',
+      cvScale: String(cvEsc),
+      cvBoxW: Math.round(1920 * cvEsc) + 'px',
+      cvBoxH: Math.round(1080 * cvEsc) + 'px',
+      baixou: s.baixou,
+      codigo: s.codigo || 'PR-0000-0000',
+      codigoArquivo: s.codigo || 'PR-0000-0000',
+      baixouTeste: !!s.baixouTeste,
+      respostasTexto: respostasTexto,
+      baixarTeste: function () { var nome = (s.codigo || 'PR') + '-respostas.txt'; try { var blob = new Blob([respostasTexto], { type: 'text/plain;charset=utf-8' }); var url = URL.createObjectURL(blob); var a = document.createElement('a'); a.href = url; a.download = nome; document.body.appendChild(a); a.click(); a.remove(); setTimeout(function () { URL.revokeObjectURL(url); }, 2000); } catch (e) {} self.setState({ baixouTeste: true }); },
+      sairImpressao: function () { self.setState({ imprimindo: false }); },
+      baixar: function () {
+        var tituloAntes = document.title;
+        function fim() { try { document.title = tituloAntes; } catch (e) {} self.setState({ imprimindo: false }); }
+        self.setState({ imprimindo: true, baixou: true });
+        self.timers.push(setTimeout(function () {
+          var feito = false;
+          function uma() { if (feito) return; feito = true; try { window.removeEventListener('afterprint', uma); } catch (e) {} fim(); }
+          try { window.addEventListener('afterprint', uma); } catch (e) {}
+          try { document.title = s.codigo || 'Canvas Prisma'; window.print(); } catch (e) {}
+          self.timers.push(setTimeout(uma, 1500));
+        }, 400));
+      },
+      erro: s.erro && faltando.length > 0, erroEnvio: s.erroEnvio,
+      faltandoTxt: faltando.map(function (k) { return rotulos[k][0]; }).join(', '),
+      irInicio: function () { self.timers.forEach(function (t) { clearTimeout(t); }); self.timers = []; self.setState({ tela: 'entrada', erro: false, erroEnvio: false }); },
+      comecar: function () { self.setState({ tela: 'conta' }); },
+      exemplo: function () {
+        self.setState({
+          usouExemplo: true, erro: false,
+          stakeholders: '[preencher: nomes]',
+          nome: '[seu nome]', area: '[sua área]',
+          email: '[seu.email@empresa.com.br]',
+          problema: 'No e-commerce, parte dos pedidos de banda larga trava porque o endereço do cliente não é encontrado na base, e o pedido vai para tratamento manual. Percebi pelo volume da fila do backoffice. O cliente conclui a compra, mas dias depois recebe contato pedindo para confirmar o endereço, e parte desiste da instalação.',
+          dados: 'Exemplo ilustrativo: números aproximados para demonstrar o cálculo.',
+          volume: '3000', valorCaso: '25', ganho: 'Redução de custo', ganhosSec: ['Experiência do cliente'], justPrinc: 'Menos pedidos caem no tratamento manual do backoffice, que hoje confere cada endereço à mão.', justSec: { 'Experiência do cliente': 'O cliente não é chamado dias depois para confirmar o endereço.' },
+          produto: 'Banda larga no e-commerce',
+          interessados: 'Time de e-commerce'
+        });
+      },
+      gerar: function () {
+        if (faltando.length) {
+          self.setState({ erro: true });
+          var alvo = rotulos[faltando[0]][1];
+          self.timers.push(setTimeout(function () { try { var el = document.getElementById(alvo); if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); if (el.focus) el.focus({ preventScroll: true }); } } catch (e) {} }, 50));
+          return;
+        }
+        self.setState({ erro: false, tela: 'ia', iaStep: 0, ia: self.montarIA() });
+        self.timers.push(setTimeout(function () { self.setState({ iaStep: 1 }); }, 800));
+        self.timers.push(setTimeout(function () { self.setState({ iaStep: 2 }); }, 1600));
+        self.timers.push(setTimeout(function () { self.setState({ iaStep: 3 }); }, 2400));
+        self.timers.push(setTimeout(function () { self.setState({ tela: 'valida' }); }, 3000));
+      },
+      iaSteps: iaSteps,
+      iaItems: iaItems,
+      problemaResumo: resumo,
+      validadosTxt: validados + ' de ' + s.ia.length + ' campos confirmados',
+      enviarOpacity: validados === s.ia.length ? '1' : '0.45',
+      enviar: function () { if (validados < s.ia.length) { self.setState({ erroEnvio: true }); return; } var seq = (s.seq || 0) + 1; var d = new Date(); var mmaa = ('0' + (d.getMonth() + 1)).slice(-2) + String(d.getFullYear()).slice(-2); self.setState({ tela: 'fim', erroEnvio: false, cvNivel: 0, cvNivelT: 0, seq: seq, codigo: 'PR-' + mmaa + '-' + ('000' + seq).slice(-4), enviadoEm: d.toLocaleString('pt-BR'), baixouTeste: false }); },
+      voltarConta: function () { self.setState({ tela: 'conta' }); },
+      recomecar: function () { self.setState({ tela: 'conta', problema: '', dados: '', produto: '', interessados: '', erro: false, erroEnvio: false, usouExemplo: false, iaStep: 0, ia: [], stakeholders: '', nome: '', area: '', email: '', baixou: false, volume: '', volNaoSei: false, valorCaso: '', ganho: '', ganhosSec: [], justPrinc: '', justSec: {}, arquivos: [], links: [], linkNovo: '' }); }
+    };
+  }
+}
+</script>
+</body>
+</html>
