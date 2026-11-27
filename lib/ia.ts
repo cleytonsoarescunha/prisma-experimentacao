@@ -51,7 +51,7 @@ Você recebe o relato e devolve, em JSON, quatro itens que a pessoa vai conferir
    - agendamento ou instalação: "Agente de Agendamento"
    - dúvidas ou atendimento: "Agente de Suporte"
    - escolha de planos ou ofertas: "Buscador de Produtos"
-   Se o relato não tiver um tema claro o suficiente para nomear uma solução, devolva exatamente "${PF}".
+   Fora desses temas, crie sempre um nome novo. Nunca deixe o nome vazio nem devolva "${PF}": mesmo com um relato vago, dê um nome claro a partir do que foi contado (o produto, o time ou o ganho esperado).
 
 3. hipotese: uma frase no formato "Acredito que [ação], porque [razão], o que resultará em [resultado mensurável]."
    Comece exatamente com "Acredito que" e use exatamente "porque" e "o que resultará em". Se houver volume por mês, cite os casos por mês no resultado (por exemplo: "entre os cerca de 3.000 casos por mês"). Não invente números que não estão no relato.
@@ -151,8 +151,8 @@ function conferirResumo(v: unknown): string | null {
 
 function conferirNome(v: unknown): string | null {
   const t = limpar(v).replace(/^["“]|["”]$/g, "").replace(/\.$/, "");
-  if (!t) return null;
-  if (t === PF) return PF;
+  // O nome nunca pode ficar em aberto: se a IA não der um nome válido, entra o das regras sem IA.
+  if (!t || t.startsWith("[")) return null;
   const oficial = PORTFOLIO.find((p) => p.toLowerCase() === t.toLowerCase());
   if (oficial) return oficial;
   if (t.length > 40 || t.split(" ").length > 5 || /acredito/i.test(t)) return null;

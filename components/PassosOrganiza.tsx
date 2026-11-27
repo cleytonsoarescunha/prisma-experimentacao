@@ -3,6 +3,7 @@
 import { useState } from "react";
 import PrismaVidro from "./PrismaVidro";
 import { COR, Sobretitulo, botaoPrimario } from "./ui";
+import { nomeValido } from "@/lib/regras";
 import type { IdItem, ItemOrganizado } from "@/lib/tipos";
 
 const ETAPAS_ESPERA = ["Lendo o que você contou", "Organizando a hipótese", "Preparando o resumo para o time InovAI"];
@@ -62,20 +63,42 @@ export function PassoConfere({
   onEnviar: () => Promise<string | null>;
 }) {
   const [erroEnvio, setErroEnvio] = useState<string | null>(null);
+  /** O erro veio do servidor (aí vale oferecer voltar ao Passo 1) ou é só falta de confirmar itens. */
+  const [erroDoServidor, setErroDoServidor] = useState(false);
   const [enviando, setEnviando] = useState(false);
   const confirmados = itens.filter((x) => x.aceito).length;
   const todos = confirmados === itens.length;
   const resumo = problema.length > 180 ? problema.slice(0, 177) + "..." : problema;
 
+  /** Aviso de um item que não pode ser confirmado como está (texto vazio, ou nome em aberto). */
+  const [avisos, setAvisos] = useState<Partial<Record<IdItem, string>>>({});
+
   function atualiza(i: number, patch: Partial<ItemOrganizado>) {
     onItens(itens.map((y, j) => (j === i ? { ...y, ...patch } : y)));
     setErroEnvio(null);
+    setAvisos((a) => ({ ...a, [itens[i].id]: undefined }));
+  }
+
+  function confirmar(i: number) {
+    const it = itens[i];
+    const aviso = !it.texto.trim()
+      ? "Escreva este item antes de confirmar."
+      : it.id === "nome" && !nomeValido(it.texto)
+        ? "Dê um nome para a solução antes de confirmar."
+        : "";
+    if (aviso) {
+      onItens(itens.map((y, j) => (j === i ? { ...y, editando: true, aceito: false } : y)));
+      setAvisos((a) => ({ ...a, [it.id]: aviso }));
+      return;
+    }
+    atualiza(i, { aceito: true, editando: false });
   }
 
   async function enviar() {
     if (enviando) return;
     if (!todos) {
       setErroEnvio("Confirme todos os campos antes de enviar.");
+      setErroDoServidor(false);
       return;
     }
     setEnviando(true);
@@ -83,6 +106,7 @@ export function PassoConfere({
     const falha = await onEnviar();
     if (falha) {
       setErroEnvio(falha);
+      setErroDoServidor(true);
       setEnviando(false);
     }
   }
@@ -162,11 +186,16 @@ export function PassoConfere({
             ) : (
               <p style={{ margin: 0, fontSize: 15, lineHeight: "23px", whiteSpace: "pre-line" }}>{it.texto}</p>
             )}
+            {avisos[it.id] && (
+              <p role="alert" style={{ margin: 0, fontSize: 14, lineHeight: "20px", fontWeight: 700, color: COR.erro }}>
+                {avisos[it.id]}
+              </p>
+            )}
             <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
               {!it.aceito && (
                 <button
                   type="button"
-                  onClick={() => atualiza(i, { aceito: true, editando: false })}
+                  onClick={() => confirmar(i)}
                   style={{ ...botaoPrimario, minHeight: 44, padding: "10px 22px", fontSize: 15 }}
                 >
                   {it.editando ? "Salvar e confirmar" : "Confirmar"}
@@ -203,6 +232,7 @@ export function PassoConfere({
       {erroEnvio && (
         <div role="alert" style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 10, padding: "12px 16px", borderRadius: 10, background: COR.rosa, color: COR.erro, fontSize: 15, lineHeight: "22px", fontWeight: 700 }}>
           <p style={{ margin: 0 }}>{erroEnvio}</p>
+          {erroDoServidor && (
           <button
             type="button"
             onClick={onEditarRelato}
@@ -210,6 +240,7 @@ export function PassoConfere({
           >
             Voltar e corrigir o que você contou
           </button>
+          )}
         </div>
       )}
     </div>

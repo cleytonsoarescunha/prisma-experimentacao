@@ -51,7 +51,17 @@ export default function TelaFim({ demanda, onRecomecar }: { demanda: Demanda; on
   ].filter((x): x is string => !!x);
 
   function baixar() {
-    // Fatia 1: usa a janela de impressão do navegador ("Salvar como PDF"). O PDF gerado no servidor chega na Fatia 4.
+    // PDF gerado no servidor, igual ao canvas da tela.
+    if (demanda.assinaturaPdf) {
+      const link = document.createElement("a");
+      link.href = `/api/demandas/${encodeURIComponent(codigo)}/pdf?t=${encodeURIComponent(demanda.assinaturaPdf)}`;
+      link.download = `${codigo}.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      return;
+    }
+    // Plano B (sem assinatura do servidor): janela de impressão do navegador, "Salvar como PDF".
     const antes = document.title;
     document.title = codigo;
     const volta = () => {
@@ -105,7 +115,10 @@ export default function TelaFim({ demanda, onRecomecar }: { demanda: Demanda; on
       </div>
 
       <p style={{ margin: 0, fontSize: 16, lineHeight: "24px", color: COR.suave, overflowWrap: "anywhere" }}>
-        Enviamos o seu canvas pré-preenchido para {form.email}. Use o código {codigo} para falar sobre esta demanda. O próximo passo é uma reunião rápida com o time InovAI.
+        {demanda.emailEnviado
+          ? `Enviamos o seu canvas pré-preenchido para ${form.email}.`
+          : "Não conseguimos enviar o e-mail com o canvas agora: baixe o PDF logo abaixo."}{" "}
+        Use o código {codigo} para falar sobre esta demanda. O próximo passo é uma reunião rápida com o time InovAI.
       </p>
 
       {!!demanda.anexosComFalha?.length && (

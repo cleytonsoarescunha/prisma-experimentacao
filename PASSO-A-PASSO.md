@@ -20,7 +20,7 @@
 ## 4. Gemini (IA, gratuito)
 - Entre em https://aistudio.google.com com uma conta Google pessoal.
 - Gere uma API key e guarde. Você vai colar no `.env.local` na Fatia 3.
-- No plano gratuito, os dados enviados podem ser usados pelo Google para treinar modelos: use só exemplos fictícios.
+- No plano gratuito, os dados enviados podem ser usados pelo Google para treinar modelos. Isso foi aceito; nos testes, use exemplos fictícios.
 
 ## 5. Começar
 - Abra o Claude Code nesta pasta.

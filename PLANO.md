@@ -43,4 +43,4 @@ Siga o `PASSO-A-PASSO.md` (contas e instalação). Depois, abra o Claude Code de
 
 ## Depois
 - Publicar na internet (Netlify, Cloudflare Pages, Render ou Vercel; confira as regras do plano gratuito para o seu uso).
-- Trocar o Gemini gratuito por uma IA paga antes de receber problemas reais.
+- Gemini gratuito pode continuar com o Prisma publicado (decisão de 27/11/2026: o uso dos dados para treino foi aceito). Trocar por uma IA paga só se a qualidade ou o limite gratuito não derem conta.

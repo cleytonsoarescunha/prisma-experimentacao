@@ -85,6 +85,10 @@ export interface Demanda {
   etapa: number;
   /** Nomes dos anexos que não conseguiram ser guardados. */
   anexosComFalha?: string[];
+  /** Assinatura que libera o download do PDF desta demanda. */
+  assinaturaPdf?: string;
+  /** Se o e-mail com o canvas foi aceito pelo serviço de e-mail. */
+  emailEnviado?: boolean;
 }
 
 export const ETAPAS_ESTEIRA = [

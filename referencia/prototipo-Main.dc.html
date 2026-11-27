@@ -592,7 +592,10 @@ button:focus-visible{outline:3px solid #f3a6a8;outline-offset:2px}
 <div style="width: 90px; height: 3px; background: linear-gradient(90deg, #e2262b, rgba(226,38,43,0))"></div>
 </div>
 </div>
+<div style="display: flex; flex-direction: column; align-items: flex-end; gap: 4px; text-align: right">
 <span style="font-size: 13px; color: #53585f">Os problemas recebidos entram na esteira de experimentação do time InovAI</span>
+<span style="font-size: 13px; color: #53585f">Criado por <a href="mailto:cleytonsoarescunha@gmail.com?subject=Contato%20sobre%20o%20Prisma%20de%20Experimenta%C3%A7%C3%A3o" title="Enviar um e-mail para o criador do Prisma" style="color: #c00000; font-weight: 700">Cleyton Cunha</a></span>
+</div>
 </div>
 </footer>
 </sc-if>
@@ -743,7 +746,9 @@ class Component extends DCLogic {
       { k: ['fila', 'manual', 'backoffice', 'bko', 'retrabalho'], n: 'Fila Zero', a: 'automatizar a tratativa que hoje é feita à mão', r: 'o caso é resolvido sem passar pela fila' }
     ];
     var tema = temas.filter(function (t) { return tem(t.k); })[0];
-    var nome = tema ? tema.n : '[a ser preenchido]';
+    // O nome nunca fica em aberto: sem tema conhecido, um nome pelo ganho principal.
+    var nomePorGanho = { 'Redução de custo': 'Processo Enxuto', 'Aumento de receita': 'Venda Garantida', 'Experiência do cliente': 'Jornada Simples', 'Inovação': 'Nova Rota' };
+    var nome = tema ? tema.n : (nomePorGanho[s.ganho] || 'Solução em Foco');
     // 2. Hipótese clássica: Acredito que [ação], porque [razão], o que resultará em [resultado mensurável]
     var vol = parseFloat(String(s.volume || '').replace(/[^0-9]/g, '')) || 0;
     var volTxt = vol > 0 && !s.volNaoSei ? ', entre os cerca de ' + Math.round(vol).toLocaleString('pt-BR') + ' casos por mês' : '';

@@ -1,6 +1,9 @@
 // Recebe uma demanda nova: grava no banco (que gera o código) e guarda os anexos no Storage.
 
-import { num } from "@/lib/regras";
+import { assinar } from "@/lib/assinatura";
+import { enviarEmailCanvas } from "@/lib/email";
+import { gerarEGuardarPdf } from "@/lib/pdf";
+import { nomeValido, num } from "@/lib/regras";
 import { ConfiguracaoFaltando, PASTA_ANEXOS, supabaseServidor } from "@/lib/supabase-servidor";
 import { FORMULARIO_VAZIO, GANHOS, type Formulario, type Ganho, type IdItem } from "@/lib/tipos";
 import { MENSAGENS_NUMERO, ROTULOS, camposFaltando, numerosInvalidos, temCustoPorCaso } from "@/lib/validacao";
@@ -81,6 +84,7 @@ export async function POST(request: Request) {
     if (IDS.includes(it.id as IdItem)) itens.set(it.id as IdItem, texto(it.texto));
   });
   if (IDS.some((id) => !itens.get(id))) return erro("Confirme os quatro itens antes de enviar.");
+  if (!nomeValido(itens.get("nome") || "")) return erro("Dê um nome para a solução antes de enviar.");
 
   const arquivos = corpo.getAll("anexos").filter((a): a is File => a instanceof File && a.size > 0);
   if (arquivos.length > MAX_ARQUIVOS) return erro(`Envie no máximo ${MAX_ARQUIVOS} arquivos.`);
@@ -145,5 +149,15 @@ export async function POST(request: Request) {
     if (e) console.error("Erro ao registrar anexos:", e);
   }
 
-  return Response.json({ codigo, anexosComFalha: falharam }, { status: 201 });
+  // 4. Gera o PDF do canvas, guarda no Storage e envia por e-mail. Se algo falhar, a demanda já está salva.
+  const pdf = await gerarEGuardarPdf(codigo, new URL(request.url).origin);
+  const emailEnviado = await enviarEmailCanvas({
+    para: form.email,
+    nome: form.nome,
+    codigo,
+    nomeSolucao: itens.get("nome") || "",
+    pdf,
+  });
+
+  return Response.json({ codigo, anexosComFalha: falharam, assinaturaPdf: assinar(codigo), pdfGerado: !!pdf, emailEnviado }, { status: 201 });
 }

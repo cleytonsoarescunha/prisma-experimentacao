@@ -187,6 +187,38 @@ export function CanvasSlide({
 }
 
 /**
+ * Canvas em tamanho real, sozinho na página, para o servidor gerar o PDF.
+ * Reduz a fonte como na tela e, quando terminar, marca data-canvas-pronto="sim".
+ */
+export function CanvasPdf({ d }: { d: DadosCanvas }) {
+  const ladoRef = useRef<HTMLDivElement>(null);
+  const corpoRef = useRef<HTMLDivElement>(null);
+  const [nivel, setNivel] = useState(0);
+  const [nivelT, setNivelT] = useState(0);
+  const [pronto, setPronto] = useState(false);
+
+  useLayoutEffect(() => {
+    const c = corpoRef.current;
+    const l = ladoRef.current;
+    if (c && c.scrollHeight > c.clientHeight + 1 && nivel < 4) {
+      setNivel(nivel + 1);
+      return;
+    }
+    if (l && l.scrollHeight > l.clientHeight + 1 && nivelT < 3) {
+      setNivelT(nivelT + 1);
+      return;
+    }
+    setPronto(true);
+  }, [d, nivel, nivelT]);
+
+  return (
+    <div data-canvas-pronto={pronto ? "sim" : "nao"} style={{ width: 1920, height: 1080, overflow: "hidden" }}>
+      <CanvasSlide d={d} nivel={nivel} nivelT={nivelT} ladoRef={ladoRef} corpoRef={corpoRef} />
+    </div>
+  );
+}
+
+/**
  * Canvas na tela: reduzido para caber na largura disponível.
  * Se o texto não couber, diminui a fonte aos poucos (nunca corta).
  * Também deixa pronta uma cópia em tamanho real, usada só na impressão / PDF.

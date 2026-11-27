@@ -72,6 +72,20 @@ const TEMAS: { k: string[]; n: string; a: string; r: string }[] = [
   { k: ["fila", "manual", "backoffice", "bko", "retrabalho"], n: "Fila Zero", a: "automatizar a tratativa que hoje é feita à mão", r: "o caso é resolvido sem passar pela fila" },
 ];
 
+/** Nome usado pelas regras sem IA quando o relato não cai em nenhum tema conhecido. */
+const NOME_POR_GANHO: Record<Ganho, string> = {
+  "Redução de custo": "Processo Enxuto",
+  "Aumento de receita": "Venda Garantida",
+  "Experiência do cliente": "Jornada Simples",
+  Inovação: "Nova Rota",
+};
+
+/** Confere se o nome da solução é válido (não vazio e não um espaço reservado como "[a ser preenchido]"). */
+export function nomeValido(nome: string): boolean {
+  const t = nome.trim();
+  return t.length > 0 && !t.startsWith("[");
+}
+
 /** Gera resumo, nome, hipótese e riscos por palavras-chave (sem IA). */
 export function organizarSemIA(s: Formulario): ItemOrganizado[] {
   if (s.usouExemplo) {
@@ -87,9 +101,10 @@ export function organizarSemIA(s: Formulario): ItemOrganizado[] {
   const txt = String(s.problema || "").toLowerCase();
   const tem = (lista: string[]) => lista.some((w) => txt.indexOf(w) >= 0);
 
-  // 1. Nome: tema que já tem solução no portfólio usa o nome oficial; sem tema, fica em aberto.
+  // 1. Nome: tema que já tem solução no portfólio usa o nome oficial; sem tema, um nome pelo ganho esperado.
+  // O nome nunca fica em aberto: a pessoa confere e pode trocar no Passo 3.
   const tema = TEMAS.find((t) => tem(t.k));
-  const nome = tema ? tema.n : PF;
+  const nome = tema ? tema.n : s.ganho ? NOME_POR_GANHO[s.ganho] : "Solução em Foco";
 
   // 2. Hipótese: Acredito que [ação], porque [razão], o que resultará em [resultado mensurável].
   const vol = parseFloat(String(s.volume || "").replace(/[^0-9]/g, "")) || 0;

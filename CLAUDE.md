@@ -19,7 +19,7 @@ O Prisma não resolve o problema. Ele organiza o relato, estima o tamanho do pro
 3. Mude só o que foi pedido. Se uma mudança obrigar a mexer em outra coisa (visual, texto, regra), avise e peça o ok antes.
 4. No fim de cada fatia: rode a aplicação, confira você mesmo, diga ao Cleyton exatamente como testar e, com o ok dele, faça commit e push para o GitHub com uma mensagem clara em português.
 5. Nunca coloque chaves, senhas ou tokens no código nem no GitHub. Use `.env.local` (fora do Git) e um `.env.example` sem valores.
-6. Use só dados fictícios em desenvolvimento. O plano gratuito do Gemini pode usar os dados enviados para treinar modelos: nunca mande dados reais de empresa ou de pessoas para ele.
+6. Nos testes feitos durante o desenvolvimento, use dados fictícios. O plano gratuito do Gemini pode usar os dados enviados para treinar modelos; o Cleyton decidiu (27/11/2026) que isso é aceitável também com o Prisma publicado, e que não é preciso avisar disso a quem preenche. Mesmo assim, para a IA vão só os campos do relato (nunca nome, área, e-mail, stakeholders, links ou anexos).
 7. Escrita: português do Brasil, linguagem objetiva, sem travessões (use dois-pontos, vírgula ou ponto).
 
 ## Ferramentas
@@ -80,13 +80,17 @@ Só envia quando os quatro estiverem confirmados ("Enviar para o time InovAI").
 - O canvas pré-preenchido (ver abaixo) e o botão "Baixar [código].pdf".
 - Próximo passo: reunião de aprofundamento com o time InovAI.
 - Botão "Contar outro problema".
+- Rodapé de todas as telas: "Criado por Cleyton Cunha", com o nome ligado a um e-mail para o criador (mailto).
+
+### E-mail de confirmação
+Enviado para quem contou o problema logo após o envio, pelo Gmail do Cleyton (senha de app do Google no .env.local). Assunto: "InovAI | Recebemos o seu problema: [código]". Corpo: saudação com o primeiro nome; "Recebemos o seu problema: [nome da solução confirmado no Passo 3]."; o código da demanda em destaque; o PDF do canvas em anexo ([código].pdf); o próximo passo (reunião inicial com o time InovAI); assinatura "Time InovAI · Experimentação". Se o e-mail falhar, a demanda é salva mesmo assim e a tela final pede para baixar o PDF.
 
 ## Organização pela IA
 
 A IA recebe o relato e devolve, em JSON validado: resumo do problema, nome da solução, hipótese e riscos. Regras:
 
 - Resumo: uma frase curta e completa, sem reticências, com até cerca de 110 caracteres.
-- Nome: mistura criatividade com clareza; ao ler, fica nítido do que se trata (ex.: "Fatura Clara", "Fila Zero"). Quando o problema cair no tema de uma solução que já existe no portfólio, use o nome oficial dela, nunca invente outro: endereço ou CEP: "Match HP"; documentos: "Validador de Documentos"; agendamento ou instalação: "Agente de Agendamento"; dúvidas ou atendimento: "Agente de Suporte"; escolha de planos ou ofertas: "Buscador de Produtos". Sem tema claro: "[a ser preenchido]".
+- Nome: mistura criatividade com clareza; ao ler, fica nítido do que se trata (ex.: "Fatura Clara", "Fila Zero"). Quando o problema cair no tema de uma solução que já existe no portfólio, use o nome oficial dela, nunca invente outro: endereço ou CEP: "Match HP"; documentos: "Validador de Documentos"; agendamento ou instalação: "Agente de Agendamento"; dúvidas ou atendimento: "Agente de Suporte"; escolha de planos ou ofertas: "Buscador de Produtos". Fora desses temas, a IA sempre cria um nome: a demanda nunca é enviada sem um nome válido (nem vazio, nem "[a ser preenchido]"). Sem IA, as regras usam um nome pelo ganho principal (Redução de custo: "Processo Enxuto"; Aumento de receita: "Venda Garantida"; Experiência do cliente: "Jornada Simples"; Inovação: "Nova Rota"). No Passo 3, o item Nome não pode ser confirmado vazio.
 - Hipótese no formato clássico: "Acredito que [ação], porque [razão], o que resultará em [resultado mensurável]." Se houver volume, cite os casos por mês no resultado.
 - Riscos: 3 a 4, um por linha, com o tipo na frente.
 - Fallback sem IA: as regras do protótipo (função `montarIA` no arquivo de referência) geram esses quatro itens por palavras-chave. Use-as se a IA falhar.

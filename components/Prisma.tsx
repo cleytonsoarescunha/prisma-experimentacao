@@ -8,6 +8,9 @@ import { PassoConfere, PassoOrganizando } from "./PassosOrganiza";
 import TelaFim from "./TelaFim";
 import { COR, IconeFrasco } from "./ui";
 import { EXEMPLO, organizarSemIA } from "@/lib/regras";
+
+/** E-mail do criador, para o link "Criado por" do rodapé. */
+const CONTATO_CRIADOR = "cleytonsoarescunha@gmail.com";
 import { FORMULARIO_VAZIO, type Demanda, type Formulario, type ItemOrganizado } from "@/lib/tipos";
 
 type Tela = "entrada" | "conta" | "ia" | "valida" | "fim";
@@ -113,7 +116,16 @@ export default function Prisma() {
     const corpo = await resposta.json().catch(() => ({}));
     if (!resposta.ok || !corpo.codigo) return corpo.erro || "Não foi possível enviar agora. Tente de novo em instantes.";
 
-    setAtual({ codigo: corpo.codigo, enviadoEm: new Date(), form, itens, etapa: 0, anexosComFalha: corpo.anexosComFalha || [] });
+    setAtual({
+      codigo: corpo.codigo,
+      enviadoEm: new Date(),
+      form,
+      itens,
+      etapa: 0,
+      anexosComFalha: corpo.anexosComFalha || [],
+      assinaturaPdf: corpo.assinaturaPdf,
+      emailEnviado: corpo.emailEnviado === true,
+    });
     irPara("fim");
     return null;
   }
@@ -303,7 +315,19 @@ export default function Prisma() {
               <div style={{ width: 90, height: 3, background: "linear-gradient(90deg, #e2262b, rgba(226,38,43,0))" }} />
             </div>
           </div>
-          <span style={{ fontSize: 13, color: COR.suave }}>Os problemas recebidos entram na esteira de experimentação do time InovAI</span>
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 4, textAlign: "right" }}>
+            <span style={{ fontSize: 13, color: COR.suave }}>Os problemas recebidos entram na esteira de experimentação do time InovAI</span>
+            <span style={{ fontSize: 13, color: COR.suave }}>
+              Criado por{" "}
+              <a
+                href={"mailto:" + CONTATO_CRIADOR + "?subject=" + encodeURIComponent("Contato sobre o Prisma de Experimentação")}
+                title="Enviar um e-mail para o criador do Prisma"
+                style={{ color: COR.vermelhoEscuro, fontWeight: 700 }}
+              >
+                Cleyton Cunha
+              </a>
+            </span>
+          </div>
         </div>
       </footer>
     </div>
