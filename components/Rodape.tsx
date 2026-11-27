@@ -23,7 +23,7 @@ export default function Rodape() {
           </div>
         </div>
         <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 4, textAlign: "right" }}>
-          <span style={{ fontSize: 13, color: COR.suave }}>Os problemas recebidos entram na esteira de experimentação do time InovAI</span>
+          <span style={{ fontSize: 13, color: COR.suave }}>Os problemas recebidos viram experimentos, com soluções desenvolvidas pelo time InovAI.</span>
           <span style={{ fontSize: 13, color: COR.suave }}>
             Criado por{" "}
             <a
