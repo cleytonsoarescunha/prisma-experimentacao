@@ -59,16 +59,32 @@ export function PassoConfere({
   itens: ItemOrganizado[];
   onItens: (itens: ItemOrganizado[]) => void;
   onEditarRelato: () => void;
-  onEnviar: () => void;
+  onEnviar: () => Promise<string | null>;
 }) {
-  const [erroEnvio, setErroEnvio] = useState(false);
+  const [erroEnvio, setErroEnvio] = useState<string | null>(null);
+  const [enviando, setEnviando] = useState(false);
   const confirmados = itens.filter((x) => x.aceito).length;
   const todos = confirmados === itens.length;
   const resumo = problema.length > 180 ? problema.slice(0, 177) + "..." : problema;
 
   function atualiza(i: number, patch: Partial<ItemOrganizado>) {
     onItens(itens.map((y, j) => (j === i ? { ...y, ...patch } : y)));
-    setErroEnvio(false);
+    setErroEnvio(null);
+  }
+
+  async function enviar() {
+    if (enviando) return;
+    if (!todos) {
+      setErroEnvio("Confirme todos os campos antes de enviar.");
+      return;
+    }
+    setEnviando(true);
+    setErroEnvio(null);
+    const falha = await onEnviar();
+    if (falha) {
+      setErroEnvio(falha);
+      setEnviando(false);
+    }
   }
 
   return (
@@ -177,22 +193,16 @@ export function PassoConfere({
         </p>
         <button
           type="button"
-          aria-disabled={!todos}
-          onClick={() => {
-            if (!todos) {
-              setErroEnvio(true);
-              return;
-            }
-            onEnviar();
-          }}
-          style={{ ...botaoPrimario, opacity: todos ? 1 : 0.45 }}
+          aria-disabled={!todos || enviando}
+          onClick={enviar}
+          style={{ ...botaoPrimario, opacity: todos && !enviando ? 1 : 0.45, cursor: enviando ? "wait" : "pointer" }}
         >
-          Enviar para o time InovAI
+          {enviando ? "Enviando..." : "Enviar para o time InovAI"}
         </button>
       </div>
       {erroEnvio && (
         <p role="alert" style={{ margin: 0, padding: "12px 16px", borderRadius: 10, background: COR.rosa, color: COR.erro, fontSize: 15, lineHeight: "22px", fontWeight: 700 }}>
-          Confirme todos os campos antes de enviar.
+          {erroEnvio}
         </p>
       )}
     </div>

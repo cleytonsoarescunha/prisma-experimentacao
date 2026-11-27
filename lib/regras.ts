@@ -253,12 +253,6 @@ export function montarCanvas(s: Formulario, itens: ItemOrganizado[]): DadosCanva
   };
 }
 
-/** Código da demanda PR-MMAA-NNNN. Nesta fase a sequência fica só na memória do navegador. */
-export function gerarCodigo(data: Date, sequencia: number): string {
-  const mmaa = String(data.getMonth() + 1).padStart(2, "0") + String(data.getFullYear()).slice(-2);
-  return "PR-" + mmaa + "-" + String(sequencia).padStart(4, "0");
-}
-
 export const EXEMPLO: Partial<Formulario> = {
   usouExemplo: true,
   stakeholders: "[preencher: nomes]",

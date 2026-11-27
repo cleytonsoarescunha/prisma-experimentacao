@@ -14,6 +14,8 @@ export interface EstadoConsulta {
   cod: string;
   erro: boolean;
   res: ResultadoConsulta | null;
+  /** Mensagem própria do erro; sem ela, mostra "Código não encontrado". */
+  mensagem?: string;
 }
 
 /** Caixa "Já enviou um problema?". No celular fica na faixa vermelha; no computador, na área branca. */
@@ -88,7 +90,7 @@ function Consulta({
       </div>
       {estado.erro && (
         <p role="alert" style={{ margin: 0, fontSize: 14, lineHeight: "20px", fontWeight: 700, color: hero ? "#ffffff" : COR.erro }}>
-          Código não encontrado. Confira o formato, por exemplo PR-1126-0001.
+          {estado.mensagem || "Código não encontrado. Confira o formato, por exemplo PR-1126-0001."}
         </p>
       )}
       {r &&
@@ -106,12 +108,12 @@ function Consulta({
             <p style={{ margin: 0, fontSize: 15, lineHeight: "21px" }}>
               Etapa atual: <strong>{ETAPAS_ESTEIRA[r.idx]}</strong>
             </p>
-            <p style={{ margin: 0, fontSize: 13, lineHeight: "19px", color: COR.suave }}>{r.nota}</p>
+            {r.nota && <p style={{ margin: 0, fontSize: 13, lineHeight: "19px", color: COR.suave }}>{r.nota}</p>}
           </div>
         ) : (
           <p role="status" style={{ margin: 0, fontSize: 15, lineHeight: "22px" }}>
             <strong style={{ color: COR.vermelhoEscuro }}>{r.codigo}</strong> está na etapa {r.idx + 1} de 8:{" "}
-            <strong>{ETAPAS_ESTEIRA[r.idx]}</strong>. {r.nota}
+            <strong>{ETAPAS_ESTEIRA[r.idx]}</strong>.{r.nota && " " + r.nota}
           </p>
         ))}
     </form>

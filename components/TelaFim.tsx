@@ -52,6 +52,12 @@ export default function TelaFim({ demanda, onRecomecar }: { demanda: Demanda; on
         Enviamos o seu canvas pré-preenchido para {form.email}. Use o código {codigo} para falar sobre esta demanda. O próximo passo é uma reunião rápida com o time InovAI.
       </p>
 
+      {!!demanda.anexosComFalha?.length && (
+        <p role="alert" style={{ margin: 0, padding: "12px 16px", borderRadius: 10, background: COR.rosa, color: COR.erro, fontSize: 15, lineHeight: "22px", fontWeight: 700 }}>
+          Não conseguimos guardar estes anexos: {demanda.anexosComFalha.join(", ")}. Leve-os para a reunião com o time InovAI.
+        </p>
+      )}
+
       {pendencias.length > 0 && (
         <div role="note" style={{ display: "flex", gap: 14, alignItems: "flex-start", padding: "16px 18px", borderRadius: 12, background: "#fff7e0", border: `2px solid ${COR.amarelo}` }}>
           <svg aria-hidden="true" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke={COR.tinta} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flex: "none" }}>

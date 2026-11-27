@@ -8,7 +8,7 @@ import { PassoConfere, PassoOrganizando } from "./PassosOrganiza";
 import TelaFim from "./TelaFim";
 import { COR, IconeFrasco } from "./ui";
 import { organizarRelato } from "@/lib/ia";
-import { EXEMPLO, gerarCodigo } from "@/lib/regras";
+import { EXEMPLO } from "@/lib/regras";
 import { FORMULARIO_VAZIO, type Demanda, type Formulario, type ItemOrganizado } from "@/lib/tipos";
 
 type Tela = "entrada" | "conta" | "ia" | "valida" | "fim";
@@ -34,8 +34,6 @@ export default function Prisma() {
   const [form, setFormState] = useState<Formulario>(FORMULARIO_VAZIO);
   const [itens, setItens] = useState<ItemOrganizado[]>([]);
   const [etapaEspera, setEtapaEspera] = useState(0);
-  // Nesta fase as demandas enviadas ficam só na memória do navegador (somem ao recarregar).
-  const [enviadas, setEnviadas] = useState<Demanda[]>([]);
   const [atual, setAtual] = useState<Demanda | null>(null);
   const [consulta, setConsulta] = useState<EstadoConsulta>({ cod: "", erro: false, res: null });
   const timers = useRef<number[]>([]);
@@ -67,27 +65,52 @@ export default function Prisma() {
     timers.current.push(window.setTimeout(() => irPara("valida"), Math.max(0, 3000 - passou)));
   }
 
-  function enviar() {
-    const agora = new Date();
-    const mesmoMes = enviadas.filter((d) => d.enviadoEm.getMonth() === agora.getMonth() && d.enviadoEm.getFullYear() === agora.getFullYear());
-    const demanda: Demanda = { codigo: gerarCodigo(agora, mesmoMes.length + 1), enviadoEm: agora, form, itens, etapa: 0 };
-    setEnviadas([...enviadas, demanda]);
-    setAtual(demanda);
+  /** Envia para o servidor, que grava no banco e devolve o código. Devolve uma mensagem de erro, se houver. */
+  async function enviar(): Promise<string | null> {
+    const dados = new FormData();
+    const { arquivos, ...semArquivos } = form;
+    dados.set("dados", JSON.stringify({ form: semArquivos, itens: itens.map((x) => ({ id: x.id, texto: x.texto })) }));
+    arquivos.forEach((a) => dados.append("anexos", a));
+
+    let resposta: Response;
+    try {
+      resposta = await fetch("/api/demandas", { method: "POST", body: dados });
+    } catch {
+      return "Sem conexão com o servidor. Confira a internet e tente de novo.";
+    }
+    const corpo = await resposta.json().catch(() => ({}));
+    if (!resposta.ok || !corpo.codigo) return corpo.erro || "Não foi possível enviar agora. Tente de novo em instantes.";
+
+    setAtual({ codigo: corpo.codigo, enviadoEm: new Date(), form, itens, etapa: 0, anexosComFalha: corpo.anexosComFalha || [] });
     irPara("fim");
+    return null;
   }
 
-  function consultar() {
+  async function consultar() {
     const c = consulta.cod.trim().toUpperCase();
-    const achou = /^PR-\d{4}-\d{4}$/.test(c) ? enviadas.find((d) => d.codigo === c) : undefined;
-    if (!achou) {
+    if (!/^PR-\d{4}-\d{4,}$/.test(c)) {
       setConsulta({ cod: c, erro: true, res: null });
       return;
     }
-    setConsulta({
-      cod: c,
-      erro: false,
-      res: { codigo: c, idx: achou.etapa, nota: "Recebemos seu problema. O time InovAI vai entrar em contato para a reunião de aprofundamento." },
-    });
+    try {
+      const resposta = await fetch("/api/demandas/" + encodeURIComponent(c));
+      const corpo = await resposta.json().catch(() => ({}));
+      if (!resposta.ok) {
+        setConsulta({ cod: c, erro: true, res: null, mensagem: resposta.status === 404 ? undefined : corpo.erro });
+        return;
+      }
+      setConsulta({
+        cod: c,
+        erro: false,
+        res: {
+          codigo: corpo.codigo,
+          idx: corpo.idx,
+          nota: corpo.idx === 0 ? "Recebemos seu problema. O time InovAI vai entrar em contato para a reunião de aprofundamento." : "",
+        },
+      });
+    } catch {
+      setConsulta({ cod: c, erro: true, res: null, mensagem: "Sem conexão com o servidor. Tente de novo." });
+    }
   }
 
   function recomecar() {

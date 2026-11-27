@@ -80,6 +80,8 @@ export interface Demanda {
   itens: ItemOrganizado[];
   /** Índice da etapa atual na esteira (0 = Mapeamento de problemas). */
   etapa: number;
+  /** Nomes dos anexos que não conseguiram ser guardados. */
+  anexosComFalha?: string[];
 }
 
 export const ETAPAS_ESTEIRA = [
