@@ -92,5 +92,29 @@ export const ETAPAS_ESTEIRA = [
   "Decisão de pilotar",
   "Priorização",
   "Piloto",
-  "Crescimento",
+  "Transferência de conhecimento",
 ] as const;
+
+/**
+ * Passos do pedido: detalham as etapas 1 e 2 da esteira.
+ * Etapa 1 (Mapeamento de problemas): passos 1 e 2. Etapa 2 (Desenho de solução): passos 3 a 5.
+ */
+export const PASSOS_PEDIDO = [
+  { t: "Demanda recebida", d: "Você conta o problema aqui no Prisma, confere o resumo e recebe o código da demanda.", etapa: 0 },
+  { t: "Reunião inicial agendada", d: "Uma conversa com o time InovAI para validar as informações e aprofundar o discovery.", etapa: 0 },
+  { t: "Priorização de estudos", d: "O time InovAI prioriza quais problemas serão estudados primeiro.", etapa: 1 },
+  { t: "Validação e métricas da PoC", d: "Validamos a proposta com os interessados e definimos as métricas da PoC.", etapa: 1 },
+  { t: "Em desenvolvimento", d: "O time desenvolve a solução. Depois, ela segue para a Prototipação.", etapa: 1 },
+] as const;
+
+/**
+ * Converte a situação gravada no banco em etapa da esteira (0 a 7) e passo do pedido.
+ * passo vai de 0 a 4 nas etapas 1 e 2; é 5 quando os passos já terminaram (etapa 3 em diante).
+ */
+export function posicaoDemanda(situacao: string): { esteira: number; passo: number } {
+  const passo = PASSOS_PEDIDO.findIndex((p) => p.t === situacao);
+  if (passo >= 0) return { esteira: PASSOS_PEDIDO[passo].etapa, passo };
+  const esteira = ETAPAS_ESTEIRA.indexOf(situacao as (typeof ETAPAS_ESTEIRA)[number]);
+  if (esteira >= 2) return { esteira, passo: PASSOS_PEDIDO.length };
+  return { esteira: 0, passo: 0 };
+}

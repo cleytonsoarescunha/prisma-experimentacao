@@ -187,7 +187,7 @@ export function CanvasSlide({
 }
 
 /**
- * Canvas na tela: reduzido para caber na largura disponível, com opção de ampliar.
+ * Canvas na tela: reduzido para caber na largura disponível.
  * Se o texto não couber, diminui a fonte aos poucos (nunca corta).
  * Também deixa pronta uma cópia em tamanho real, usada só na impressão / PDF.
  */
@@ -196,7 +196,6 @@ export function CanvasTela({ d }: { d: DadosCanvas }) {
   const ladoRef = useRef<HTMLDivElement>(null);
   const corpoRef = useRef<HTMLDivElement>(null);
   const [largura, setLargura] = useState(760);
-  const [zoom, setZoom] = useState(false);
   const [nivel, setNivel] = useState(0);
   const [nivelT, setNivelT] = useState(0);
   // A tela final só aparece depois de interação no navegador, então document já existe.
@@ -222,24 +221,11 @@ export function CanvasTela({ d }: { d: DadosCanvas }) {
   }, [d, nivel, nivelT]);
 
   const fit = Math.max(0.1, (largura - 2) / 1920);
-  const zoomAtivo = zoom && fit < 0.5;
-  const esc = zoomAtivo ? 0.5 : fit;
+  const esc = fit;
 
   return (
     <>
-      {fit < 0.5 && (
-        <div style={{ display: "flex", justifyContent: "flex-end" }}>
-          <button
-            type="button"
-            onClick={() => setZoom(!zoom)}
-            aria-pressed={zoom}
-            style={{ minHeight: 40, padding: "8px 16px", border: `1px solid ${COR.cinzaBorda}`, borderRadius: 9999, background: "#ffffff", color: COR.tinta, fontSize: 14, fontWeight: 700 }}
-          >
-            {zoom ? "Ajustar à tela" : "Ampliar canvas"}
-          </button>
-        </div>
-      )}
-      <div ref={wrapRef} tabIndex={zoomAtivo ? 0 : undefined} style={{ width: "100%", overflowX: zoomAtivo ? "auto" : "hidden", border: `1px solid ${COR.linhas}`, borderRadius: 10, background: "#ffffff" }}>
+      <div ref={wrapRef} style={{ width: "100%", overflowX: "hidden", border: `1px solid ${COR.linhas}`, borderRadius: 10, background: "#ffffff" }}>
         <div style={{ position: "relative", width: Math.round(1920 * esc), height: Math.round(1080 * esc), overflow: "hidden" }}>
           <div style={{ position: "absolute", left: 0, top: 0, transform: `scale(${esc})`, transformOrigin: "0 0" }}>
             <CanvasSlide d={d} nivel={nivel} nivelT={nivelT} ladoRef={ladoRef} corpoRef={corpoRef} />

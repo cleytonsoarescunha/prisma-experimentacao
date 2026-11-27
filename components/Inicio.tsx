@@ -2,11 +2,14 @@
 
 import PrismaVidro from "./PrismaVidro";
 import { COR } from "./ui";
-import { ETAPAS_ESTEIRA } from "@/lib/tipos";
+import { ETAPAS_ESTEIRA, PASSOS_PEDIDO } from "@/lib/tipos";
 
 export interface ResultadoConsulta {
   codigo: string;
-  idx: number;
+  /** Etapa da esteira (0 a 7). */
+  esteira: number;
+  /** Passo do pedido (0 a 4); 5 quando os passos já terminaram (etapa 3 em diante). */
+  passo: number;
   nota: string;
 }
 
@@ -16,6 +19,58 @@ export interface EstadoConsulta {
   res: ResultadoConsulta | null;
   /** Mensagem própria do erro; sem ela, mostra "Código não encontrado". */
   mensagem?: string;
+}
+
+const TOTAL_PASSOS = PASSOS_PEDIDO.length;
+/** Etapas da esteira que vêm depois dos 5 passos (Prototipação em diante). */
+const ETAPAS_DEPOIS = ETAPAS_ESTEIRA.slice(2);
+/** Pontos da jornada única: 5 passos do pedido e depois as etapas 3 a 8. */
+const TOTAL_PONTOS = TOTAL_PASSOS + ETAPAS_DEPOIS.length;
+
+/** Posição da demanda na jornada única (0 a 10). */
+function pontoDaJornada(r: ResultadoConsulta) {
+  return r.passo < TOTAL_PASSOS ? r.passo : TOTAL_PASSOS + (r.esteira - 2);
+}
+
+/** Resultado da consulta: onde a demanda está, em texto e numa barra da jornada inteira. */
+function ResultadoVisual({ r }: { r: ResultadoConsulta }) {
+  const ponto = pontoDaJornada(r);
+  const nosPassos = r.passo < TOTAL_PASSOS;
+  return (
+    <div role="status" style={{ background: "#ffffff", color: COR.tinta, borderRadius: 12, border: `1px solid ${COR.linhas}`, padding: "16px 18px", display: "flex", flexDirection: "column", gap: 10 }}>
+      <span style={{ fontSize: 18, fontWeight: 900, color: COR.vermelhoEscuro }}>{r.codigo}</span>
+      <p style={{ margin: 0, fontSize: 15, lineHeight: "21px" }}>
+        {nosPassos ? (
+          <>
+            Passo atual: <strong>{PASSOS_PEDIDO[r.passo].t}</strong>
+          </>
+        ) : (
+          <>
+            Os passos do pedido foram concluídos. Agora em: <strong>{ETAPAS_ESTEIRA[r.esteira]}</strong>
+          </>
+        )}
+      </p>
+      <div aria-hidden="true" style={{ display: "flex", gap: 4, alignItems: "center" }}>
+        {Array.from({ length: TOTAL_PONTOS }, (_, i) => (
+          <span
+            key={i}
+            style={{
+              flex: i < TOTAL_PASSOS ? 2 : 1,
+              height: i < TOTAL_PASSOS ? 10 : 6,
+              marginLeft: i === TOTAL_PASSOS ? 6 : 0,
+              borderRadius: 9999,
+              background: i < ponto ? COR.vermelho : i === ponto ? COR.erro : COR.linhas,
+            }}
+          />
+        ))}
+      </div>
+      <div aria-hidden="true" style={{ display: "flex", justifyContent: "space-between", gap: 8, fontSize: 11, fontWeight: 700, color: COR.suave }}>
+        <span>Passos do pedido</span>
+        <span>Depois do pedido</span>
+      </div>
+      {r.nota && <p style={{ margin: 0, fontSize: 13, lineHeight: "19px", color: COR.suave }}>{r.nota}</p>}
+    </div>
+  );
 }
 
 /** Caixa "Já enviou um problema?". No celular fica na faixa vermelha; no computador, na área branca. */
@@ -32,7 +87,6 @@ function Consulta({
 }) {
   const hero = variante === "hero";
   const id = hero ? "f-consulta" : "f-consulta-web";
-  const r = estado.res;
   return (
     <form
       onSubmit={(e) => {
@@ -43,11 +97,11 @@ function Consulta({
       style={
         hero
           ? { flex: "1 1 100%", flexDirection: "column", gap: 8 }
-          : { display: "flex", flexDirection: "column", gap: 8, padding: "16px 18px", borderRadius: 12, background: COR.fundo }
+          : { display: "flex", flexDirection: "column", gap: 10, padding: "16px 18px", borderRadius: 12, background: COR.fundo }
       }
     >
       <label htmlFor={id} style={{ fontSize: 15, lineHeight: "21px", fontWeight: 700 }}>
-        Já enviou um problema? Digite o código e veja onde ele está na esteira
+        Já enviou um problema? Digite o código e veja em que passo ele está
       </label>
       <div style={{ display: "flex", gap: 8, flexWrap: "wrap", maxWidth: hero ? undefined : 460 }}>
         <input
@@ -93,29 +147,7 @@ function Consulta({
           {estado.mensagem || "Código não encontrado. Confira o formato, por exemplo PR-1126-0001."}
         </p>
       )}
-      {r &&
-        (hero ? (
-          <div role="status" style={{ background: "#ffffff", color: COR.tinta, borderRadius: 12, padding: "16px 18px", display: "flex", flexDirection: "column", gap: 10 }}>
-            <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 10, flexWrap: "wrap" }}>
-              <span style={{ fontSize: 18, fontWeight: 900, color: COR.vermelhoEscuro }}>{r.codigo}</span>
-              <span style={{ fontSize: 13, color: COR.suave }}>Etapa {r.idx + 1} de 8</span>
-            </div>
-            <div aria-hidden="true" style={{ display: "flex", gap: 4 }}>
-              {ETAPAS_ESTEIRA.map((_, i) => (
-                <span key={i} style={{ flex: 1, height: 8, borderRadius: 9999, background: i < r.idx ? COR.vermelho : i === r.idx ? COR.erro : COR.linhas }} />
-              ))}
-            </div>
-            <p style={{ margin: 0, fontSize: 15, lineHeight: "21px" }}>
-              Etapa atual: <strong>{ETAPAS_ESTEIRA[r.idx]}</strong>
-            </p>
-            {r.nota && <p style={{ margin: 0, fontSize: 13, lineHeight: "19px", color: COR.suave }}>{r.nota}</p>}
-          </div>
-        ) : (
-          <p role="status" style={{ margin: 0, fontSize: 15, lineHeight: "22px" }}>
-            <strong style={{ color: COR.vermelhoEscuro }}>{r.codigo}</strong> está na etapa {r.idx + 1} de 8:{" "}
-            <strong>{ETAPAS_ESTEIRA[r.idx]}</strong>.{r.nota && " " + r.nota}
-          </p>
-        ))}
+      {estado.res && <ResultadoVisual r={estado.res} />}
     </form>
   );
 }
@@ -163,93 +195,158 @@ export function HeroInicio({
   );
 }
 
-function Esteira({ atualIdx }: { atualIdx: number }) {
-  const itens = ETAPAS_ESTEIRA.map((label, i) => {
-    const feito = i < atualIdx;
-    const atual = i === atualIdx;
-    return {
-      label,
-      n: i + 1,
-      atual,
-      cBorder: feito ? "none" : atual ? `3px solid ${COR.vermelho}` : `2px solid ${COR.linhas}`,
-      cBg: feito ? COR.vermelho : "#ffffff",
-      cColor: feito ? "#ffffff" : atual ? COR.vermelhoEscuro : COR.cinza,
-      nmColor: feito ? COR.tinta : atual ? COR.vermelhoEscuro : COR.suave,
-      lnL: i === 0 ? "transparent" : i <= atualIdx ? COR.vermelho : COR.linhas,
-      lnR: i === ETAPAS_ESTEIRA.length - 1 ? "transparent" : i < atualIdx ? COR.vermelho : COR.linhas,
-    };
-  });
-  const circulo = (e: (typeof itens)[number]) => (
+/** Situação de um ponto da jornada, conforme a consulta: sem consulta, todos aparecem normais. */
+function situacao(i: number, ponto: number | null) {
+  if (ponto === null) return { atual: false, feito: false, apagado: false };
+  return { atual: i === ponto, feito: i < ponto, apagado: i > ponto };
+}
+
+/** Seta entre os cartões: para a direita no computador, para baixo no celular. */
+function Seta({ apagada }: { apagada?: boolean }) {
+  return (
+    <svg className="pz-seta" aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={apagada ? COR.cinzaBorda : COR.vermelho} strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M5 12h13" />
+      <path d="m13 6 6 6-6 6" />
+    </svg>
+  );
+}
+
+/** Selo pequeno de situação dentro do cartão. */
+function Selo({ texto, cheio }: { texto: string; cheio: boolean }) {
+  return (
     <span
       style={{
-        width: 36,
-        height: 36,
-        flex: "0 0 auto",
-        borderRadius: 9999,
-        border: e.cBorder,
-        background: e.cBg,
-        color: e.cColor,
-        fontSize: 15,
+        alignSelf: "flex-start",
+        fontSize: 10,
         fontWeight: 700,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
+        letterSpacing: "0.1em",
+        padding: "3px 8px",
+        borderRadius: 9999,
+        color: cheio ? "#ffffff" : COR.vermelhoEscuro,
+        background: cheio ? COR.vermelho : COR.rosa,
       }}
     >
-      {e.n}
-    </span>
-  );
-  const selo = (texto: string) => (
-    <span style={{ alignSelf: "flex-start", fontSize: 10, fontWeight: 700, letterSpacing: "0.1em", color: "#ffffff", background: COR.vermelho, padding: "3px 8px", borderRadius: 9999 }}>
       {texto}
     </span>
   );
+}
 
+/** Cartão de um passo do pedido, sem número: a ordem é mostrada pelas setas. */
+function CartaoPasso({ i, ponto }: { i: number; ponto: number | null }) {
+  const p = PASSOS_PEDIDO[i];
+  const { atual, feito, apagado } = situacao(i, ponto);
   return (
-    <>
-      <ol aria-label="Esteira de experimentação" className="so-desk" style={{ display: "grid", gridTemplateColumns: "repeat(8, minmax(0, 1fr))", gap: 10, listStyle: "none", padding: 0, margin: 0 }}>
-        {itens.map((e) => (
-          <li key={e.n} aria-current={e.atual ? "step" : undefined} style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-              {circulo(e)}
-              <span style={{ flexGrow: 1, height: 3, background: e.lnR }} />
-            </div>
-            <span style={{ fontSize: 13, fontWeight: 700, lineHeight: "17px", color: e.nmColor }}>{e.label}</span>
-            {e.atual && selo("ETAPA ATUAL")}
-          </li>
+    <li
+      className="pz-item"
+      aria-current={atual ? "step" : undefined}
+      style={{
+        borderStyle: "solid",
+        borderWidth: atual ? "4px 2px 2px" : "4px 1px 1px",
+        borderTopColor: apagado ? COR.linhas : COR.vermelho,
+        borderRightColor: atual ? COR.vermelho : COR.linhas,
+        borderBottomColor: atual ? COR.vermelho : COR.linhas,
+        borderLeftColor: atual ? COR.vermelho : COR.linhas,
+        borderRadius: 16,
+        padding: "14px 12px 16px",
+        display: "flex",
+        flexDirection: "column",
+        gap: 8,
+        background: atual ? COR.rosa : "#ffffff",
+        hyphens: "auto",
+        overflowWrap: "break-word",
+      }}
+    >
+      <span style={{ fontSize: 16, lineHeight: "21px", fontWeight: 700, color: apagado ? COR.suave : COR.tinta }}>{p.t}</span>
+      <span style={{ fontSize: 14, lineHeight: "20px", color: COR.suave }}>{p.d}</span>
+      {feito && <Selo texto="✓ CONCLUÍDO" cheio={false} />}
+      {atual && <Selo texto="PASSO ATUAL" cheio />}
+    </li>
+  );
+}
+
+/** Grupo de passos de uma etapa da esteira (Mapeamento: 2 passos; Desenho de solução: 3 passos), ligados por setas. */
+function GrupoPassos({ etapa, ponto }: { etapa: 0 | 1; ponto: number | null }) {
+  const indices = PASSOS_PEDIDO.map((p, i) => (p.etapa === etapa ? i : -1)).filter((i) => i >= 0);
+  const aqui = ponto !== null && indices.includes(ponto);
+  return (
+    <section
+      className={"pz-item " + (etapa === 0 ? "pz-item-2" : "pz-item-3")}
+      aria-label={`Etapa ${etapa + 1} da esteira: ${ETAPAS_ESTEIRA[etapa]}`}
+      style={{ display: "flex", flexDirection: "column", gap: 10 }}
+    >
+      <div style={{ display: "flex", alignItems: "baseline", gap: 8, flexWrap: "wrap", paddingBottom: 8, borderBottom: `3px solid ${aqui ? COR.vermelho : COR.linhas}` }}>
+        <span style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.1em", color: COR.vermelhoEscuro }}>ETAPA {etapa + 1}</span>
+        <span style={{ fontSize: 15, fontWeight: 700 }}>{ETAPAS_ESTEIRA[etapa]}</span>
+      </div>
+      <ol className="pz-trilha" style={{ listStyle: "none", padding: 0, margin: 0, flex: 1 }}>
+        {indices.map((i, k) => (
+          <FragmentoPasso key={i} i={i} ponto={ponto} comSeta={k > 0} />
         ))}
       </ol>
-      <div className="so-mob" style={{ flexDirection: "column", gap: 6 }}>
-        <span aria-hidden="true" style={{ alignSelf: "flex-end", fontSize: 12, fontWeight: 700, letterSpacing: "0.12em", color: COR.vermelhoEscuro }}>
-          ARRASTE →
-        </span>
-        <div tabIndex={0} aria-label="Esteira de experimentação" style={{ border: `1px solid ${COR.linhas}`, borderRadius: 14, background: "#ffffff", padding: "14px 0", overflowX: "auto" }}>
-          <ol style={{ display: "flex", width: "max-content", padding: "0 16px", margin: 0, listStyle: "none" }}>
-            {itens.map((e) => (
-              <li key={e.n} aria-current={e.atual ? "step" : undefined} style={{ flex: "0 0 112px", display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}>
-                <div style={{ width: "100%", display: "flex", alignItems: "center", gap: 6 }}>
-                  <span style={{ flexGrow: 1, height: 3, background: e.lnL }} />
-                  {circulo(e)}
-                  <span style={{ flexGrow: 1, height: 3, background: e.lnR }} />
-                </div>
-                <span style={{ fontSize: 13, fontWeight: 700, lineHeight: "17px", textAlign: "center", padding: "0 6px", color: e.nmColor }}>{e.label}</span>
-                {e.atual && <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.1em", color: "#ffffff", background: COR.vermelho, padding: "3px 8px", borderRadius: 9999 }}>ATUAL</span>}
-              </li>
-            ))}
-          </ol>
-        </div>
-      </div>
+    </section>
+  );
+}
+
+/** Um cartão, precedido de seta quando não é o primeiro do grupo. */
+function FragmentoPasso({ i, ponto, comSeta }: { i: number; ponto: number | null; comSeta: boolean }) {
+  return (
+    <>
+      {comSeta && (
+        <li aria-hidden="true" style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <Seta apagada={ponto !== null && i > ponto} />
+        </li>
+      )}
+      <CartaoPasso i={i} ponto={ponto} />
     </>
   );
 }
 
-const PASSOS_INICIO = [
-  { t: "Você conta o problema", d: "O que acontece, quem sente e o tamanho do problema.", icone: "seta" },
-  { t: "Organizamos as informações", d: "Objetivo, hipótese, riscos e uma primeira ideia de teste, para você conferir.", icone: "seta" },
-  { t: "Conversamos e experimentamos", d: "Você recebe o canvas pré-preenchido por e-mail, marcamos uma reunião e o time InovAI segue na esteira.", icone: "bandeira" },
-];
+/** Continuação da mesma jornada, depois dos passos do pedido: as próximas etapas da esteira, menores e sem número. */
+function DepoisDoPedido({ ponto }: { ponto: number | null }) {
+  return (
+    <section aria-label="Depois do pedido: próximas etapas da esteira" style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+      <div style={{ display: "flex", alignItems: "baseline", gap: 8, flexWrap: "wrap", paddingBottom: 8, borderBottom: `3px solid ${ponto !== null && ponto >= TOTAL_PASSOS ? COR.vermelho : COR.linhas}` }}>
+        <span style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.1em", color: COR.vermelhoEscuro }}>DEPOIS DO PEDIDO</span>
+        <span style={{ fontSize: 15, fontWeight: 700 }}>A solução segue pelas próximas etapas da esteira</span>
+      </div>
+      <ol style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 6, listStyle: "none", padding: 0, margin: 0 }}>
+        {ETAPAS_DEPOIS.map((nome, j) => {
+          const i = TOTAL_PASSOS + j;
+          const { atual, feito, apagado } = situacao(i, ponto);
+          return (
+            <li key={nome} aria-current={atual ? "step" : undefined} style={{ display: "flex", alignItems: "center", gap: 6 }}>
+              {j > 0 && (
+                <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={apagado ? COR.cinzaBorda : COR.vermelho} strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M5 12h13" />
+                  <path d="m13 6 6 6-6 6" />
+                </svg>
+              )}
+              <span
+                style={{
+                  padding: "7px 12px",
+                  borderRadius: 9999,
+                  fontSize: 13,
+                  lineHeight: "17px",
+                  fontWeight: 700,
+                  border: `${atual ? 2 : 1}px solid ${atual ? COR.vermelho : COR.linhas}`,
+                  background: atual ? COR.vermelho : feito ? COR.rosa : COR.fundo,
+                  color: atual ? "#ffffff" : apagado ? COR.suave : COR.tinta,
+                }}
+              >
+                {feito && "✓ "}
+                {nome}
+                {atual && <span className="sr-only"> (etapa atual)</span>}
+              </span>
+            </li>
+          );
+        })}
+      </ol>
+      <p style={{ margin: 0, fontSize: 13, lineHeight: "19px", color: COR.suave }}>O Piloto só acontece depois dos testes, com os resultados em mãos.</p>
+    </section>
+  );
+}
 
-/** Conteúdo da área branca na página inicial. */
+/** Conteúdo da área branca na página inicial: uma jornada só, do pedido ao crescimento. */
 export function ConteudoInicio({
   consulta,
   onCod,
@@ -259,44 +356,24 @@ export function ConteudoInicio({
   onCod: (v: string) => void;
   onConsultar: () => void;
 }) {
+  const ponto = consulta.res ? pontoDaJornada(consulta.res) : null;
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
       <h2 className="pz-h2" style={{ margin: 0, lineHeight: 1.2, fontWeight: 700 }}>
-        Seu problema entra na nossa esteira de experimentação
+        Como funciona o seu pedido
       </h2>
       <p style={{ margin: 0, fontSize: 16, lineHeight: "24px", color: COR.suave }}>
-        Você conta o problema e o time InovAI conduz o resto: entende, desenha a solução e testa antes de chegar ao cliente.
+        O seu pedido acontece nas duas primeiras etapas da esteira de experimentação do time InovAI. Depois, a solução segue pelas próximas etapas.
       </p>
       <Consulta variante="web" estado={consulta} onCod={onCod} onConsultar={onConsultar} />
-      <Esteira atualIdx={consulta.res ? consulta.res.idx : 0} />
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 16 }}>
-        {PASSOS_INICIO.map((p, i) => (
-          <div
-            key={p.t}
-            style={{ border: `1px solid ${COR.linhas}`, borderTop: `4px solid ${COR.vermelho}`, borderRadius: 16, padding: "20px 22px 22px", display: "flex", flexDirection: "column", gap: 10, background: "#ffffff" }}
-          >
-            <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-              <span style={{ width: 44, height: 44, borderRadius: 9999, background: COR.vermelho, color: "#ffffff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18, fontWeight: 700, flex: "none" }}>
-                {i + 1}
-              </span>
-              <span style={{ flex: 1, height: 2, background: "linear-gradient(90deg, #e2262b, rgba(226,38,43,0.15))" }} />
-              {p.icone === "seta" ? (
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={COR.vermelho} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={{ flex: "none" }}>
-                  <path d="M9 6l6 6-6 6" />
-                </svg>
-              ) : (
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={COR.vermelho} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={{ flex: "none" }}>
-                  <path d="M5 21V4" />
-                  <path d="M5 4h11l-2 4 2 4H5" />
-                </svg>
-              )}
-            </div>
-            <span style={{ fontSize: 18, lineHeight: "24px", fontWeight: 700 }}>{p.t}</span>
-            <span style={{ fontSize: 15, lineHeight: "22px", color: COR.suave }}>{p.d}</span>
-          </div>
-        ))}
+      <div className="pz-trilha" style={{ gap: 10 }}>
+        <GrupoPassos etapa={0} ponto={ponto} />
+        <div aria-hidden="true" className="pz-seta-grupo" style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <Seta apagada={ponto !== null && ponto < 2} />
+        </div>
+        <GrupoPassos etapa={1} ponto={ponto} />
       </div>
-      <p style={{ margin: 0, fontSize: 14, lineHeight: "20px", color: COR.suave }}>O Piloto só acontece depois dos testes, com os resultados em mãos.</p>
+      <DepoisDoPedido ponto={ponto} />
     </div>
   );
 }

@@ -100,6 +100,44 @@
   animation: pzPulse 1.6s ease-in-out infinite;
 }
 
+/* Trilha do pedido: cartões ligados por setas. No computador largo fica numa linha (setas para a direita);
+   em telas menores, um cartão embaixo do outro (setas para baixo). */
+.pz-trilha {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 6px;
+}
+.pz-trilha > .pz-item {
+  min-width: 0;
+}
+.pz-seta {
+  align-self: center;
+  flex: none;
+  transform: rotate(90deg);
+}
+@media (min-width: 1100px) {
+  .pz-trilha {
+    flex-direction: row;
+  }
+  .pz-trilha > .pz-item {
+    flex: 1 1 0;
+  }
+  .pz-trilha > .pz-item-2 {
+    flex: 2 1 0;
+  }
+  .pz-trilha > .pz-item-3 {
+    flex: 3 1 0;
+  }
+  .pz-seta {
+    transform: none;
+  }
+  /* Seta entre as duas etapas: desce um pouco para ficar na altura dos cartões, abaixo dos títulos. */
+  .pz-seta-grupo {
+    padding-top: 30px;
+  }
+}
+
 @media (max-width: 767px) {
   .so-mob {
     display: flex !important;

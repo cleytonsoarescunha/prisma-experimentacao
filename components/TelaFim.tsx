@@ -11,6 +11,38 @@ export default function TelaFim({ demanda, onRecomecar }: { demanda: Demanda; on
   const { form, codigo } = demanda;
   const dados = useMemo(() => montarCanvas(form, demanda.itens), [form, demanda.itens]);
   const [baixou, setBaixou] = useState(false);
+  const [copiado, setCopiado] = useState<"" | "ok" | "erro">("");
+
+  /** Plano B para navegadores que bloqueiam a área de transferência moderna. */
+  function copiarAntigo(texto: string): boolean {
+    const campo = document.createElement("textarea");
+    campo.value = texto;
+    campo.setAttribute("readonly", "");
+    campo.style.position = "fixed";
+    campo.style.opacity = "0";
+    document.body.appendChild(campo);
+    campo.select();
+    let ok = false;
+    try {
+      ok = document.execCommand("copy");
+    } catch {
+      ok = false;
+    }
+    campo.remove();
+    return ok;
+  }
+
+  async function copiar() {
+    let ok = false;
+    try {
+      await navigator.clipboard.writeText(codigo);
+      ok = true;
+    } catch {
+      ok = copiarAntigo(codigo);
+    }
+    setCopiado(ok ? "ok" : "erro");
+    if (ok) window.setTimeout(() => setCopiado(""), 3000);
+  }
 
   const pendencias = [
     form.volNaoSei ? "Quantas vezes o problema acontece por mês (pedidos, chamados, clientes afetados)" : null,
@@ -43,9 +75,32 @@ export default function TelaFim({ demanda, onRecomecar }: { demanda: Demanda; on
         </h2>
       </div>
 
-      <div style={{ display: "inline-flex", alignSelf: "flex-start", alignItems: "center", gap: 10, flexWrap: "wrap", padding: "8px 16px", border: `2px solid ${COR.vermelho}`, borderRadius: 10, background: "#ffffff" }}>
-        <span style={{ fontSize: 12, lineHeight: "16px", fontWeight: 700, letterSpacing: "0.12em", color: COR.suave }}>CÓDIGO DA DEMANDA</span>
-        <span style={{ fontSize: 20, lineHeight: "26px", fontWeight: 900, color: COR.vermelhoEscuro }}>{codigo}</span>
+      <div style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
+        <div style={{ display: "inline-flex", alignItems: "center", gap: 10, flexWrap: "wrap", padding: "8px 16px", border: `2px solid ${COR.vermelho}`, borderRadius: 10, background: "#ffffff" }}>
+          <span style={{ fontSize: 12, lineHeight: "16px", fontWeight: 700, letterSpacing: "0.12em", color: COR.suave }}>CÓDIGO DA DEMANDA</span>
+          <span style={{ fontSize: 20, lineHeight: "26px", fontWeight: 900, color: COR.vermelhoEscuro }}>{codigo}</span>
+        </div>
+        <button
+          type="button"
+          onClick={copiar}
+          aria-label={"Copiar o código " + codigo}
+          style={{ ...botaoSecundario, minHeight: 44, padding: "8px 18px", display: "inline-flex", alignItems: "center", gap: 8 }}
+        >
+          <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            {copiado === "ok" ? (
+              <path d="m5 12 5 5 9-10" />
+            ) : (
+              <>
+                <rect x="9" y="9" width="12" height="12" rx="2" />
+                <path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1" />
+              </>
+            )}
+          </svg>
+          {copiado === "ok" ? "Código copiado" : "Copiar código"}
+        </button>
+        <span role="status" style={{ fontSize: 13, lineHeight: "18px", color: COR.erro, fontWeight: 700 }}>
+          {copiado === "erro" ? "Não deu para copiar. Selecione o código e use Ctrl+C." : ""}
+        </span>
       </div>
 
       <p style={{ margin: 0, fontSize: 16, lineHeight: "24px", color: COR.suave, overflowWrap: "anywhere" }}>

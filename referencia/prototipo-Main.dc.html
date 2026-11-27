@@ -105,10 +105,11 @@ button:focus-visible{outline:3px solid #f3a6a8;outline-offset:2px}
 </div>
 <sc-if value="{{consultaErro}}" hint-placeholder-val="{{ false }}"><p role="alert" style="margin: 0; font-size: 14px; line-height: 20px; font-weight: 700; color: #ffffff">Código não encontrado. Confira o formato, por exemplo PR-1126-0001.</p></sc-if>
 <sc-if value="{{temConsulta}}" hint-placeholder-val="{{ false }}">
-<div role="status" style="background: #ffffff; color: #262626; border-radius: 12px; padding: 16px 18px; display: flex; flex-direction: column; gap: 10px">
-<div style="display: flex; align-items: baseline; justify-content: space-between; gap: 10px; flex-wrap: wrap"><span style="font-size: 18px; font-weight: 900; color: #c00000">{{cRes.codigo}}</span><span style="font-size: 13px; color: #53585f">Etapa {{cRes.n}} de 8</span></div>
-<div aria-hidden="true" style="display: flex; gap: 4px"><sc-for list="{{cRes.barra}}" as="b" hint-placeholder-count="8"><span style="flex: 1; height: 8px; border-radius: 9999px; background: {{b.cor}}"></span></sc-for></div>
-<p style="margin: 0; font-size: 15px; line-height: 21px">Etapa atual: <strong>{{cRes.etapa}}</strong></p>
+<div role="status" style="background: #ffffff; color: #262626; border-radius: 12px; border: 1px solid #d9d9d9; padding: 16px 18px; display: flex; flex-direction: column; gap: 10px">
+<span style="font-size: 18px; font-weight: 900; color: #c00000">{{cRes.codigo}}</span>
+<p style="margin: 0; font-size: 15px; line-height: 21px">{{cRes.texto}} <strong>{{cRes.nome}}</strong></p>
+<div aria-hidden="true" style="display: flex; gap: 4px; align-items: center"><sc-for list="{{cRes.barra}}" as="b" hint-placeholder-count="11"><span style="flex: {{b.flex}}; height: {{b.h}}; margin-left: {{b.ml}}; border-radius: 9999px; background: {{b.cor}}"></span></sc-for></div>
+<div aria-hidden="true" style="display: flex; justify-content: space-between; gap: 8px; font-size: 11px; font-weight: 700; color: #53585f"><span>Passos do pedido</span><span>Depois do pedido</span></div>
 <p style="margin: 0; font-size: 13px; line-height: 19px; color: #53585f">{{cRes.nota}}</p>
 </div>
 </sc-if>
@@ -157,7 +158,7 @@ button:focus-visible{outline:3px solid #f3a6a8;outline-offset:2px}
 <div style="display: flex; align-items: center; gap: 10px"><div style="width: 28px; height: 20px; border: 2px solid #53585f; border-radius: 6px; background: #ffffff; flex: none"></div><p style="margin: 0; font-size: 14px; line-height: 18px">Você preenche (obrigatório)</p></div>
 <div style="display: flex; align-items: center; gap: 10px"><div style="width: 28px; height: 20px; border: 2px dashed #e2262b; border-radius: 6px; background: #fdeeee; flex: none"></div><p style="margin: 0; font-size: 14px; line-height: 18px">Nós organizamos, você confere</p></div>
 </div>
-<p style="margin: 0; font-size: 13px; line-height: 19px; color: #53585f">Depois da reunião, o time InovAI leva o problema pela esteira de experimentação: mapeamento, desenho da solução, protótipo e testes.</p>
+<p style="margin: 0; font-size: 13px; line-height: 19px; color: #53585f">Depois do envio, o pedido passa pela reunião inicial, pela priorização e pela validação da PoC antes de entrar na esteira de experimentação.</p>
 </aside>
 </sc-if>
 
@@ -166,61 +167,58 @@ button:focus-visible{outline:3px solid #f3a6a8;outline-offset:2px}
 
 <sc-if value="{{isEntrada}}" hint-placeholder-val="{{ true }}">
 <div style="display: flex; flex-direction: column; gap: 20px">
-<h2 style="margin: 0; font-size: {{h2Size}}; line-height: 1.2; font-weight: 700">Seu problema entra na nossa esteira de experimentação</h2>
-<p style="margin: 0; font-size: 16px; line-height: 24px; color: #53585f">Você conta o problema e o time InovAI conduz o resto: entende, desenha a solução e testa antes de chegar ao cliente.</p>
+<h2 style="margin: 0; font-size: {{h2Size}}; line-height: 1.2; font-weight: 700">Como funciona o seu pedido</h2>
+<p style="margin: 0; font-size: 16px; line-height: 24px; color: #53585f">O seu pedido acontece nas duas primeiras etapas da esteira de experimentação do time InovAI. Depois, a solução segue pelas próximas etapas.</p>
 <sc-if value="{{showDeskEsteira}}" hint-placeholder-val="{{ true }}">
-<div style="display: flex; flex-direction: column; gap: 8px; padding: 16px 18px; border-radius: 12px; background: #f5f3f1">
-<label for="f-consulta-web" style="font-size: 15px; line-height: 21px; font-weight: 700">Já enviou um problema? Digite o código e veja onde ele está na esteira</label>
+<div style="display: flex; flex-direction: column; gap: 10px; padding: 16px 18px; border-radius: 12px; background: #f5f3f1">
+<label for="f-consulta-web" style="font-size: 15px; line-height: 21px; font-weight: 700">Já enviou um problema? Digite o código e veja em que passo ele está</label>
 <div style="display: flex; gap: 8px; flex-wrap: wrap; max-width: 460px">
 <input id="f-consulta-web" type="text" value="{{consultaCod}}" onChange="{{onConsultaCod}}" placeholder="PR-1126-0001" style="flex: 1 1 180px; min-width: 0; box-sizing: border-box; min-height: 48px; padding: 10px 14px; border: 2px solid #bfbfbf; border-radius: 10px; font-size: 16px; font-weight: 700; letter-spacing: 0.04em; color: #262626; background: #ffffff">
 <button type="button" onClick="{{consultar}}" style="min-height: 48px; padding: 10px 22px; border: none; border-radius: 10px; background: #e2262b; color: #ffffff; font-family: Roboto, Arial, sans-serif; font-size: 15px; font-weight: 700; cursor: pointer">Consultar</button>
 </div>
 <sc-if value="{{consultaErro}}" hint-placeholder-val="{{ false }}"><p role="alert" style="margin: 0; font-size: 14px; line-height: 20px; font-weight: 700; color: #960000">Código não encontrado. Confira o formato, por exemplo PR-1126-0001.</p></sc-if>
 <sc-if value="{{temConsulta}}" hint-placeholder-val="{{ false }}">
-<p role="status" style="margin: 0; font-size: 15px; line-height: 22px"><strong style="color: #c00000">{{cRes.codigo}}</strong> está na etapa {{cRes.n}} de 8: <strong>{{cRes.etapa}}</strong>. {{cRes.nota}}</p>
-</sc-if>
+<div role="status" style="background: #ffffff; color: #262626; border-radius: 12px; border: 1px solid #d9d9d9; padding: 16px 18px; display: flex; flex-direction: column; gap: 10px">
+<span style="font-size: 18px; font-weight: 900; color: #c00000">{{cRes.codigo}}</span>
+<p style="margin: 0; font-size: 15px; line-height: 21px">{{cRes.texto}} <strong>{{cRes.nome}}</strong></p>
+<div aria-hidden="true" style="display: flex; gap: 4px; align-items: center"><sc-for list="{{cRes.barra}}" as="b" hint-placeholder-count="11"><span style="flex: {{b.flex}}; height: {{b.h}}; margin-left: {{b.ml}}; border-radius: 9999px; background: {{b.cor}}"></span></sc-for></div>
+<div aria-hidden="true" style="display: flex; justify-content: space-between; gap: 8px; font-size: 11px; font-weight: 700; color: #53585f"><span>Passos do pedido</span><span>Depois do pedido</span></div>
+<p style="margin: 0; font-size: 13px; line-height: 19px; color: #53585f">{{cRes.nota}}</p>
 </div>
 </sc-if>
-<sc-if value="{{showDeskEsteira}}" hint-placeholder-val="{{ true }}">
-<div style="display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 10px">
-<sc-for list="{{esteira}}" as="e" hint-placeholder-count="8">
-<div style="display: flex; flex-direction: column; gap: 8px">
-<div style="display: flex; align-items: center; gap: 6px">
-<span style="width: 36px; height: 36px; flex: 0 0 auto; border-radius: 9999px; box-sizing: border-box; border: {{e.cBorder}}; background: {{e.cBg}}; color: {{e.cColor}}; font-size: 15px; font-weight: 700; display: flex; align-items: center; justify-content: center">{{e.n}}</span>
-<span style="flex-grow: 1; height: 3px; background: {{e.lnR}}"></span>
 </div>
-<span style="font-size: 13px; font-weight: 700; line-height: 17px; color: {{e.nmColor}}">{{e.label}}</span>
-<sc-if value="{{e.atual}}" hint-placeholder-val="{{ false }}"><span style="align-self: flex-start; font-size: 10px; font-weight: 700; letter-spacing: 0.1em; color: #ffffff; background: #e2262b; padding: 3px 8px; border-radius: 9999px">ETAPA ATUAL</span></sc-if>
-</div>
+</sc-if>
+<div style="display: flex; flex-direction: {{trilhaDir}}; gap: 10px; align-items: stretch">
+<sc-for list="{{gruposPassos}}" as="g" hint-placeholder-count="2">
+<sc-if value="{{g.setaAntes}}" hint-placeholder-val="{{ false }}"><div aria-hidden="true" style="display: flex; align-items: center; justify-content: center; flex: none; padding-top: {{setaGrupoPad}}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="{{g.setaCor}}" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" style="transform: {{setaRot}}"><path d="M5 12h13"></path><path d="m13 6 6 6-6 6"></path></svg></div></sc-if>
+<section aria-label="{{g.aria}}" style="flex: {{g.flex}}; min-width: 0; display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; padding-bottom: 8px; border-bottom: 3px solid {{g.linha}}"><span style="font-size: 12px; font-weight: 700; letter-spacing: 0.1em; color: #c00000">{{g.rotulo}}</span><span style="font-size: 15px; font-weight: 700">{{g.nome}}</span></div>
+<ol style="display: flex; flex-direction: {{trilhaDir}}; gap: 6px; list-style: none; padding: 0; margin: 0; flex: 1">
+<sc-for list="{{g.cards}}" as="p" hint-placeholder-count="3">
+<sc-if value="{{p.seta}}" hint-placeholder-val="{{ false }}"><li aria-hidden="true" style="display: flex; align-items: center; justify-content: center; flex: none"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="{{p.setaCor}}" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" style="transform: {{setaRot}}"><path d="M5 12h13"></path><path d="m13 6 6 6-6 6"></path></svg></li></sc-if>
+<li aria-current="{{p.aria}}" style="flex: {{cardFlex}}; min-width: 0; box-sizing: border-box; border-style: solid; border-width: {{p.bw}}; border-color: {{p.bc}}; border-top-color: {{p.btc}}; border-radius: 16px; padding: 14px 12px 16px; display: flex; flex-direction: column; gap: 8px; background: {{p.fundo}}; hyphens: auto; overflow-wrap: break-word">
+<span style="font-size: 16px; line-height: 21px; font-weight: 700; color: {{p.tCor}}">{{p.t}}</span>
+<span style="font-size: 14px; line-height: 20px; color: #53585f">{{p.d}}</span>
+<sc-if value="{{p.feito}}" hint-placeholder-val="{{ false }}"><span style="align-self: flex-start; font-size: 10px; font-weight: 700; letter-spacing: 0.1em; color: #c00000; background: #fdeeee; padding: 3px 8px; border-radius: 9999px">✓ CONCLUÍDO</span></sc-if>
+<sc-if value="{{p.atual}}" hint-placeholder-val="{{ false }}"><span style="align-self: flex-start; font-size: 10px; font-weight: 700; letter-spacing: 0.1em; color: #ffffff; background: #e2262b; padding: 3px 8px; border-radius: 9999px">PASSO ATUAL</span></sc-if>
+</li>
+</sc-for>
+</ol>
+</section>
 </sc-for>
 </div>
-</sc-if>
-<sc-if value="{{showMobileEsteira}}" hint-placeholder-val="{{ false }}">
-<div style="display: flex; flex-direction: column; gap: 6px">
-<span style="align-self: flex-end; font-size: 12px; font-weight: 700; letter-spacing: 0.12em; color: #c00000">ARRASTE →</span>
-<div style="border: 1px solid #d9d9d9; border-radius: 14px; background: #ffffff; padding: 14px 0; overflow-x: auto">
-<div style="display: flex; width: max-content; padding: 0 16px">
-<sc-for list="{{esteira}}" as="e" hint-placeholder-count="8">
-<div style="flex: 0 0 112px; display: flex; flex-direction: column; align-items: center; gap: 8px">
-<div style="width: 100%; display: flex; align-items: center; gap: 6px">
-<span style="flex-grow: 1; height: 3px; background: {{e.lnL}}"></span>
-<span style="width: 36px; height: 36px; flex: 0 0 auto; border-radius: 9999px; box-sizing: border-box; border: {{e.cBorder}}; background: {{e.cBg}}; color: {{e.cColor}}; font-size: 15px; font-weight: 700; display: flex; align-items: center; justify-content: center">{{e.n}}</span>
-<span style="flex-grow: 1; height: 3px; background: {{e.lnR}}"></span>
-</div>
-<span style="font-size: 13px; font-weight: 700; line-height: 17px; text-align: center; padding: 0 6px; color: {{e.nmColor}}">{{e.label}}</span>
-<sc-if value="{{e.atual}}" hint-placeholder-val="{{ false }}"><span style="font-size: 10px; font-weight: 700; letter-spacing: 0.1em; color: #ffffff; background: #e2262b; padding: 3px 8px; border-radius: 9999px">ATUAL</span></sc-if>
-</div>
+<div style="display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; padding-bottom: 8px; border-bottom: 3px solid {{depoisLinha}}"><span style="font-size: 12px; font-weight: 700; letter-spacing: 0.1em; color: #c00000">DEPOIS DO PEDIDO</span><span style="font-size: 15px; font-weight: 700">A solução segue pelas próximas etapas da esteira</span></div>
+<ol style="display: flex; flex-wrap: wrap; align-items: center; gap: 6px; list-style: none; padding: 0; margin: 0">
+<sc-for list="{{etapasDepois}}" as="e" hint-placeholder-count="6">
+<li aria-current="{{e.aria}}" style="display: flex; align-items: center; gap: 6px">
+<sc-if value="{{e.seta}}" hint-placeholder-val="{{ true }}"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="{{e.setaCor}}" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13"></path><path d="m13 6 6 6-6 6"></path></svg></sc-if>
+<span style="padding: 7px 12px; border-radius: 9999px; font-size: 13px; line-height: 17px; font-weight: 700; border: {{e.borda}}; background: {{e.fundo}}; color: {{e.cor}}">{{e.nome}}</span>
+</li>
 </sc-for>
+</ol>
+<p style="margin: 0; font-size: 13px; line-height: 19px; color: #53585f">O Piloto só acontece depois dos testes, com os resultados em mãos.</p>
 </div>
-</div>
-</div>
-</sc-if>
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px">
-<div style="border: 1px solid #d9d9d9; border-top: 4px solid #e2262b; border-radius: 16px; padding: 20px 22px 22px; display: flex; flex-direction: column; gap: 10px; background: #ffffff"><div style="display: flex; align-items: center; gap: 10px"><span style="width: 44px; height: 44px; border-radius: 9999px; background: #e2262b; color: #ffffff; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 700; flex: none">1</span><span style="flex: 1; height: 2px; background: linear-gradient(90deg, #e2262b, rgba(226,38,43,0.15))"></span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#e2262b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex: none"><path d="M9 6l6 6-6 6"></path></svg></div><span style="font-size: 18px; line-height: 24px; font-weight: 700">Você conta o problema</span><span style="font-size: 15px; line-height: 22px; color: #53585f">O que acontece, quem sente e o tamanho do problema.</span></div>
-<div style="border: 1px solid #d9d9d9; border-top: 4px solid #e2262b; border-radius: 16px; padding: 20px 22px 22px; display: flex; flex-direction: column; gap: 10px; background: #ffffff"><div style="display: flex; align-items: center; gap: 10px"><span style="width: 44px; height: 44px; border-radius: 9999px; background: #e2262b; color: #ffffff; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 700; flex: none">2</span><span style="flex: 1; height: 2px; background: linear-gradient(90deg, #e2262b, rgba(226,38,43,0.15))"></span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#e2262b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex: none"><path d="M9 6l6 6-6 6"></path></svg></div><span style="font-size: 18px; line-height: 24px; font-weight: 700">Organizamos as informações</span><span style="font-size: 15px; line-height: 22px; color: #53585f">Objetivo, hipótese, riscos e uma primeira ideia de teste, para você conferir.</span></div>
-<div style="border: 1px solid #d9d9d9; border-top: 4px solid #e2262b; border-radius: 16px; padding: 20px 22px 22px; display: flex; flex-direction: column; gap: 10px; background: #ffffff"><div style="display: flex; align-items: center; gap: 10px"><span style="width: 44px; height: 44px; border-radius: 9999px; background: #e2262b; color: #ffffff; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 700; flex: none">3</span><span style="flex: 1; height: 2px; background: linear-gradient(90deg, #e2262b, rgba(226,38,43,0.15))"></span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#e2262b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex: none"><path d="M5 21V4"></path><path d="M5 4h11l-2 4 2 4H5"></path></svg></div><span style="font-size: 18px; line-height: 24px; font-weight: 700">Conversamos e experimentamos</span><span style="font-size: 15px; line-height: 22px; color: #53585f">Você recebe o canvas pré-preenchido por e-mail, marcamos uma reunião e o time InovAI segue na esteira.</span></div>
-</div>
-<p style="margin: 0; font-size: 14px; line-height: 20px; color: #53585f">O Piloto só acontece depois dos testes, com os resultados em mãos.</p>
 </div>
 </sc-if>
 
@@ -440,7 +438,11 @@ button:focus-visible{outline:3px solid #f3a6a8;outline-offset:2px}
 <div style="width: 56px; height: 56px; border-radius: 9999px; background: #e2262b; display: flex; align-items: center; justify-content: center; flex: none"><svg aria-hidden="true" viewBox="0 0 24 24" style="width: 30px; height: 30px" fill="none" stroke="#ffffff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"></path></svg></div>
 <h2 style="margin: 0; font-size: {{h2Size}}; line-height: 1.2; font-weight: 700">Recebemos o seu problema</h2>
 </div>
-<div style="display: inline-flex; align-self: flex-start; align-items: center; gap: 10px; padding: 8px 16px; border: 2px solid #e2262b; border-radius: 10px; background: #ffffff"><span style="font-size: 12px; line-height: 16px; font-weight: 700; letter-spacing: 0.12em; color: #53585f">CÓDIGO DA DEMANDA</span><span style="font-size: 20px; line-height: 26px; font-weight: 900; color: #c00000">{{codigo}}</span></div>
+<div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap">
+<div style="display: inline-flex; align-items: center; gap: 10px; flex-wrap: wrap; padding: 8px 16px; border: 2px solid #e2262b; border-radius: 10px; background: #ffffff"><span style="font-size: 12px; line-height: 16px; font-weight: 700; letter-spacing: 0.12em; color: #53585f">CÓDIGO DA DEMANDA</span><span style="font-size: 20px; line-height: 26px; font-weight: 900; color: #c00000">{{codigo}}</span></div>
+<button type="button" onClick="{{copiarCodigo}}" aria-label="{{copiarAria}}" style="min-height: 44px; padding: 8px 18px; border: 2px solid #e2262b; border-radius: 9999px; background: #ffffff; color: #c00000; font-family: Roboto, Arial, sans-serif; font-size: 15px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 8px"><sc-if value="{{copiadoOk}}" hint-placeholder-val="{{ false }}"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"></path></svg></sc-if><sc-if value="{{copiadoNao}}" hint-placeholder-val="{{ true }}"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"></rect><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"></path></svg></sc-if>{{copiadoLabel}}</button>
+<span role="status" style="font-size: 13px; line-height: 18px; color: #960000; font-weight: 700">{{copiadoErroTxt}}</span>
+</div>
 <p style="margin: 0; font-size: 16px; line-height: 24px; color: #53585f">Enviamos o seu canvas pré-preenchido para {{email}}. Use o código {{codigo}} para falar sobre esta demanda. O próximo passo é uma reunião rápida com o time InovAI.</p>
 <sc-if value="{{temPendMetricas}}" hint-placeholder-val="{{ false }}">
 <div role="note" style="display: flex; gap: 14px; align-items: flex-start; padding: 16px 18px; border-radius: 12px; background: #fff7e0; border: 2px solid #ffc000">
@@ -457,7 +459,6 @@ button:focus-visible{outline:3px solid #f3a6a8;outline-offset:2px}
 <p style="margin: 0; font-size: 12px; line-height: 16px; font-weight: 700; letter-spacing: 0.12em; color: #53585f">SEU CANVAS PRÉ-PREENCHIDO</p>
 <button type="button" onClick="{{baixar}}" style="min-height: 44px; padding: 10px 20px; border: 2px solid #e2262b; border-radius: 9999px; background: #ffffff; color: #c00000; font-family: Roboto, Arial, sans-serif; font-size: 15px; font-weight: 700; cursor: pointer">Baixar {{codigoArquivo}}.pdf</button>
 </div>
-<div style="display: flex; justify-content: flex-end"><button type="button" onClick="{{toggleCvZoom}}" aria-pressed="{{cvZoomPressed}}" style="min-height: 40px; padding: 8px 16px; border: 1px solid #bfbfbf; border-radius: 9999px; background: #ffffff; color: #262626; font-family: Roboto, Arial, sans-serif; font-size: 14px; font-weight: 700; cursor: pointer">{{cvZoomLabel}}</button></div>
 <div id="cv-wrap" style="width: 100%; overflow-x: {{cvOverflow}}; border: 1px solid #d9d9d9; border-radius: 10px; background: #ffffff">
 <div style="position: relative; width: {{cvBoxW}}; height: {{cvBoxH}}; overflow: hidden">
 <div role="img" aria-label="Canvas de iniciativa pré-preenchido" style="position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform: scale({{cvScale}}); transform-origin: 0 0; background: #ffffff; color: #262626; font-family: Roboto, Arial, sans-serif; display: flex; flex-direction: row; text-align: left">
@@ -807,8 +808,7 @@ class Component extends DCLogic {
     function setter(k) { return function (e) { var o = {}; o[k] = e.target.value; self.setState(o); }; }
     var listaBen = (function () { var out = []; if (s.ganho && String(s.justPrinc || '').trim()) out.push({ tipo: s.ganho, texto: s.justPrinc }); (s.ganhosSec || []).forEach(function (l) { var t = (s.justSec || {})[l]; if (t && String(t).trim()) out.push({ tipo: l, texto: t }); }); return out; })();
     var cvFit = ((s.cvW || (compact ? 352 : 760)) - 2) / 1920;
-    var cvZoomAtivo = !!s.cvZoom && cvFit < 0.5;
-    var cvEsc = cvZoomAtivo ? 0.5 : cvFit;
+    var cvEsc = cvFit;
     var respostasTexto = (function () {
       var L = [];
       L.push('PRISMA DE EXPERIMENTAÇÃO · RESPOSTAS DO TESTE');
@@ -885,34 +885,73 @@ class Component extends DCLogic {
       onConsultaCod: function (e) { self.setState({ consultaCod: e.target.value, consultaErro: false }); },
       consultaErro: !!s.consultaErro,
       temConsulta: !!s.consultaRes,
-      cRes: s.consultaRes || { codigo: '', n: '', etapa: '', nota: '', barra: [] },
+      cRes: s.consultaRes || { codigo: '', texto: '', nome: '', barra: [], nota: '' },
       consultar: function () {
         var c = String(s.consultaCod || '').trim().toUpperCase();
         if (!/^PR-\d{4}-\d{4}$/.test(c)) { self.setState({ consultaRes: null, consultaErro: true }); return; }
-        var nomes = ['Mapeamento de problemas', 'Desenho de solução', 'Prototipação', 'Testes', 'Decisão de pilotar', 'Priorização', 'Piloto', 'Crescimento'];
+        var nomes = ['Mapeamento de problemas', 'Desenho de solução', 'Prototipação', 'Testes', 'Decisão de pilotar', 'Priorização', 'Piloto', 'Transferência de conhecimento'];
+        var passos = ['Demanda recebida', 'Reunião inicial agendada', 'Priorização de estudos', 'Validação e métricas da PoC', 'Em desenvolvimento'];
+        var etapaDoPasso = [0, 0, 1, 1, 1];
         var propria = c === s.codigo;
-        var idx = propria ? 0 : (parseInt(c.slice(-4), 10) % 6);
+        // Simulação: o número do código decide o ponto da jornada (0 a 4: passos do pedido; 5 a 10: próximas etapas).
+        var ponto = propria ? 0 : (parseInt(c.slice(-4), 10) % 11);
+        var est = ponto < 5 ? etapaDoPasso[ponto] : ponto - 3;
         self.setState({ consultaErro: false, consultaCod: c, consultaRes: {
-          codigo: c, idx: idx, n: String(idx + 1), etapa: nomes[idx],
-          nota: propria ? 'Recebemos seu problema. O time InovAI vai entrar em contato para a reunião de aprofundamento.' : 'No protótipo, a etapa é simulada. Na solução, ela vem do registro da demanda.',
-          barra: nomes.map(function (_, i) { return { cor: i < idx ? '#e2262b' : (i === idx ? '#960000' : '#d9d9d9') }; })
+          codigo: c, ponto: ponto, esteiraIdx: est,
+          texto: ponto < 5 ? 'Passo atual:' : 'Os passos do pedido foram concluídos. Agora em:',
+          nome: ponto < 5 ? passos[ponto] : nomes[est],
+          barra: Array.apply(null, Array(11)).map(function (_, i) {
+            return { flex: i < 5 ? '2' : '1', h: i < 5 ? '10px' : '6px', ml: i === 5 ? '6px' : '0', cor: i < ponto ? '#e2262b' : (i === ponto ? '#960000' : '#d9d9d9') };
+          }),
+          nota: propria ? 'Recebemos seu problema. O time InovAI vai entrar em contato para agendar a reunião inicial.' : 'No protótipo, a posição é simulada. Na solução, ela vem do registro da demanda.'
         } });
       },
-      showDeskEsteira: !compact,
-      showMobileEsteira: compact,
-      esteira: ['Mapeamento de problemas', 'Desenho de solução', 'Prototipação', 'Testes', 'Decisão de pilotar', 'Priorização', 'Piloto', 'Crescimento'].map(function (l, i, arr) {
-        var atualIdx = s.consultaRes ? s.consultaRes.idx : 0;
-        var feito = i < atualIdx, atual = i === atualIdx;
+      trilhaDir: compact ? 'column' : 'row',
+      setaRot: compact ? 'rotate(90deg)' : 'none',
+      setaGrupoPad: compact ? '0' : '30px',
+      cardFlex: compact ? '0 0 auto' : '1 1 0',
+      gruposPassos: (function () {
+        var r = s.consultaRes;
+        var ponto = r ? r.ponto : -1;
+        var lista = [
+          ['Demanda recebida', 'Você conta o problema aqui no Prisma, confere o resumo e recebe o código da demanda.'],
+          ['Reunião inicial agendada', 'Uma conversa com o time InovAI para validar as informações e aprofundar o discovery.'],
+          ['Priorização de estudos', 'O time InovAI prioriza quais problemas serão estudados primeiro.'],
+          ['Validação e métricas da PoC', 'Validamos a proposta com os interessados e definimos as métricas da PoC.'],
+          ['Em desenvolvimento', 'O time desenvolve a solução. Depois, ela segue para a Prototipação.']
+        ];
+        function card(i, primeiro) {
+          var p = lista[i];
+          var atual = !!r && ponto === i, feito = !!r && i < ponto, apagado = !!r && i > ponto;
+          return {
+            t: p[0], d: p[1], atual: atual, feito: feito, aria: atual ? 'step' : 'false',
+            seta: !primeiro, setaCor: apagado ? '#bfbfbf' : '#e2262b',
+            tCor: apagado ? '#53585f' : '#262626',
+            bw: atual ? '4px 2px 2px 2px' : '4px 1px 1px 1px',
+            bc: atual ? '#e2262b' : '#d9d9d9',
+            btc: apagado ? '#d9d9d9' : '#e2262b',
+            fundo: atual ? '#fdeeee' : '#ffffff'
+          };
+        }
+        return [
+          { setaAntes: false, setaCor: '#e2262b', flex: compact ? '0 0 auto' : '2 1 0', rotulo: 'ETAPA 1', nome: 'Mapeamento de problemas', aria: 'Etapa 1 da esteira: Mapeamento de problemas', linha: r && ponto <= 1 ? '#e2262b' : '#d9d9d9', cards: [card(0, true), card(1, false)] },
+          { setaAntes: true, setaCor: r && ponto < 2 ? '#bfbfbf' : '#e2262b', flex: compact ? '0 0 auto' : '3 1 0', rotulo: 'ETAPA 2', nome: 'Desenho de solução', aria: 'Etapa 2 da esteira: Desenho de solução', linha: r && ponto >= 2 && ponto <= 4 ? '#e2262b' : '#d9d9d9', cards: [card(2, true), card(3, false), card(4, false)] }
+        ];
+      })(),
+      depoisLinha: s.consultaRes && s.consultaRes.ponto >= 5 ? '#e2262b' : '#d9d9d9',
+      etapasDepois: ['Prototipação', 'Testes', 'Decisão de pilotar', 'Priorização', 'Piloto', 'Transferência de conhecimento'].map(function (nome, j) {
+        var r = s.consultaRes, i = 5 + j;
+        var atual = !!r && r.ponto === i, feito = !!r && i < r.ponto, apagado = !!r && i > r.ponto;
         return {
-          n: String(i + 1), label: l, atual: atual,
-          cBorder: feito ? 'none' : (atual ? '3px solid #e2262b' : '2px solid #d9d9d9'),
-          cBg: feito ? '#e2262b' : '#ffffff',
-          cColor: feito ? '#ffffff' : (atual ? '#c00000' : '#898989'),
-          nmColor: feito ? '#262626' : (atual ? '#c00000' : '#53585f'),
-          lnL: i === 0 ? 'transparent' : (i <= atualIdx ? '#e2262b' : '#d9d9d9'),
-          lnR: i === arr.length - 1 ? 'transparent' : (i < atualIdx ? '#e2262b' : '#d9d9d9')
+          nome: (feito ? '✓ ' : '') + nome, aria: atual ? 'step' : 'false',
+          seta: j > 0, setaCor: apagado ? '#bfbfbf' : '#e2262b',
+          borda: atual ? '2px solid #e2262b' : '1px solid #d9d9d9',
+          fundo: atual ? '#e2262b' : (feito ? '#fdeeee' : '#f5f3f1'),
+          cor: atual ? '#ffffff' : (apagado ? '#53585f' : '#262626')
         };
       }),
+      showDeskEsteira: !compact,
+      showMobileEsteira: compact,
       symSize: compact ? '34' : '42',
       brandSize: compact ? '19px' : '22px',
       logoH: compact ? '34px' : '42px',
@@ -1020,10 +1059,7 @@ class Component extends DCLogic {
           riscos: (rk.length ? rk : [PF]).map(function (t) { return { t: t }; })
         };
       })(),
-      cvZoomLabel: s.cvZoom ? 'Ajustar à tela' : 'Ampliar canvas',
-      cvZoomPressed: s.cvZoom ? 'true' : 'false',
-      toggleCvZoom: function () { self.setState({ cvZoom: !s.cvZoom }); },
-      cvOverflow: cvZoomAtivo ? 'auto' : 'hidden',
+      cvOverflow: 'hidden',
       cvScale: String(cvEsc),
       cvBoxW: Math.round(1920 * cvEsc) + 'px',
       cvBoxH: Math.round(1080 * cvEsc) + 'px',
@@ -1031,6 +1067,16 @@ class Component extends DCLogic {
       codigo: s.codigo || 'PR-0000-0000',
       codigoArquivo: s.codigo || 'PR-0000-0000',
       baixouTeste: !!s.baixouTeste,
+      copiarAria: 'Copiar o código ' + (s.codigo || ''),
+      copiadoOk: s.copiado === 'ok', copiadoNao: s.copiado !== 'ok',
+      copiadoLabel: s.copiado === 'ok' ? 'Código copiado' : 'Copiar código',
+      copiadoErroTxt: s.copiado === 'erro' ? 'Não deu para copiar. Selecione o código e use Ctrl+C.' : '',
+      copiarCodigo: function () {
+        var c = s.codigo || '';
+        function ok() { self.setState({ copiado: 'ok' }); self.timers.push(setTimeout(function () { self.setState({ copiado: '' }); }, 3000)); }
+        function falhou() { self.setState({ copiado: 'erro' }); }
+        try { navigator.clipboard.writeText(c).then(ok, falhou); } catch (e) { falhou(); }
+      },
       respostasTexto: respostasTexto,
       baixarTeste: function () { var nome = (s.codigo || 'PR') + '-respostas.txt'; try { var blob = new Blob([respostasTexto], { type: 'text/plain;charset=utf-8' }); var url = URL.createObjectURL(blob); var a = document.createElement('a'); a.href = url; a.download = nome; document.body.appendChild(a); a.click(); a.remove(); setTimeout(function () { URL.revokeObjectURL(url); }, 2000); } catch (e) {} self.setState({ baixouTeste: true }); },
       sairImpressao: function () { self.setState({ imprimindo: false }); },
@@ -1081,7 +1127,7 @@ class Component extends DCLogic {
       problemaResumo: resumo,
       validadosTxt: validados + ' de ' + s.ia.length + ' campos confirmados',
       enviarOpacity: validados === s.ia.length ? '1' : '0.45',
-      enviar: function () { if (validados < s.ia.length) { self.setState({ erroEnvio: true }); return; } var seq = (s.seq || 0) + 1; var d = new Date(); var mmaa = ('0' + (d.getMonth() + 1)).slice(-2) + String(d.getFullYear()).slice(-2); self.setState({ tela: 'fim', erroEnvio: false, cvNivel: 0, cvNivelT: 0, seq: seq, codigo: 'PR-' + mmaa + '-' + ('000' + seq).slice(-4), enviadoEm: d.toLocaleString('pt-BR'), baixouTeste: false }); },
+      enviar: function () { if (validados < s.ia.length) { self.setState({ erroEnvio: true }); return; } var seq = (s.seq || 0) + 1; var d = new Date(); var mmaa = ('0' + (d.getMonth() + 1)).slice(-2) + String(d.getFullYear()).slice(-2); self.setState({ tela: 'fim', erroEnvio: false, cvNivel: 0, cvNivelT: 0, seq: seq, codigo: 'PR-' + mmaa + '-' + ('000' + seq).slice(-4), enviadoEm: d.toLocaleString('pt-BR'), baixouTeste: false, copiado: '' }); },
       voltarConta: function () { self.setState({ tela: 'conta' }); },
       recomecar: function () { self.setState({ tela: 'conta', problema: '', dados: '', produto: '', interessados: '', erro: false, erroEnvio: false, usouExemplo: false, iaStep: 0, ia: [], stakeholders: '', nome: '', area: '', email: '', baixou: false, volume: '', volNaoSei: false, valorCaso: '', ganho: '', ganhosSec: [], justPrinc: '', justSec: {}, arquivos: [], links: [], linkNovo: '' }); }
     };

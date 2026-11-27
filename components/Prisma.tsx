@@ -104,8 +104,9 @@ export default function Prisma() {
         erro: false,
         res: {
           codigo: corpo.codigo,
-          idx: corpo.idx,
-          nota: corpo.idx === 0 ? "Recebemos seu problema. O time InovAI vai entrar em contato para a reunião de aprofundamento." : "",
+          passo: corpo.passo,
+          esteira: corpo.esteira,
+          nota: corpo.passo === 0 ? "Recebemos seu problema. O time InovAI vai entrar em contato para agendar a reunião inicial." : "",
         },
       });
     } catch {

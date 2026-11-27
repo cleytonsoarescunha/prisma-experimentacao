@@ -1,6 +1,7 @@
 -- Prisma de Experimentação: banco inicial (Fatia 2)
 -- Como usar: no painel do Supabase, abra SQL Editor > New query, cole este arquivo inteiro e clique em Run.
 -- Pode rodar mais de uma vez sem estragar nada.
+-- Depois dele, rode também 002_permissoes_servidor.sql e 003_passos_do_pedido.sql, nessa ordem.
 
 -- 1. Demandas --------------------------------------------------------------
 
@@ -41,7 +42,7 @@ create table if not exists public.demandas (
 
   constraint demandas_etapa_valida check (etapa in (
     'Mapeamento de problemas', 'Desenho de solução', 'Prototipação', 'Testes',
-    'Decisão de pilotar', 'Priorização', 'Piloto', 'Crescimento'
+    'Decisão de pilotar', 'Priorização', 'Piloto', 'Transferência de conhecimento'
   ))
 );
 

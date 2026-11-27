@@ -36,8 +36,11 @@ A aplicação funciona no computador e no celular (layout responsivo; no celular
 ### Página inicial
 - Faixa vermelha com o título "Qual problema você quer resolver?", texto de apoio e o botão "Contar meu problema".
 - Desenho do prisma de vidro (marca do Prisma; copie o SVG do protótipo).
-- Esteira de experimentação com 8 etapas: Mapeamento de problemas, Desenho de solução, Prototipação, Testes, Decisão de pilotar, Priorização, Piloto, Crescimento. Nota: "O Piloto só acontece depois dos testes, com os resultados em mãos."
-- Consulta pelo código: "Já enviou um problema? Digite o código e veja onde ele está na esteira." No computador fica na área branca, ao lado; no celular, depois do desenho do prisma. Ao consultar, a esteira destaca a etapa atual da demanda.
+- Seção "Como funciona o seu pedido": uma jornada só, sem números nos passos. A sequência é mostrada por setas entre os cartões (para a direita no computador, para baixo no celular).
+  - Grupo "ETAPA 1 Mapeamento de problemas": Demanda recebida → Reunião inicial agendada (validar informações e aprofundar o discovery).
+  - Seta, e grupo "ETAPA 2 Desenho de solução": Priorização de estudos → Validação e métricas da PoC (com os interessados) → Em desenvolvimento.
+  - Por último, menor, "DEPOIS DO PEDIDO: a solução segue pelas próximas etapas da esteira": Prototipação → Testes → Decisão de pilotar → Priorização → Piloto → Transferência de conhecimento (a solução passa para o time recebedor, que faz a governança e a evolução). Nota: "O Piloto só acontece depois dos testes, com os resultados em mãos."
+- Consulta pelo código: "Já enviou um problema? Digite o código e veja em que passo ele está." No computador fica na área branca, logo abaixo do título da seção; no celular, depois do desenho do prisma. O resultado diz o passo atual (ou, depois do pedido, a etapa atual) e mostra uma barra da jornada inteira (5 trechos maiores dos passos e 6 menores das próximas etapas). Os cartões também acendem: concluído (✓ CONCLUÍDO), atual (destaque rosa e selo PASSO ATUAL) e ainda não chegou (cinza).
 
 ### Passo 1: Você conta
 Campos (OBRIGATÓRIO ou OPCIONAL indicado ao lado do rótulo):
@@ -73,7 +76,7 @@ A pessoa vê "Você contou" (resumo, com botão Editar que volta ao Passo 1) e q
 Só envia quando os quatro estiverem confirmados ("Enviar para o time InovAI").
 
 ### Tela final
-- "Recebemos o seu problema", com o CÓDIGO DA DEMANDA em destaque.
+- "Recebemos o seu problema", com o CÓDIGO DA DEMANDA em destaque e, ao lado, o botão "Copiar código" (vira "Código copiado" por alguns segundos).
 - Se o volume ficou como "Não sei agora" ou o custo por caso ficou vazio: aviso amarelo "Leve estes números para a reunião", listando o que falta.
 - O canvas pré-preenchido (ver abaixo) e o botão "Baixar [código].pdf".
 - Próximo passo: reunião de aprofundamento com o time InovAI.
@@ -114,7 +117,7 @@ Barra lateral vermelha (#E2262B, 490px, sem imagem de fundo):
 
 ## Banco de dados (Supabase)
 
-Tabela `demandas` (sugestão; ajuste se precisar): código, data de envio, todos os campos do Passo 1, itens confirmados no Passo 3 (resumo, nome, hipótese, riscos), etapa atual na esteira (começa em "Mapeamento de problemas"), histórico de mudanças de etapa, caminho dos anexos no Storage e do PDF do canvas. Ative Row Level Security: quem enviou vê só as próprias demandas; o time InovAI (lista de e-mails em variável de ambiente) vê e altera todas.
+Tabela `demandas` (sugestão; ajuste se precisar): código, data de envio, todos os campos do Passo 1, itens confirmados no Passo 3 (resumo, nome, hipótese, riscos), situação atual (um dos 5 passos do pedido nas etapas 1 e 2, ou uma etapa de Prototipação em diante; começa em "Demanda recebida"), histórico de mudanças de etapa, caminho dos anexos no Storage e do PDF do canvas. Ative Row Level Security: quem enviou vê só as próprias demandas; o time InovAI (lista de e-mails em variável de ambiente) vê e altera todas.
 
 ## Visual
 

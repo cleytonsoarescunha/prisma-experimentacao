@@ -1,7 +1,7 @@
-// Consulta pública pelo código: devolve só o código e a etapa na esteira (nenhum dado pessoal).
+// Consulta pública pelo código: devolve só o código, o passo do pedido e a etapa na esteira (nenhum dado pessoal).
 
 import { ConfiguracaoFaltando, supabaseServidor } from "@/lib/supabase-servidor";
-import { ETAPAS_ESTEIRA } from "@/lib/tipos";
+import { posicaoDemanda } from "@/lib/tipos";
 
 export async function GET(_req: Request, ctx: RouteContext<"/api/demandas/[codigo]">) {
   const { codigo: bruto } = await ctx.params;
@@ -23,6 +23,6 @@ export async function GET(_req: Request, ctx: RouteContext<"/api/demandas/[codig
   }
   if (!data) return Response.json({ erro: "Código não encontrado." }, { status: 404 });
 
-  const idx = Math.max(0, ETAPAS_ESTEIRA.indexOf(data.etapa as (typeof ETAPAS_ESTEIRA)[number]));
-  return Response.json({ codigo: data.codigo, etapa: data.etapa, idx });
+  const { passo, esteira } = posicaoDemanda(data.etapa);
+  return Response.json({ codigo: data.codigo, etapa: data.etapa, passo, esteira });
 }
