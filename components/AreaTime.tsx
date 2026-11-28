@@ -158,6 +158,35 @@ export function FormEntrar({ erroLink }: { erroLink: boolean }) {
   );
 }
 
+/**
+ * Página aberta pelo link do e-mail. O acesso só é liberado no clique do botão:
+ * os robôs de segurança dos e-mails das empresas abrem os links para conferir, mas não apertam botões,
+ * e assim não gastam o link de uso único antes da pessoa.
+ */
+export function ConfirmarEntrada({ token }: { token: string }) {
+  const [entrando, setEntrando] = useState(false);
+  return (
+    <form
+      method="post"
+      action="/api/inovai/entrar"
+      onSubmit={() => setEntrando(true)}
+      style={{ maxWidth: 480, background: "#ffffff", border: `1px solid ${COR.linhas}`, borderRadius: 16, padding: 28, display: "flex", flexDirection: "column", gap: 14 }}
+    >
+      <h1 style={{ margin: 0, fontSize: 26, lineHeight: "32px" }}>Entrar na área restrita</h1>
+      <p style={{ margin: 0, fontSize: 15, lineHeight: "22px", color: COR.suave }}>
+        Clique no botão para entrar. O acesso fica guardado neste navegador por 7 dias.
+      </p>
+      <input type="hidden" name="token" value={token} />
+      <button type="submit" disabled={entrando} style={{ ...botaoPrimario, alignSelf: "flex-start", cursor: entrando ? "wait" : "pointer" }}>
+        {entrando ? "Entrando..." : "Entrar na área restrita"}
+      </button>
+      <Link href="/" style={{ fontSize: 14, color: COR.vermelhoEscuro, fontWeight: 700 }}>
+        Voltar para a página inicial
+      </Link>
+    </form>
+  );
+}
+
 export interface LinhaDemanda {
   codigo: string;
   enviadoEm: string;

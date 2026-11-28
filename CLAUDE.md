@@ -125,7 +125,7 @@ Barra lateral vermelha (#E2262B, 490px, sem imagem de fundo):
 ## Área do time InovAI
 
 - Endereço `/inovai`. Na barra superior do site, à direita, um botão "Área restrita" (com ícone de cadeado) leva para lá.
-- Entrada sem senha: a pessoa digita o e-mail em `/inovai/entrar` e recebe pelo Gmail do Prisma um link de acesso ("InovAI | Seu link de acesso ao Prisma"), criado pelo Supabase Auth, que vale uma vez e por cerca de 1 hora. Só e-mails da lista `INOVAI_EMAILS` (no .env.local) recebem o link; a resposta na tela é sempre a mesma, para não revelar quem está na lista. Depois do clique, a sessão fica guardada por 7 dias num cookie assinado.
+- Entrada sem senha: a pessoa digita o e-mail em `/inovai/entrar` e recebe pelo Gmail do Prisma um link de acesso ("InovAI | Seu link de acesso ao Prisma"), criado pelo Supabase Auth, que vale uma vez e por cerca de 1 hora. O link abre uma página com o botão "Entrar na área restrita" e o acesso só é liberado no clique (os robôs de segurança dos e-mails corporativos abrem os links sozinhos e gastariam o link antes da pessoa). Só e-mails da lista `INOVAI_EMAILS` (no .env.local) recebem o link; a resposta na tela é sempre a mesma, para não revelar quem está na lista. Depois do clique, a sessão fica guardada por 7 dias num cookie assinado.
 - Lista de todas as demandas (código, data, nome da solução, produto, quem enviou e área, situação), com filtro por situação.
 - Detalhe da demanda: situação e botão para mudar (com histórico de quem mudou e quando), quem enviou, tudo o que foi contado, anexos (links temporários), hipótese e riscos, canvas e botão para baixar o PDF.
 - Botão Sair, que recarrega a página do zero.

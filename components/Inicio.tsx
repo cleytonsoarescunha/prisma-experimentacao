@@ -309,12 +309,13 @@ function DepoisDoPedido({ ponto }: { ponto: number | null }) {
         <span style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.1em", color: COR.vermelhoEscuro }}>DEPOIS DO PEDIDO</span>
         <span style={{ fontSize: 15, fontWeight: 700 }}>A solução segue pelas próximas etapas da esteira</span>
       </div>
-      <ol style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 6, listStyle: "none", padding: 0, margin: 0 }}>
+      {/* Uma linha só, que se arrasta para o lado quando não cabe na tela (celular). */}
+      <ol className="pz-arrasta" tabIndex={0} aria-label="Próximas etapas da esteira (arraste para o lado para ver todas)" style={{ display: "flex", flexWrap: "nowrap", alignItems: "center", gap: 6, listStyle: "none", padding: "2px 0 8px", margin: 0 }}>
         {ETAPAS_DEPOIS.map((nome, j) => {
           const i = TOTAL_PASSOS + j;
           const { atual, feito, apagado } = situacao(i, ponto);
           return (
-            <li key={nome} aria-current={atual ? "step" : undefined} style={{ display: "flex", alignItems: "center", gap: 6 }}>
+            <li key={nome} aria-current={atual ? "step" : undefined} style={{ display: "flex", alignItems: "center", gap: 6, flex: "none", whiteSpace: "nowrap" }}>
               {j > 0 && (
                 <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={apagado ? COR.cinzaBorda : COR.vermelho} strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M5 12h13" />

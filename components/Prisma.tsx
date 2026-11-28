@@ -337,7 +337,7 @@ export default function Prisma() {
                 </div>
               </div>
               <p style={{ margin: 0, fontSize: 13, lineHeight: "19px", color: COR.suave }}>
-                Depois da reunião, o time InovAI leva o problema pela esteira de experimentação: mapeamento, desenho da solução, protótipo e testes.
+                Depois do envio, o pedido passa pela reunião inicial, pela priorização e pela validação da PoC antes de entrar na esteira de experimentação.
               </p>
             </aside>
           )}

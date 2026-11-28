@@ -129,6 +129,19 @@
   flex: none;
   transform: rotate(90deg);
 }
+/* Linha que se arrasta para o lado (próximas etapas da esteira no celular). */
+.pz-arrasta {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: #d9d9d9 transparent;
+}
+.pz-arrasta:focus-visible {
+  outline: 3px solid #e2262b;
+  outline-offset: 2px;
+  border-radius: 8px;
+}
 @media (min-width: 1100px) {
   .pz-trilha {
     flex-direction: row;

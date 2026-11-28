@@ -7,7 +7,7 @@ const CONTATO_CRIADOR = "cleytonsoarescunha@gmail.com";
 
 export default function Rodape() {
   return (
-    <footer className="pz-x" style={{ width: "100%", maxWidth: 1240, margin: "0 auto", paddingTop: 8, paddingBottom: 36, flex: "none", boxSizing: "border-box" }}>
+    <footer className="pz-x" style={{ width: "100%", maxWidth: 1240, margin: "0 auto", paddingTop: 8, paddingBottom: 96, flex: "none", boxSizing: "border-box" }}>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, flexWrap: "wrap", borderTop: `1px solid ${COR.linhas}`, paddingTop: 22 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
           <span style={{ width: 44, height: 44, background: COR.vermelho, display: "flex", alignItems: "center", justifyContent: "center" }}>

@@ -56,11 +56,16 @@ button:focus-visible{outline:3px solid #f3a6a8;outline-offset:2px}
 <span style="font-size: 12px; line-height: 16px; color: #53585f">Time InovAI · CoE Digital</span>
 </div>
 </button>
-<nav aria-label="Navegação principal" style="display: flex; align-items: center; gap: 24px">
-<button type="button" aria-label="Área restrita" title="Área restrita: entrada do time InovAI (no protótipo, só ilustrativo)" style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 40px; min-width: 40px; padding: 8px 14px; border: 2px solid #e2262b; border-radius: 9999px; background: #ffffff; color: #c00000; font-family: Roboto, Arial, sans-serif; font-size: 14px; font-weight: 700; white-space: nowrap; cursor: pointer"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg><sc-if value="{{showNav}}" hint-placeholder-val="{{ true }}"><span>Área restrita</span></sc-if></button>
+<nav aria-label="Navegação principal" style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap; justify-content: flex-end">
+<sc-if value="{{mostraSair}}" hint-placeholder-val="{{ false }}">
+<sc-if value="{{showNav}}" hint-placeholder-val="{{ true }}"><span style="font-size: 14px; color: #53585f; overflow-wrap: anywhere">{{timeEmail}}</span></sc-if>
+<button type="button" onClick="{{sair}}" style="min-height: 40px; padding: 8px 16px; border: none; border-radius: 9999px; background: transparent; color: #c00000; font-family: Roboto, Arial, sans-serif; font-size: 14px; font-weight: 700; text-decoration: underline; cursor: pointer">Sair</button>
+</sc-if>
+<button type="button" onClick="{{abrirRestrita}}" aria-label="{{restritaAria}}" aria-current="{{restritaAtual}}" title="Área restrita" style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 40px; min-width: 40px; padding: 8px 14px; border: 2px solid #e2262b; border-radius: 9999px; background: {{restritaBg}}; color: {{restritaCor}}; font-family: Roboto, Arial, sans-serif; font-size: 14px; font-weight: 700; white-space: nowrap; cursor: pointer"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg><sc-if value="{{showNav}}" hint-placeholder-val="{{ true }}"><span>Área restrita</span></sc-if></button>
 </nav>
 </div>
 </header>
+<sc-if value="{{isSite}}" hint-placeholder-val="{{ true }}">
 <section class="hero" style="color: #ffffff; flex: none">
 <sc-if value="{{isEntrada}}" hint-placeholder-val="{{ true }}">
 <div style="max-width: 1240px; margin: 0 auto; padding: {{heroPad}}; box-sizing: border-box; display: flex; align-items: center; justify-content: space-between; gap: 32px; flex-wrap: wrap">
@@ -98,7 +103,7 @@ button:focus-visible{outline:3px solid #f3a6a8;outline-offset:2px}
 </div>
 <sc-if value="{{showMobileEsteira}}" hint-placeholder-val="{{ false }}">
 <div style="flex: 1 1 100%; display: flex; flex-direction: column; gap: 8px">
-<label for="f-consulta" style="font-size: 15px; line-height: 21px; font-weight: 700">Já enviou um problema? Acompanhe pelo código</label>
+<label for="f-consulta" style="font-size: 15px; line-height: 21px; font-weight: 700">Já enviou um problema? Digite o código e veja em que passo ele está</label>
 <div style="display: flex; gap: 8px; flex-wrap: wrap">
 <input id="f-consulta" type="text" value="{{consultaCod}}" onChange="{{onConsultaCod}}" placeholder="PR-1126-0001" style="flex: 1 1 180px; min-width: 0; box-sizing: border-box; min-height: 48px; padding: 10px 14px; border: 2px solid #ffffff; border-radius: 10px; font-size: 16px; font-weight: 700; letter-spacing: 0.04em; color: #262626; background: #ffffff">
 <button type="button" onClick="{{consultar}}" style="min-height: 48px; padding: 10px 22px; border: 2px solid #ffffff; border-radius: 10px; background: transparent; color: #ffffff; font-family: Roboto, Arial, sans-serif; font-size: 15px; font-weight: 700; cursor: pointer">Consultar</button>
@@ -209,9 +214,9 @@ button:focus-visible{outline:3px solid #f3a6a8;outline-offset:2px}
 </div>
 <div style="display: flex; flex-direction: column; gap: 10px">
 <div style="display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; padding-bottom: 8px; border-bottom: 3px solid {{depoisLinha}}"><span style="font-size: 12px; font-weight: 700; letter-spacing: 0.1em; color: #c00000">DEPOIS DO PEDIDO</span><span style="font-size: 15px; font-weight: 700">A solução segue pelas próximas etapas da esteira</span></div>
-<ol style="display: flex; flex-wrap: wrap; align-items: center; gap: 6px; list-style: none; padding: 0; margin: 0">
+<ol tabindex="0" aria-label="Próximas etapas da esteira (arraste para o lado para ver todas)" style="display: flex; flex-wrap: nowrap; align-items: center; gap: 6px; list-style: none; padding: 2px 0 8px; margin: 0; overflow-x: auto; scrollbar-width: thin; scrollbar-color: #d9d9d9 transparent">
 <sc-for list="{{etapasDepois}}" as="e" hint-placeholder-count="6">
-<li aria-current="{{e.aria}}" style="display: flex; align-items: center; gap: 6px">
+<li aria-current="{{e.aria}}" style="display: flex; align-items: center; gap: 6px; flex: none; white-space: nowrap">
 <sc-if value="{{e.seta}}" hint-placeholder-val="{{ true }}"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="{{e.setaCor}}" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13"></path><path d="m13 6 6 6-6 6"></path></svg></sc-if>
 <span style="padding: 7px 12px; border-radius: 9999px; font-size: 13px; line-height: 17px; font-weight: 700; border: {{e.borda}}; background: {{e.fundo}}; color: {{e.cor}}">{{e.nome}}</span>
 </li>
@@ -413,6 +418,7 @@ button:focus-visible{outline:3px solid #f3a6a8;outline-offset:2px}
 <sc-if value="{{it.lendo}}" hint-placeholder-val="{{ true }}">
 <p style="margin: 0; font-size: 15px; line-height: 23px; white-space: pre-line">{{it.texto}}</p>
 </sc-if>
+<sc-if value="{{it.temAviso}}" hint-placeholder-val="{{ false }}"><p role="alert" style="margin: 0; font-size: 14px; line-height: 20px; font-weight: 700; color: #960000">{{it.aviso}}</p></sc-if>
 <div style="display: flex; gap: 10px; flex-wrap: wrap">
 <sc-if value="{{it.mostraAceitar}}" hint-placeholder-val="{{ true }}">
 <button type="button" onClick="{{it.aceitar}}" style="min-height: 44px; padding: 10px 22px; border: none; border-radius: 9999px; background: #e2262b; color: #ffffff; font-family: Roboto, Arial, sans-serif; font-size: 15px; font-weight: 700; cursor: pointer">{{it.aceitarLabel}}</button>
@@ -583,7 +589,132 @@ button:focus-visible{outline:3px solid #f3a6a8;outline-offset:2px}
 </main>
 </div>
 </div>
-<footer style="width: 100%; max-width: 1240px; margin: 0 auto; padding: 8px {{padX}} 36px; box-sizing: border-box; flex: none">
+</sc-if>
+
+<sc-if value="{{isTime}}" hint-placeholder-val="{{ false }}">
+<main style="width: 100%; max-width: 1240px; margin: 0 auto; padding: 28px {{padX}} 48px; box-sizing: border-box; flex: 1">
+
+<sc-if value="{{isTEntrar}}" hint-placeholder-val="{{ true }}">
+<div style="display: flex; flex-direction: column; gap: 18px; max-width: 480px">
+<div style="background: #ffffff; border: 1px solid #d9d9d9; border-radius: 16px; padding: 28px; display: flex; flex-direction: column; gap: 14px">
+<h1 style="margin: 0; font-size: 26px; line-height: 32px">Entrar</h1>
+<p style="margin: 0; font-size: 15px; line-height: 22px; color: #53585f">Área só para o time InovAI. Digite o seu e-mail e enviaremos um link de acesso, sem senha.</p>
+<label for="f-entrar-email" style="font-size: 15px; font-weight: 700">Seu e-mail</label>
+<input id="f-entrar-email" type="email" autocomplete="email" value="{{tEmail}}" onChange="{{onTEmail}}" style="width: 100%; box-sizing: border-box; min-height: 48px; padding: 10px 14px; border: 2px solid #53585f; border-radius: 10px; font-size: 16px; background: #ffffff; color: #262626">
+<button type="button" onClick="{{pedirLink}}" aria-live="polite" style="align-self: flex-start; min-height: 48px; padding: 12px 28px; border: {{linkBotaoBorda}}; border-radius: 9999px; background: {{linkBotaoBg}}; color: {{linkBotaoCor}}; opacity: {{linkBotaoOp}}; font-family: Roboto, Arial, sans-serif; font-size: 16px; font-weight: 700; cursor: {{linkBotaoCursor}}">{{linkBotaoTxt}}</button>
+<sc-if value="{{tEnviou}}" hint-placeholder-val="{{ false }}"><p style="margin: 0; font-size: 13px; line-height: 19px; color: #53585f">Não chegou? Confira o spam e a quarentena do e-mail da empresa. Você pode pedir um novo link a cada 1 minuto; o link mais recente é o que vale.</p></sc-if>
+<sc-if value="{{tTemMsg}}" hint-placeholder-val="{{ false }}"><p role="{{tMsgRole}}" style="margin: 0; padding: 12px 14px; border-radius: 10px; font-size: 14px; line-height: 20px; font-weight: 700; background: {{tMsgBg}}; color: {{tMsgCor}}">{{tMsg}}</p></sc-if>
+<button type="button" onClick="{{irInicio}}" style="align-self: flex-start; padding: 0; border: none; background: transparent; color: #c00000; font-family: Roboto, Arial, sans-serif; font-size: 14px; font-weight: 700; text-decoration: underline; cursor: pointer">Voltar para a página inicial</button>
+</div>
+<sc-if value="{{tEnviou}}" hint-placeholder-val="{{ false }}">
+<div style="border: 2px dashed #bfbfbf; border-radius: 12px; padding: 16px 18px; display: flex; flex-direction: column; gap: 12px; background: #ffffff">
+<div style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 11px; line-height: 14px; font-weight: 700; letter-spacing: 0.12em; color: #53585f">SÓ NO PROTÓTIPO</span><span style="font-size: 15px; line-height: 21px; font-weight: 700">O e-mail que chega: "InovAI | Seu link de acesso ao Prisma"</span></div>
+<div style="border-left: 3px solid #d9d9d9; padding: 4px 0 4px 14px; display: flex; flex-direction: column; gap: 10px; font-size: 15px; line-height: 22px">
+<p style="margin: 0">Olá!</p>
+<p style="margin: 0">Use o botão abaixo para entrar na área do time InovAI no Prisma de Experimentação.</p>
+<button type="button" onClick="{{abrirLinkEmail}}" style="align-self: flex-start; padding: 12px 24px; border: none; border-radius: 9999px; background: #e2262b; color: #ffffff; font-family: Roboto, Arial, sans-serif; font-size: 15px; font-weight: 700; cursor: pointer">Entrar no Prisma</button>
+<p style="margin: 0; color: #53585f; font-size: 14px">O link vale uma única vez e por cerca de 1 hora. Se você não pediu este acesso, ignore este e-mail.</p>
+<p style="margin: 0; color: #53585f; font-size: 14px">Time InovAI · Experimentação</p>
+</div>
+</div>
+</sc-if>
+</div>
+</sc-if>
+
+<sc-if value="{{isTConfirmar}}" hint-placeholder-val="{{ false }}">
+<div style="max-width: 480px; background: #ffffff; border: 1px solid #d9d9d9; border-radius: 16px; padding: 28px; box-sizing: border-box; display: flex; flex-direction: column; gap: 14px">
+<h1 style="margin: 0; font-size: 26px; line-height: 32px">Entrar na área restrita</h1>
+<p style="margin: 0; font-size: 15px; line-height: 22px; color: #53585f">Clique no botão para entrar. O acesso fica guardado neste navegador por 7 dias.</p>
+<button type="button" onClick="{{confirmarEntrada}}" style="align-self: flex-start; min-height: 48px; padding: 12px 28px; border: none; border-radius: 9999px; background: #e2262b; color: #ffffff; font-family: Roboto, Arial, sans-serif; font-size: 16px; font-weight: 700; cursor: pointer">Entrar na área restrita</button>
+<button type="button" onClick="{{irInicio}}" style="align-self: flex-start; padding: 0; border: none; background: transparent; color: #c00000; font-family: Roboto, Arial, sans-serif; font-size: 14px; font-weight: 700; text-decoration: underline; cursor: pointer">Voltar para a página inicial</button>
+</div>
+</sc-if>
+
+<sc-if value="{{isTLista}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; gap: 18px">
+<div style="display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; flex-wrap: wrap">
+<div><h1 style="margin: 0; font-size: 28px; line-height: 34px">Demandas</h1><p style="margin: 4px 0 0; font-size: 15px; color: #53585f">{{listaTotalTxt}}</p></div>
+<div style="display: flex; flex-direction: column; gap: 6px; flex: 0 1 300px; min-width: 0">
+<label for="f-filtro" style="font-size: 14px; font-weight: 700">Filtrar por situação</label>
+<select id="f-filtro" value="{{tFiltro}}" onChange="{{onTFiltro}}" style="width: 100%; box-sizing: border-box; min-height: 48px; padding: 10px 14px; border: 2px solid #53585f; border-radius: 10px; font-family: Roboto, Arial, sans-serif; font-size: 16px; background: #ffffff; color: #262626">
+<sc-for list="{{filtroOpcoes}}" as="o" hint-placeholder-count="12"><option value="{{o.v}}" selected="{{o.sel}}">{{o.t}}</option></sc-for>
+</select>
+</div>
+</div>
+<sc-if value="{{listaVazia}}" hint-placeholder-val="{{ false }}"><p style="margin: 0; padding: 24px; background: #ffffff; border-radius: 12px; border: 1px solid #d9d9d9; color: #53585f">Nenhuma demanda nesta situação.</p></sc-if>
+<ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px">
+<sc-for list="{{listaVisivel}}" as="l" hint-placeholder-count="4">
+<li><button type="button" onClick="{{l.abrir}}" aria-label="Abrir a demanda {{l.codigo}}" style="width: 100%; box-sizing: border-box; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 6px 18px; align-items: center; padding: 14px 18px; background: #ffffff; border: 1px solid #d9d9d9; border-radius: 12px; color: #262626; font-family: Roboto, Arial, sans-serif; text-align: left; cursor: pointer">
+<span style="display: flex; flex-direction: column"><strong style="color: #c00000; font-size: 16px">{{l.codigo}}</strong><span style="font-size: 13px; color: #53585f">{{l.data}}</span></span>
+<span style="display: flex; flex-direction: column"><strong style="font-size: 16px">{{l.nomeSolucao}}</strong><span style="font-size: 13px; color: #53585f">{{l.produto}}</span></span>
+<span style="display: flex; flex-direction: column; font-size: 14px"><span>{{l.nome}}</span><span style="font-size: 13px; color: #53585f">{{l.area}}</span></span>
+<span style="justify-self: start; font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 9999px; background: #fdeeee; color: #c00000">{{l.situacaoTxt}}</span>
+</button></li>
+</sc-for>
+</ul>
+<p style="margin: 0; font-size: 13px; line-height: 19px; color: #53585f">No protótipo, as demandas são fictícias. As que você enviar neste teste também aparecem aqui.</p>
+</div>
+</sc-if>
+
+<sc-if value="{{isTDetalhe}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; gap: 18px">
+<button type="button" onClick="{{voltarLista}}" style="align-self: flex-start; padding: 0; border: none; background: transparent; color: #c00000; font-family: Roboto, Arial, sans-serif; font-size: 14px; font-weight: 700; text-decoration: underline; cursor: pointer">← Voltar para a lista</button>
+<div style="display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; flex-wrap: wrap">
+<div><p style="margin: 0; font-size: 14px; font-weight: 700; color: #c00000">{{dt.codigo}}</p><h1 style="margin: 2px 0 0; font-size: 30px; line-height: 36px">{{dt.nomeSolucao}}</h1><p style="margin: 4px 0 0; font-size: 15px; color: #53585f">{{dt.resumo}}</p></div>
+<button type="button" onClick="{{baixarDetalhe}}" style="min-height: 44px; padding: 10px 20px; border: 2px solid #e2262b; border-radius: 9999px; background: #ffffff; color: #c00000; font-family: Roboto, Arial, sans-serif; font-size: 15px; font-weight: 700; cursor: pointer">Baixar {{dt.codigo}}.pdf</button>
+</div>
+<sc-if value="{{dtAvisoPdf}}" hint-placeholder-val="{{ false }}"><p role="status" style="margin: 0; font-size: 13px; line-height: 19px; color: #c00000; font-weight: 700">No protótipo, o PDF só sai das demandas que você enviou neste teste (na tela final). Na solução, ele vem guardado com a demanda.</p></sc-if>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax({{dtColMin}}, 1fr)); gap: 18px; align-items: start">
+<section style="background: #ffffff; border: 1px solid #d9d9d9; border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 10px">
+<h2 style="margin: 0; font-size: 18px; line-height: 24px">Situação</h2>
+<p style="margin: 0; font-size: 16px; font-weight: 700; color: #c00000">{{dt.situacaoTxt}}</p>
+<label for="f-situacao" style="font-size: 14px; font-weight: 700">Mudar para</label>
+<select id="f-situacao" value="{{tNova}}" onChange="{{onTNova}}" style="width: 100%; box-sizing: border-box; min-height: 48px; padding: 10px 14px; border: 2px solid #53585f; border-radius: 10px; font-family: Roboto, Arial, sans-serif; font-size: 16px; background: #ffffff; color: #262626">
+<sc-for list="{{situacaoOpcoes}}" as="o" hint-placeholder-count="11"><option value="{{o.v}}" selected="{{o.sel}}">{{o.t}}</option></sc-for>
+</select>
+<button type="button" onClick="{{salvarSituacao}}" style="align-self: flex-start; min-height: 48px; padding: 12px 28px; border: {{salvarBorda}}; border-radius: 9999px; background: {{salvarBg}}; color: {{salvarCor}}; opacity: {{salvarOp}}; font-family: Roboto, Arial, sans-serif; font-size: 16px; font-weight: 700; cursor: pointer">Salvar situação</button>
+<sc-if value="{{tSalvou}}" hint-placeholder-val="{{ false }}"><p role="status" style="margin: 0; font-size: 14px; font-weight: 700; color: #1d5e20">Situação atualizada.</p></sc-if>
+<h3 style="margin: 8px 0 0; font-size: 15px">Histórico</h3>
+<ul style="margin: 0; padding-left: 18px; font-size: 14px; line-height: 21px"><sc-for list="{{dt.historico}}" as="h" hint-placeholder-count="2"><li>{{h.t}}</li></sc-for></ul>
+</section>
+<section style="background: #ffffff; border: 1px solid #d9d9d9; border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 10px">
+<h2 style="margin: 0; font-size: 18px; line-height: 24px">Quem enviou</h2>
+<div style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; font-weight: 700; letter-spacing: 0.08em; color: #53585f">NOME</span><span style="font-size: 15px; line-height: 22px">{{dt.nome}}</span></div>
+<div style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; font-weight: 700; letter-spacing: 0.08em; color: #53585f">ÁREA</span><span style="font-size: 15px; line-height: 22px">{{dt.area}}</span></div>
+<div style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; font-weight: 700; letter-spacing: 0.08em; color: #53585f">E-MAIL</span><span style="font-size: 15px; line-height: 22px; color: #c00000; text-decoration: underline; overflow-wrap: anywhere">{{dt.email}}</span></div>
+<div style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; font-weight: 700; letter-spacing: 0.08em; color: #53585f">ENVIADO EM</span><span style="font-size: 15px; line-height: 22px">{{dt.enviadoEm}}</span></div>
+</section>
+</div>
+<section style="background: #ffffff; border: 1px solid #d9d9d9; border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 10px">
+<h2 style="margin: 0; font-size: 18px; line-height: 24px">O que a pessoa contou</h2>
+<div style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; font-weight: 700; letter-spacing: 0.08em; color: #53585f">PROBLEMA</span><span style="font-size: 15px; line-height: 22px; white-space: pre-line">{{dt.problema}}</span></div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px">
+<div style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; font-weight: 700; letter-spacing: 0.08em; color: #53585f">CASOS POR MÊS</span><span style="font-size: 15px; line-height: 22px">{{dt.volume}}</span></div>
+<div style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; font-weight: 700; letter-spacing: 0.08em; color: #53585f">CUSTO POR CASO (R$)</span><span style="font-size: 15px; line-height: 22px">{{dt.valorCaso}}</span></div>
+<div style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; font-weight: 700; letter-spacing: 0.08em; color: #53585f">PRODUTO OU JORNADA</span><span style="font-size: 15px; line-height: 22px">{{dt.produto}}</span></div>
+<div style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; font-weight: 700; letter-spacing: 0.08em; color: #53585f">TIME QUE RECEBE A SOLUÇÃO</span><span style="font-size: 15px; line-height: 22px">{{dt.interessados}}</span></div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; font-weight: 700; letter-spacing: 0.08em; color: #53585f">GANHOS ESPERADOS</span><span style="font-size: 15px; line-height: 22px; white-space: pre-line">{{dt.ganhos}}</span></div>
+<div style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; font-weight: 700; letter-spacing: 0.08em; color: #53585f">STAKEHOLDERS</span><span style="font-size: 15px; line-height: 22px">{{dt.stakeholders}}</span></div>
+<div style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; font-weight: 700; letter-spacing: 0.08em; color: #53585f">DADOS OU OBSERVAÇÕES</span><span style="font-size: 15px; line-height: 22px">{{dt.dados}}</span></div>
+<div style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; font-weight: 700; letter-spacing: 0.08em; color: #53585f">LINKS</span><span style="font-size: 15px; line-height: 22px; white-space: pre-line; overflow-wrap: anywhere; color: {{dt.linksCor}}">{{dt.links}}</span></div>
+<div style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; font-weight: 700; letter-spacing: 0.08em; color: #53585f">ANEXOS</span><span style="font-size: 15px; line-height: 22px; white-space: pre-line; overflow-wrap: anywhere; color: {{dt.anexosCor}}">{{dt.anexos}}</span></div>
+</section>
+<section style="background: #ffffff; border: 1px solid #d9d9d9; border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 10px">
+<h2 style="margin: 0; font-size: 18px; line-height: 24px">Itens conferidos no Passo 3</h2>
+<div style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; font-weight: 700; letter-spacing: 0.08em; color: #53585f">HIPÓTESE</span><span style="font-size: 15px; line-height: 22px">{{dt.hipotese}}</span></div>
+<div style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; font-weight: 700; letter-spacing: 0.08em; color: #53585f">RISCOS INICIAIS</span><span style="font-size: 15px; line-height: 22px; white-space: pre-line">{{dt.riscos}}</span></div>
+</section>
+<section style="background: #ffffff; border: 1px solid #d9d9d9; border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 10px">
+<h2 style="margin: 0; font-size: 18px; line-height: 24px">Canvas</h2>
+<p style="margin: 0; font-size: 14px; line-height: 20px; color: #53585f">Na solução, aqui aparece o canvas da demanda, igual ao da tela final e ao do PDF. No protótipo, veja o canvas na tela final depois de enviar um problema.</p>
+</section>
+</div>
+</sc-if>
+
+</main>
+</sc-if>
+<footer style="width: 100%; max-width: 1240px; margin: 0 auto; padding: 8px {{padX}} 96px; box-sizing: border-box; flex: none">
 <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; border-top: 1px solid #d9d9d9; padding-top: 22px">
 <div style="display: flex; align-items: center; gap: 14px">
 <span style="width: 44px; height: 44px; background: #e2262b; display: flex; align-items: center; justify-content: center"><svg aria-hidden="true" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6"></path><path d="M10 3v6.5L4.6 18.2A1.8 1.8 0 0 0 6.1 21h11.8a1.8 1.8 0 0 0 1.5-2.8L14 9.5V3"></path><path d="M7 15h10"></path></svg></span>
@@ -703,12 +834,21 @@ button:focus-visible{outline:3px solid #f3a6a8;outline-offset:2px}
 class Component extends DCLogic {
   constructor(props) {
     super(props);
-    this.state = { tela: 'entrada', volNaoSei: false, volume: '', valorCaso: '', valorNaoSei: false, consultaCod: '', consultaRes: null, consultaErro: false, ganho: '', ganhosSec: [], justPrinc: '', justSec: {}, problema: '', dados: '', arquivos: [], links: [], linkNovo: '', produto: '', interessados: '', stakeholders: '', nome: '', area: '', email: '', erro: false, erroEnvio: false, usouExemplo: false, iaStep: 0, ia: [], baixou: false, cvNivel: 0, cvNivelT: 0, imprimindo: false };
+    this.state = { tela: 'entrada', volNaoSei: false, volume: '', valorCaso: '', valorNaoSei: false, consultaCod: '', consultaRes: null, consultaErro: false, ganho: '', ganhosSec: [], justPrinc: '', justSec: {}, problema: '', dados: '', arquivos: [], links: [], linkNovo: '', produto: '', interessados: '', stakeholders: '', nome: '', area: '', email: '', erro: false, erroEnvio: false, usouExemplo: false, iaStep: 0, ia: [], baixou: false, cvNivel: 0, cvNivelT: 0, imprimindo: false, logado: false, timeEmail: '', tEmail: '', tEnviou: false, tMsg: null, tEspera: 0, tFiltro: '', tSel: '', tNova: '', tSalvou: false, dtAvisoPdf: false, enviadas: [], mudancas: {} };
     this.timers = [];
+    this.contador = null;
+  }
+  // Área restrita no protótipo: demandas fictícias para mostrar a lista e o detalhe.
+  amostras() {
+    return [
+      { codigo: 'PR-1026-0009', iso: '2026-10-28', data: '28/10/2026', enviadoEm: '28/10/2026, 10:42:00', nomeSolucao: 'Agente de Agendamento', resumo: 'Clientes desistem da instalação porque não encontram horário para a visita técnica', produto: 'Instalação de fibra', nome: 'Bruna Lima', area: 'Atendimento', email: 'bruna.lima@exemplo.com.br', problema: 'Muitos clientes ligam para remarcar a instalação da fibra porque o horário oferecido não serve. Parte deles desiste no meio do caminho. Percebemos pelo volume de remarcações na central.', volume: '1200', valorCaso: '18', ganho: 'Experiência do cliente', justPrinc: 'O cliente escolhe um horário que funciona para ele, sem precisar ligar.', ganhosSec: { 'Redução de custo': 'Menos ligações de remarcação na central.' }, interessados: 'Time de instalação', stakeholders: 'Gerência de campo', dados: 'Cerca de 40 remarcações por dia na central.', links: [], anexos: ['remarcacoes-outubro.xlsx'], hipotese: 'Acredito que sugerir horários disponíveis de forma automática, porque o cliente encontra um horário sem precisar de outro canal, o que resultará em menos esforço do cliente, com menos contatos e etapas, entre os cerca de 1.200 casos por mês.', riscos: 'Técnico: a agenda dos técnicos pode não estar integrada.\nNegócio: o volume informado pode não se confirmar nos dados reais.\nAdoção: o time de instalação precisa incorporar a solução na rotina.', situacao: 'Reunião inicial agendada', hist: [['Reunião inicial agendada', '03/11/2026, 09:15:00', 'pessoa.inovai@exemplo.com.br'], ['Demanda recebida', '28/10/2026, 10:42:00', 'envio']] },
+      { codigo: 'PR-1026-0005', iso: '2026-10-14', data: '14/10/2026', enviadoEm: '14/10/2026, 16:05:00', nomeSolucao: 'Fila Zero', resumo: 'Pedidos com erro de cadastro param numa fila de tratamento manual no backoffice', produto: 'Backoffice de pedidos', nome: 'Diego Ramos', area: 'Operações', email: 'diego.ramos@exemplo.com.br', problema: 'Quando o cadastro chega com erro, o pedido vai para uma fila que o backoffice trata à mão. A fila cresce no fim do mês e atrasa a ativação.', volume: '', valorCaso: '12', ganho: 'Redução de custo', justPrinc: 'Menos horas do backoffice conferindo pedido por pedido.', ganhosSec: {}, interessados: 'Backoffice de vendas', stakeholders: '', dados: '', links: ['painel.exemplo.com.br/fila-backoffice'], anexos: [], hipotese: 'Acredito que automatizar a tratativa que hoje é feita à mão, porque o caso é resolvido sem passar pela fila, o que resultará em menos casos em tratamento manual e menor custo por caso.', riscos: 'Técnico: os dados necessários podem não estar disponíveis ou completos.\nNegócio: o tamanho do problema ainda não foi medido; o volume precisa ser levantado antes do teste.\nAdoção: o backoffice de vendas precisa incorporar a solução na rotina.', situacao: 'Priorização de estudos', hist: [['Priorização de estudos', '30/10/2026, 14:00:00', 'pessoa.inovai@exemplo.com.br'], ['Reunião inicial agendada', '20/10/2026, 11:30:00', 'pessoa.inovai@exemplo.com.br'], ['Demanda recebida', '14/10/2026, 16:05:00', 'envio']] },
+      { codigo: 'PR-1026-0002', iso: '2026-10-03', data: '03/10/2026', enviadoEm: '03/10/2026, 08:50:00', nomeSolucao: 'Fatura Clara', resumo: 'Clientes ligam para a central porque não entendem os valores da fatura', produto: 'Fatura do plano móvel', nome: 'Carla Dias', area: 'Cobrança', email: 'carla.dias@exemplo.com.br', problema: 'Depois de uma mudança de plano, a fatura vem com valores proporcionais que o cliente não entende. Ele liga para a central para perguntar e às vezes contesta a cobrança.', volume: '5000', valorCaso: '9', ganho: 'Redução de custo', justPrinc: 'Menos ligações para explicar a fatura.', ganhosSec: { 'Experiência do cliente': 'O cliente entende a cobrança sem ligar.' }, interessados: 'Time de cobrança', stakeholders: 'Diretoria de relacionamento', dados: '', links: [], anexos: [], hipotese: 'Acredito que explicar a fatura ao cliente de forma simples e automática, porque o cliente entende a cobrança sem precisar ligar, o que resultará em menos casos em tratamento manual e menor custo por caso, entre os cerca de 5.000 casos por mês.', riscos: 'Técnico: os dados necessários podem não estar disponíveis ou completos.\nNegócio: o volume informado pode não se confirmar nos dados reais.\nAdoção: o time de cobrança precisa incorporar a solução na rotina.', situacao: 'Prototipação', hist: [['Prototipação', '25/11/2026, 10:00:00', 'pessoa.inovai@exemplo.com.br'], ['Em desenvolvimento', '10/11/2026, 15:20:00', 'pessoa.inovai@exemplo.com.br'], ['Demanda recebida', '03/10/2026, 08:50:00', 'envio']] }
+    ];
   }
   componentDidMount() { var self = this; this._onR = function () { self.medirCanvas(); }; try { window.addEventListener('resize', this._onR); } catch (e) {} }
   componentDidUpdate() { this.medirCanvas(); }
-  componentWillUnmount() { this.timers.forEach(function (t) { clearTimeout(t); }); try { window.removeEventListener('resize', this._onR); } catch (e) {} }
+  componentWillUnmount() { this.timers.forEach(function (t) { clearTimeout(t); }); if (this.contador) clearInterval(this.contador); try { window.removeEventListener('resize', this._onR); } catch (e) {} }
   medirCanvas() {
     try {
       var st = this.state;
@@ -867,9 +1007,15 @@ class Component extends DCLogic {
         mostraAceitar: !x.aceito,
         aceitarLabel: x.editando ? 'Salvar e confirmar' : 'Confirmar',
         mostraEditar: !x.editando,
-        aceitar: function () { atualiza({ aceito: true, editando: false }); },
-        editar: function () { atualiza({ editando: true, aceito: false }); },
-        onChange: function (e) { atualiza({ texto: e.target.value }); }
+        temAviso: !!x.aviso, aviso: x.aviso || '',
+        aceitar: function () {
+          var t = String(self.state.ia[i].texto || '').trim();
+          var aviso = !t ? 'Escreva este item antes de confirmar.' : (x.id === 'nome' && t.charAt(0) === '[' ? 'Dê um nome para a solução antes de confirmar.' : '');
+          if (aviso) { atualiza({ editando: true, aceito: false, aviso: aviso }); return; }
+          atualiza({ aceito: true, editando: false, aviso: '' });
+        },
+        editar: function () { atualiza({ editando: true, aceito: false, aviso: '' }); },
+        onChange: function (e) { atualiza({ texto: e.target.value, aviso: '' }); }
       };
     });
     var iaDefs = ['Lendo o que você contou', 'Organizando a hipótese', 'Preparando o resumo para o time InovAI'];
@@ -878,7 +1024,106 @@ class Component extends DCLogic {
       return { label: l, mark: feito ? '✓' : '', bg: feito ? '#e2262b' : '#d9d9d9', color: feito ? '#262626' : '#53585f' };
     });
     var resumo = s.problema.length > 180 ? s.problema.slice(0, 177) + '...' : s.problema;
+    // ---- Área restrita (time InovAI) ----
+    var PASSOS_P = ['Demanda recebida', 'Reunião inicial agendada', 'Priorização de estudos', 'Validação e métricas da PoC', 'Em desenvolvimento'];
+    var ETAPA_P = [0, 0, 1, 1, 1];
+    var ESTEIRA = ['Mapeamento de problemas', 'Desenho de solução', 'Prototipação', 'Testes', 'Decisão de pilotar', 'Priorização', 'Piloto', 'Transferência de conhecimento'];
+    var SITUACOES = PASSOS_P.concat(ESTEIRA.slice(2));
+    function descrever(x) { var p = PASSOS_P.indexOf(x); if (p >= 0) return 'Etapa ' + (ETAPA_P[p] + 1) + ' · ' + x; var e = ESTEIRA.indexOf(x); return e >= 0 ? 'Etapa ' + (e + 1) + ' · ' + x : x; }
+    function pontoDe(x) { var p = PASSOS_P.indexOf(x); if (p >= 0) return p; var e = ESTEIRA.indexOf(x); return e >= 2 ? 5 + (e - 2) : 0; }
+    var isTime = s.tela === 'tEntrar' || s.tela === 'tConfirmar' || s.tela === 'tLista' || s.tela === 'tDetalhe';
+    var mud = s.mudancas || {};
+    var todas = (s.enviadas || []).slice().reverse().concat(this.amostras()).map(function (d) {
+      var m = mud[d.codigo];
+      var sit = m ? m.situacao : d.situacao;
+      var hist = (m ? m.hist : []).concat(d.hist);
+      return Object.assign({}, d, { situacao: sit, histTodo: hist });
+    });
+    function acharDemanda(c) { return todas.filter(function (d) { return d.codigo === c; })[0] || null; }
+    var visiveis = s.tFiltro ? todas.filter(function (d) { return d.situacao === s.tFiltro; }) : todas;
+    var sel = s.tela === 'tDetalhe' ? acharDemanda(s.tSel) : null;
+    var dt = sel ? {
+      codigo: sel.codigo, nomeSolucao: sel.nomeSolucao, resumo: sel.resumo, situacaoTxt: descrever(sel.situacao),
+      nome: sel.nome, area: sel.area, email: sel.email, enviadoEm: sel.enviadoEm, problema: sel.problema,
+      volume: sel.volume ? sel.volume : 'Não sabe agora', valorCaso: sel.valorCaso ? sel.valorCaso : 'Não sabe agora',
+      produto: sel.produto, interessados: sel.interessados,
+      ganhos: [sel.ganho + ' (principal): ' + sel.justPrinc].concat(Object.keys(sel.ganhosSec || {}).map(function (g) { return g + ': ' + (sel.ganhosSec[g] || '-'); })).join('\n'),
+      stakeholders: sel.stakeholders || '-', dados: sel.dados || '-',
+      links: sel.links.length ? sel.links.join('\n') : '-', linksCor: sel.links.length ? '#c00000' : '#262626',
+      anexos: sel.anexos.length ? sel.anexos.join('\n') : '-', anexosCor: sel.anexos.length ? '#c00000' : '#262626',
+      hipotese: sel.hipotese, riscos: sel.riscos,
+      historico: sel.histTodo.map(function (h) { return { t: descrever(h[0]) + ': ' + h[1] + ', por ' + (h[2] === 'envio' ? 'envio da demanda' : h[2]) }; })
+    } : { codigo: '', nomeSolucao: '', resumo: '', situacaoTxt: '', nome: '', area: '', email: '', enviadoEm: '', problema: '', volume: '', valorCaso: '', produto: '', interessados: '', ganhos: '', stakeholders: '', dados: '', links: '', linksCor: '#262626', anexos: '', anexosCor: '#262626', hipotese: '', riscos: '', historico: [] };
+    var novaSit = s.tNova || (sel ? sel.situacao : '');
+    var mudou = !!sel && novaSit !== sel.situacao;
+    function irTime(t, extra) { self.setState(Object.assign({ tela: t }, extra || {})); try { window.scrollTo(0, 0); } catch (e) {} }
+    var espera = s.tEspera || 0;
+    var msg = s.tMsg;
     return {
+      isSite: !isTime, isTime: isTime,
+      isTEntrar: s.tela === 'tEntrar', isTConfirmar: s.tela === 'tConfirmar', isTLista: s.tela === 'tLista', isTDetalhe: s.tela === 'tDetalhe',
+      mostraSair: isTime && !!s.logado,
+      timeEmail: s.timeEmail || '',
+      restritaBg: isTime ? '#e2262b' : '#ffffff',
+      restritaCor: isTime ? '#ffffff' : '#c00000',
+      restritaAtual: isTime ? 'page' : 'false',
+      restritaAria: isTime ? 'Área restrita (você está aqui)' : 'Área restrita',
+      abrirRestrita: function () { self.timers.forEach(function (t) { clearTimeout(t); }); self.timers = []; irTime(s.logado ? 'tLista' : 'tEntrar', { tMsg: null }); },
+      sair: function () { if (self.contador) { clearInterval(self.contador); self.contador = null; } irTime('tEntrar', { logado: false, timeEmail: '', tEmail: '', tEnviou: false, tMsg: null, tEspera: 0, tFiltro: '' }); },
+      tEmail: s.tEmail || '',
+      onTEmail: function (e) { self.setState({ tEmail: e.target.value, tEnviou: false }); },
+      tEnviou: !!s.tEnviou,
+      tTemMsg: !!msg,
+      tMsg: msg ? msg.texto : '',
+      tMsgRole: msg && msg.tipo === 'erro' ? 'alert' : 'status',
+      tMsgBg: msg && msg.tipo === 'erro' ? '#fdeeee' : '#eef7ee',
+      tMsgCor: msg && msg.tipo === 'erro' ? '#960000' : '#1d5e20',
+      linkBotaoTxt: espera > 0 ? 'Reenviar link em ' + espera + ' s' : (s.tEnviou ? 'Reenviar link' : 'Enviar link de acesso'),
+      linkBotaoBg: espera > 0 ? '#ffffff' : '#e2262b',
+      linkBotaoCor: espera > 0 ? '#c00000' : '#ffffff',
+      linkBotaoBorda: espera > 0 ? '2px solid #e2262b' : '2px solid #e2262b',
+      linkBotaoOp: espera > 0 ? '0.7' : '1',
+      linkBotaoCursor: espera > 0 ? 'not-allowed' : 'pointer',
+      pedirLink: function () {
+        if ((self.state.tEspera || 0) > 0) return;
+        var em = String(s.tEmail || '').trim().toLowerCase();
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) { self.setState({ tMsg: { tipo: 'erro', texto: 'Digite um e-mail válido.' } }); return; }
+        self.setState({ tEnviou: true, tEspera: 60, tMsg: { tipo: 'ok', texto: 'Se este e-mail faz parte do time InovAI, o link de acesso chega em instantes. Confira também o spam.' } });
+        if (self.contador) clearInterval(self.contador);
+        self.contador = setInterval(function () { var n = (self.state.tEspera || 0) - 1; if (n <= 0) { clearInterval(self.contador); self.contador = null; n = 0; } self.setState({ tEspera: n }); }, 1000);
+      },
+      abrirLinkEmail: function () { irTime('tConfirmar'); },
+      confirmarEntrada: function () { irTime('tLista', { logado: true, timeEmail: String(s.tEmail || '').trim().toLowerCase() || 'voce@exemplo.com.br', tMsg: null }); },
+      listaTotalTxt: todas.length + (todas.length === 1 ? ' demanda recebida' : ' demandas recebidas'),
+      tFiltro: s.tFiltro || '',
+      onTFiltro: function (e) { self.setState({ tFiltro: e.target.value }); },
+      filtroOpcoes: [{ v: '', t: 'Todas (' + todas.length + ')', sel: !s.tFiltro }].concat(SITUACOES.map(function (x) { return { v: x, t: descrever(x) + ' (' + todas.filter(function (d) { return d.situacao === x; }).length + ')', sel: s.tFiltro === x }; })),
+      listaVazia: visiveis.length === 0,
+      listaVisivel: visiveis.map(function (d) { return { codigo: d.codigo, data: d.data, nomeSolucao: d.nomeSolucao, produto: d.produto, nome: d.nome, area: d.area, situacaoTxt: descrever(d.situacao), abrir: function () { irTime('tDetalhe', { tSel: d.codigo, tNova: '', tSalvou: false, dtAvisoPdf: false }); } }; }),
+      voltarLista: function () { irTime('tLista', { tSalvou: false, dtAvisoPdf: false }); },
+      dt: dt,
+      dtColMin: '300px',
+      dtAvisoPdf: !!s.dtAvisoPdf,
+      tNova: novaSit,
+      onTNova: function (e) { self.setState({ tNova: e.target.value, tSalvou: false }); },
+      situacaoOpcoes: SITUACOES.map(function (x) { return { v: x, t: descrever(x), sel: x === novaSit }; }),
+      tSalvou: !!s.tSalvou,
+      salvarBg: mudou ? '#e2262b' : '#ffffff',
+      salvarCor: mudou ? '#ffffff' : '#c00000',
+      salvarBorda: '2px solid #e2262b',
+      salvarOp: mudou ? '1' : '0.6',
+      salvarSituacao: function () {
+        if (!mudou) return;
+        var d = new Date();
+        var quando = d.toLocaleString('pt-BR');
+        var antes = mud[sel.codigo] || { hist: [] };
+        var nm = Object.assign({}, mud); nm[sel.codigo] = { situacao: novaSit, hist: [[novaSit, quando, s.timeEmail || 'voce@exemplo.com.br']].concat(antes.hist) };
+        self.setState({ mudancas: nm, tNova: '', tSalvou: true });
+      },
+      baixarDetalhe: function () {
+        if (sel && sel.codigo === s.codigo && (s.ia || []).length) { self.setState({ dtAvisoPdf: false }); self.renderVals().baixar(); return; }
+        self.setState({ dtAvisoPdf: true });
+      },
       rootW: s.imprimindo ? '1920px' : (compact ? '390px' : '100%'),
       rootH: s.imprimindo ? 'auto' : (compact ? '844px' : 'auto'),
       rootMinH: s.imprimindo ? '0' : (compact ? '0' : '900px'),
@@ -904,9 +1149,11 @@ class Component extends DCLogic {
         var nomes = ['Mapeamento de problemas', 'Desenho de solução', 'Prototipação', 'Testes', 'Decisão de pilotar', 'Priorização', 'Piloto', 'Transferência de conhecimento'];
         var passos = ['Demanda recebida', 'Reunião inicial agendada', 'Priorização de estudos', 'Validação e métricas da PoC', 'Em desenvolvimento'];
         var etapaDoPasso = [0, 0, 1, 1, 1];
-        var propria = c === s.codigo;
-        // Simulação: o número do código decide o ponto da jornada (0 a 4: passos do pedido; 5 a 10: próximas etapas).
-        var ponto = propria ? 0 : (parseInt(c.slice(-4), 10) % 11);
+        // Demandas conhecidas no protótipo (as fictícias e as enviadas neste teste) usam a situação da área restrita.
+        var conhecida = acharDemanda(c);
+        var propria = !!conhecida;
+        // Código desconhecido: o número do código simula o ponto da jornada (0 a 4: passos do pedido; 5 a 10: próximas etapas).
+        var ponto = conhecida ? pontoDe(conhecida.situacao) : (parseInt(c.slice(-4), 10) % 11);
         var est = ponto < 5 ? etapaDoPasso[ponto] : ponto - 3;
         self.setState({ consultaErro: false, consultaCod: c, consultaRes: {
           codigo: c, ponto: ponto, esteiraIdx: est,
@@ -915,7 +1162,7 @@ class Component extends DCLogic {
           barra: Array.apply(null, Array(11)).map(function (_, i) {
             return { flex: i < 5 ? '2' : '1', h: i < 5 ? '10px' : '6px', ml: i === 5 ? '6px' : '0', cor: i < ponto ? '#e2262b' : (i === ponto ? '#960000' : '#d9d9d9') };
           }),
-          nota: propria ? 'Recebemos seu problema. O time InovAI vai entrar em contato para agendar a reunião inicial.' : 'No protótipo, a posição é simulada. Na solução, ela vem do registro da demanda.'
+          nota: propria ? (ponto === 0 ? 'Recebemos seu problema. O time InovAI vai entrar em contato para agendar a reunião inicial.' : '') : 'No protótipo, a posição é simulada. Na solução, ela vem do registro da demanda.'
         } });
       },
       trilhaDir: compact ? 'column' : 'row',
@@ -1143,7 +1390,7 @@ class Component extends DCLogic {
       problemaResumo: resumo,
       validadosTxt: validados + ' de ' + s.ia.length + ' campos confirmados',
       enviarOpacity: validados === s.ia.length ? '1' : '0.45',
-      enviar: function () { if (validados < s.ia.length) { self.setState({ erroEnvio: true }); return; } var seq = (s.seq || 0) + 1; var d = new Date(); var mmaa = ('0' + (d.getMonth() + 1)).slice(-2) + String(d.getFullYear()).slice(-2); self.setState({ tela: 'fim', erroEnvio: false, cvNivel: 0, cvNivelT: 0, seq: seq, codigo: 'PR-' + mmaa + '-' + ('000' + seq).slice(-4), enviadoEm: d.toLocaleString('pt-BR'), baixouTeste: false, copiado: '' }); },
+      enviar: function () { if (validados < s.ia.length) { self.setState({ erroEnvio: true }); return; } var seq = (s.seq || 0) + 1; var d = new Date(); var mmaa = ('0' + (d.getMonth() + 1)).slice(-2) + String(d.getFullYear()).slice(-2); var cod = 'PR-' + mmaa + '-' + ('000' + seq).slice(-4); var quando = d.toLocaleString('pt-BR'); function item(id) { var f = s.ia.filter(function (x) { return x.id === id; })[0]; return f ? f.texto : ''; } var sec = {}; (s.ganhosSec || []).forEach(function (g) { sec[g] = (s.justSec || {})[g] || ''; }); var nova = { codigo: cod, data: d.toLocaleDateString('pt-BR'), enviadoEm: quando, nomeSolucao: item('nome'), resumo: item('resumo'), produto: s.produto, nome: s.nome, area: s.area, email: s.email, problema: s.problema, volume: s.volNaoSei ? '' : s.volume, valorCaso: s.valorNaoSei ? '' : s.valorCaso, ganho: s.ganho, justPrinc: s.justPrinc, ganhosSec: sec, interessados: s.interessados, stakeholders: s.stakeholders, dados: s.dados, links: (s.links || []).slice(), anexos: (s.arquivos || []).slice(), hipotese: item('hipotese'), riscos: item('riscos'), situacao: 'Demanda recebida', hist: [['Demanda recebida', quando, 'envio']] }; self.setState({ tela: 'fim', erroEnvio: false, cvNivel: 0, cvNivelT: 0, seq: seq, codigo: cod, enviadoEm: quando, baixouTeste: false, copiado: '', enviadas: (s.enviadas || []).concat([nova]) }); try { window.scrollTo(0, 0); } catch (e) {} },
       voltarConta: function () { self.setState({ tela: 'conta' }); },
       recomecar: function () { self.setState({ tela: 'conta', problema: '', dados: '', produto: '', interessados: '', erro: false, erroEnvio: false, usouExemplo: false, iaStep: 0, ia: [], stakeholders: '', nome: '', area: '', email: '', baixou: false, volume: '', volNaoSei: false, valorCaso: '', valorNaoSei: false, ganho: '', ganhosSec: [], justPrinc: '', justSec: {}, arquivos: [], links: [], linkNovo: '' }); }
     };
