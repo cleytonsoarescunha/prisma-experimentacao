@@ -8,3 +8,8 @@
 
 [build.environment]
   NODE_VERSION = "22"
+  # A Netlify barra o build se o valor de alguma variável aparecer nos arquivos gerados.
+  # Estas não são segredo e aparecem de propósito (endereço do Supabase, nome do remetente,
+  # "gemini", o e-mail do rodapé e a lista do time). As chaves de verdade
+  # (SUPABASE_SECRET_KEY, GEMINI_API_KEY, GMAIL_SENHA_APP) continuam sendo vigiadas.
+  SECRETS_SCAN_OMIT_KEYS = "NEXT_PUBLIC_SUPABASE_URL,IA_FORNECEDOR,EMAIL_NOME_REMETENTE,GMAIL_USUARIO,INOVAI_EMAILS"
